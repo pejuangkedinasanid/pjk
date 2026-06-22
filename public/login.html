@@ -1,525 +1,170 @@
 <!DOCTYPE html>
-
 <html lang="id">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Masuk | Pejuang Kedinasan</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-
 <style>
-
-:root{
---primary:#14274e;
---primary-light:#1f3f7a;
---white:#ffffff;
---gray:#64748b;
---border:#e2e8f0;
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Open Sans',sans-serif;
-}
-
-body{
-min-height:100vh;
-background:
-linear-gradient(
-135deg,
-#14274e,
-#1f3f7a
-);
-display:flex;
-align-items:center;
-justify-content:center;
-padding:30px;
-}
-
-.login-wrapper{
-width:100%;
-max-width:1150px;
-background:white;
-border-radius:35px;
-overflow:hidden;
-display:grid;
-grid-template-columns:1fr 1fr;
-box-shadow:
-0 25px 60px rgba(0,0,0,.18);
-}
-
-.login-left{
-background:
-linear-gradient(
-135deg,
-#14274e,
-#1f3f7a
-);
-padding:70px 60px;
-color:white;
-display:flex;
-flex-direction:column;
-justify-content:center;
-}
-
-.brand-badge{
-display:inline-block;
-padding:10px 18px;
-background:rgba(255,255,255,.15);
-border-radius:999px;
-font-size:13px;
-font-weight:700;
-margin-bottom:25px;
-width:max-content;
-}
-
-.brand-title{
-font-size:52px;
-font-weight:800;
-line-height:1.1;
-margin-bottom:20px;
-}
-
-.brand-subtitle{
-font-size:18px;
-line-height:1.9;
-opacity:.9;
-margin-bottom:40px;
-}
-
-.feature-list{
-display:flex;
-flex-direction:column;
-gap:16px;
-}
-
-.feature-item{
-display:flex;
-align-items:center;
-gap:12px;
-font-size:15px;
-}
-
-.login-right{
-padding:70px 60px;
-display:flex;
-align-items:center;
-}
-
-.login-box{
-width:100%;
-}
-
-.logo{
-text-align:center;
-margin-bottom:35px;
-}
-
-.logo img{
-height:80px;
-margin-bottom:15px;
-}
-
-.logo-title{
-font-size:32px;
-font-weight:800;
-color:#14274e;
-}
-
-.logo-tagline{
-font-size:13px;
-color:#64748b;
-margin-top:5px;
-}
-
-.title{
-font-size:32px;
-font-weight:800;
-color:#14274e;
-text-align:center;
-margin-bottom:10px;
-}
-
-.subtitle{
-text-align:center;
-color:#64748b;
-margin-bottom:35px;
-}
-
-.form-group{
-margin-bottom:22px;
-}
-
-.form-group label{
-display:block;
-margin-bottom:8px;
-font-weight:700;
-color:#14274e;
-}
-
-.form-group input{
-width:100%;
-padding:16px;
-border:1px solid var(--border);
-border-radius:14px;
-font-size:15px;
-outline:none;
-transition:.3s;
-}
-
-.form-group input:focus{
-border-color:#14274e;
-box-shadow:0 0 0 4px rgba(20,39,78,.08);
-}
-
-.btn-login{
-width:100%;
-padding:16px;
-background:#14274e;
-border:none;
-border-radius:14px;
-color:white;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-transition:.3s;
-}
-
-.btn-login:hover{
-transform:translateY(-2px);
-}
-
-.extra{
-margin-top:25px;
-text-align:center;
-color:#64748b;
-}
-
-.extra a{
-color:#14274e;
-font-weight:700;
-text-decoration:none;
-}
-
-.back-home{
-display:block;
-text-align:center;
-margin-top:20px;
-text-decoration:none;
-color:#64748b;
-}
-
-.forgot{
-text-align:right;
-margin-top:-8px;
-margin-bottom:22px;
-}
-
-.forgot a{
-color:#14274e;
-font-size:14px;
-font-weight:700;
-text-decoration:none;
-}
-
-@media(max-width:992px){
-
-.login-wrapper{
-grid-template-columns:1fr;
-max-width:650px;
-}
-
-.login-left{
-display:none;
-}
-
-.login-right{
-padding:50px 40px;
-}
-
-}
-
-@media(max-width:768px){
-
-body{
-padding:15px;
-}
-
-.login-wrapper{
-border-radius:25px;
-}
-
-.login-right{
-padding:35px 25px;
-}
-
-.logo img{
-height:65px;
-}
-
-.logo-title{
-font-size:24px;
-}
-
-.logo-tagline{
-font-size:12px;
-}
-
-.title{
-font-size:26px;
-}
-
-.subtitle{
-font-size:14px;
-}
-
-.form-group input{
-padding:14px;
-}
-
-.btn-login{
-padding:14px;
-}
-
-}
-
+:root{--primary:#14274e;--primary-light:#1f3f7a;--white:#ffffff;--gray:#64748b;--border:#e2e8f0;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+body{min-height:100vh;background:linear-gradient(135deg,#14274e,#1f3f7a);display:flex;align-items:center;justify-content:center;padding:30px;}
+.login-wrapper{width:100%;max-width:1150px;background:white;border-radius:35px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;box-shadow:0 25px 60px rgba(0,0,0,.18);}
+.login-left{background:linear-gradient(135deg,#14274e,#1f3f7a);padding:70px 60px;color:white;display:flex;flex-direction:column;justify-content:center;}
+.brand-badge{display:inline-block;padding:10px 18px;background:rgba(255,255,255,.15);border-radius:999px;font-size:13px;font-weight:700;margin-bottom:25px;width:max-content;}
+.brand-title{font-size:52px;font-weight:800;line-height:1.1;margin-bottom:20px;}
+.brand-subtitle{font-size:18px;line-height:1.9;opacity:.9;margin-bottom:40px;}
+.feature-list{display:flex;flex-direction:column;gap:16px;}
+.feature-item{display:flex;align-items:center;gap:12px;font-size:15px;}
+.login-right{padding:70px 60px;display:flex;align-items:center;}
+.login-box{width:100%;}
+.logo{text-align:center;margin-bottom:35px;}
+.logo img{height:80px;margin-bottom:15px;}
+.logo-title{font-size:32px;font-weight:800;color:#14274e;}
+.logo-tagline{font-size:13px;color:#64748b;margin-top:5px;}
+.title{font-size:32px;font-weight:800;color:#14274e;text-align:center;margin-bottom:10px;}
+.subtitle{text-align:center;color:#64748b;margin-bottom:35px;}
+.form-group{margin-bottom:22px;}
+.form-group label{display:block;margin-bottom:8px;font-weight:700;color:#14274e;}
+.form-group input{width:100%;padding:16px;border:1px solid var(--border);border-radius:14px;font-size:15px;outline:none;transition:.3s;}
+.form-group input:focus{border-color:#14274e;box-shadow:0 0 0 4px rgba(20,39,78,.08);}
+.btn-login{width:100%;padding:16px;background:#14274e;border:none;border-radius:14px;color:white;font-size:16px;font-weight:700;cursor:pointer;transition:.3s;}
+.btn-login:disabled{opacity:.6;cursor:not-allowed;}
+.btn-login:hover:not(:disabled){transform:translateY(-2px);}
+.extra{margin-top:25px;text-align:center;color:#64748b;}
+.extra a{color:#14274e;font-weight:700;text-decoration:none;}
+.back-home{display:block;text-align:center;margin-top:20px;text-decoration:none;color:#64748b;}
+.forgot{text-align:right;margin-top:-8px;margin-bottom:22px;}
+.forgot a{color:#14274e;font-size:14px;font-weight:700;text-decoration:none;}
+.msg{margin-top:16px;font-size:14px;padding:10px 16px;border-radius:10px;display:none;text-align:center;}
+.msg.error{background:#fef2f2;color:#dc2626;display:block;}
+.msg.success{background:#f0fdf4;color:#16a34a;display:block;}
+@media(max-width:992px){.login-wrapper{grid-template-columns:1fr;max-width:650px;}.login-left{display:none;}.login-right{padding:50px 40px;}}
+@media(max-width:768px){body{padding:15px;}.login-wrapper{border-radius:25px;}.login-right{padding:35px 25px;}.logo img{height:65px;}.logo-title{font-size:24px;}.title{font-size:26px;}.form-group input{padding:14px;}.btn-login{padding:14px;}}
 </style>
-
 </head>
-
 <body>
-
 <div class="login-wrapper">
+  <div class="login-left">
+    <div class="brand-badge">#1 Platform Tryout Kedinasan Indonesia</div>
+    <h1 class="brand-title">Raih Sekolah Kedinasan Impianmu</h1>
+    <p class="brand-subtitle">Persiapkan diri menghadapi seleksi sekolah kedinasan dengan tryout nasional, ranking real-time, analisis kemampuan, dan ribuan soal terbaru.</p>
+    <div class="feature-list">
+      <div class="feature-item">✅ Simulasi CAT Kedinasan Real</div>
+      <div class="feature-item">🏆 Ranking Nasional Real-Time</div>
+      <div class="feature-item">📊 Analisis Nilai Mendalam</div>
+      <div class="feature-item">📚 Ribuan Soal HOTS Terbaru</div>
+      <div class="feature-item">🎥 Video Pembahasan Premium</div>
+    </div>
+  </div>
 
-<div class="login-left">
+  <div class="login-right">
+    <div class="login-box">
+      <div class="logo">
+        <img src="assets/logo.png" alt="Pejuang Kedinasan">
+        <div class="logo-title">PEJUANG KEDINASAN</div>
+        <div class="logo-tagline">Platform Tryout Kedinasan No.1 Indonesia</div>
+      </div>
 
-<div class="brand-badge">
-#1 Platform Tryout Kedinasan Indonesia
-</div>
+      <div class="title">Masuk ke Akun</div>
+      <div class="subtitle">Silakan login untuk melanjutkan belajar</div>
 
-<h1 class="brand-title">
-Raih Sekolah
-Kedinasan Impianmu
-</h1>
+      <form onsubmit="login(event)">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="Masukkan email" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="password" placeholder="Masukkan password" required>
+        </div>
+        <div class="forgot">
+          <a href="forgot-password.html">Lupa Password?</a>
+        </div>
+        <button type="submit" class="btn-login" id="loginBtn">Masuk Sekarang</button>
+      </form>
 
-<p class="brand-subtitle">
-Persiapkan diri menghadapi seleksi sekolah kedinasan dengan tryout nasional, ranking real-time, analisis kemampuan, dan ribuan soal terbaru.
-</p>
+      <div id="msg" class="msg"></div>
 
-<div class="feature-list">
-
-<div class="feature-item">
-✅ Simulasi CAT Kedinasan Real
-</div>
-
-<div class="feature-item">
-🏆 Ranking Nasional Real-Time
-</div>
-
-<div class="feature-item">
-📊 Analisis Nilai Mendalam
-</div>
-
-<div class="feature-item">
-📚 Ribuan Soal HOTS Terbaru
-</div>
-
-<div class="feature-item">
-🎥 Video Pembahasan Premium
-</div>
-
-</div>
-
-</div>
-
-<div class="login-right">
-
-<div class="login-box">
-<div class="logo">
-
-<img src="assets/logo.png" alt="Pejuang Kedinasan">
-
-<div class="logo-title">
-PEJUANG KEDINASAN
-</div>
-
-<div class="logo-tagline">
-Platform Tryout Kedinasan No.1 Indonesia
-</div>
-
-</div>
-
-<div class="title">
-Masuk ke Akun
-</div>
-
-<div class="subtitle">
-Silakan login untuk melanjutkan belajar
-</div>
-
-<form onsubmit="login(event)">
-
-<div class="form-group">
-
-<label>Email</label>
-
-<input
-type="email"
-id="email"
-placeholder="Masukkan email"
-required>
-
-</div>
-
-<div class="form-group">
-
-<label>Password</label>
-
-<input
-type="password"
-id="password"
-placeholder="Masukkan password"
-required>
-
-</div>
-
-<div class="forgot">
-
-<a href="forgot-password.html">
-Lupa Password?
-</a>
-
-</div>
-
-<button
-type="submit"
-class="btn-login">
-
-Masuk Sekarang
-
-</button>
-
-</form>
-
-<div class="extra">
-
-Belum punya akun?
-
-<a href="register.html">
-Daftar Gratis
-</a>
-
-</div>
-
-<a
-href="index.html"
-class="back-home">
-
-← Kembali ke Beranda
-
-</a>
-
-</div>
-
-</div>
-
+      <div class="extra">
+        Belum punya akun? <a href="register.html">Daftar Gratis</a>
+      </div>
+      <a href="index.html" class="back-home">← Kembali ke Beranda</a>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="config.js"></script>
-
 <script>
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-async function login(event){
-
-event.preventDefault();
-
-const btn =
-document.querySelector(".btn-login");
-
-btn.disabled = true;
-btn.innerHTML = "Memproses...";
-
-try{
-
-const supabaseClient =
-supabase.createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
-);
-
-const email =
-document.getElementById("email").value.trim();
-
-const password =
-document.getElementById("password").value;
-
-const { data, error } =
-await supabaseClient
-.from("users")
-.select("*")
-.eq("email", email)
-.eq("password", password)
-.single();
-
-if(error || !data){
-
-alert(
-"Email atau Password salah"
-);
-
-btn.disabled = false;
-btn.innerHTML = "Masuk Sekarang";
-
-return;
-
+function showMsg(text, type) {
+  const el = document.getElementById("msg");
+  el.textContent = text;
+  el.className = "msg " + type;
 }
 
-localStorage.setItem(
-"user",
-JSON.stringify(data)
-);
+async function login(event) {
+  event.preventDefault();
+  const btn = document.getElementById("loginBtn");
+  btn.disabled = true;
+  btn.textContent = "Memproses...";
 
-if(
-data.role === "admin" ||
-data.role === "super_admin"
-){
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const password = document.getElementById("password").value;
 
-window.location.href =
-"admin-login.html";
+  try {
+    const { data, error } = await supabaseClient
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .eq("password", password)
+      .single();
 
-return;
+    if (error || !data) {
+      showMsg("❌ Email atau password salah.", "error");
+      btn.disabled = false;
+      btn.textContent = "Masuk Sekarang";
+      return;
+    }
 
+    // Cek apakah sudah verifikasi OTP
+    if (!data.is_verified) {
+      // Kirim ulang OTP dan arahkan ke halaman verifikasi
+      showMsg("⏳ Akun belum diverifikasi. Mengirim OTP ke email Anda...", "success");
+      await fetch("/api/otp/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+      setTimeout(() => {
+        window.location.href = "otp.html?email=" + encodeURIComponent(email);
+      }, 1500);
+      return;
+    }
+
+    // Simpan data user ke localStorage
+    localStorage.setItem("user", JSON.stringify(data));
+
+    showMsg("✅ Login berhasil! Mengalihkan...", "success");
+
+    setTimeout(() => {
+      if (data.role === "admin" || data.role === "super_admin") {
+        window.location.href = "admin-login.html";
+      } else {
+        window.location.href = "dashboard.html";
+      }
+    }, 1000);
+
+  } catch (err) {
+    console.error(err);
+    showMsg("Terjadi kesalahan sistem. Coba lagi.", "error");
+    btn.disabled = false;
+    btn.textContent = "Masuk Sekarang";
+  }
 }
-
-window.location.href =
-"dashboard.html";
-
-}catch(err){
-
-console.error(err);
-
-alert(
-"Terjadi kesalahan saat login"
-);
-
-btn.disabled = false;
-btn.innerHTML = "Masuk Sekarang";
-
-}
-
-}
-
 </script>
-
 </body>
 </html>

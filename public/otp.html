@@ -1,430 +1,215 @@
 <!DOCTYPE html>
-
 <html lang="id">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Verifikasi Email | Pejuang Kedinasan</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-
 <style>
-
-:root{
---primary:#14274e;
---secondary:#1f3f7a;
---border:#e2e8f0;
---text:#64748b;
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Open Sans',sans-serif;
-}
-
-body{
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-background:
-linear-gradient(
-135deg,
-#14274e,
-#1f3f7a
-);
-}
-
-.card{
-width:100%;
-max-width:550px;
-background:white;
-border-radius:30px;
-padding:45px;
-box-shadow:
-0 25px 60px rgba(0,0,0,.18);
-text-align:center;
-}
-
-.brand-header{
-margin-bottom:30px;
-}
-
-.brand-title{
-font-size:34px;
-font-weight:800;
-color:#14274e;
-line-height:1;
-margin-bottom:8px;
-letter-spacing:-1px;
-}
-
-.brand-tagline{
-font-size:13px;
-color:#64748b;
-font-weight:600;
-}
-
-.title{
-font-size:30px;
-font-weight:800;
-color:#14274e;
-margin-bottom:12px;
-}
-
-.subtitle{
-color:#64748b;
-line-height:1.8;
-margin-bottom:30px;
-}
-
-.email-box{
-background:#f8fafc;
-border:1px solid #e2e8f0;
-padding:14px;
-border-radius:14px;
-margin-bottom:30px;
-font-size:14px;
-font-weight:700;
-color:#14274e;
-}
-
-.otp-container{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-bottom:30px;
-}
-
-.otp-input{
-width:58px;
-height:62px;
-border:2px solid #e2e8f0;
-border-radius:14px;
-font-size:24px;
-font-weight:800;
-text-align:center;
-outline:none;
-transition:.3s;
-}
-
-.otp-input:focus{
-border-color:#14274e;
-box-shadow:0 0 0 4px rgba(20,39,78,.08);
-}
-
-.btn{
-width:100%;
-padding:16px;
-background:#14274e;
-border:none;
-border-radius:14px;
-color:white;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-transition:.3s;
-}
-
-.btn:hover{
-opacity:.95;
-}
-
-.resend{
-margin-top:25px;
-font-size:14px;
-color:#64748b;
-}
-
-.resend a{
-color:#14274e;
-font-weight:700;
-text-decoration:none;
-}
-
-.timer{
-margin-top:10px;
-font-size:13px;
-color:#94a3b8;
-}
-
-.back{
-display:block;
-margin-top:25px;
-color:#64748b;
-text-decoration:none;
-font-size:14px;
-}
-
-@media(max-width:768px){
-
-.card{
-padding:30px 20px;
-}
-
-.brand-title{
-font-size:26px;
-}
-
-.brand-tagline{
-font-size:12px;
-}
-
-.title{
-font-size:24px;
-}
-
-.otp-container{
-gap:6px;
-}
-
-.otp-input{
-width:45px;
-height:50px;
-font-size:20px;
-}
-
-}
-
+:root{--primary:#14274e;--secondary:#1f3f7a;--border:#e2e8f0;--text:#64748b;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+body{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;background:linear-gradient(135deg,#14274e,#1f3f7a);}
+.card{width:100%;max-width:550px;background:white;border-radius:30px;padding:45px;box-shadow:0 25px 60px rgba(0,0,0,.18);text-align:center;}
+.brand-title{font-size:34px;font-weight:800;color:#14274e;line-height:1;margin-bottom:8px;letter-spacing:-1px;}
+.brand-tagline{font-size:13px;color:#64748b;font-weight:600;margin-bottom:30px;}
+.title{font-size:30px;font-weight:800;color:#14274e;margin-bottom:12px;}
+.subtitle{color:#64748b;line-height:1.8;margin-bottom:20px;}
+.email-box{background:#f8fafc;border:1px solid #e2e8f0;padding:14px;border-radius:14px;margin-bottom:30px;font-size:14px;font-weight:700;color:#14274e;}
+.otp-container{display:flex;justify-content:center;gap:10px;margin-bottom:30px;}
+.otp-input{width:58px;height:62px;border:2px solid #e2e8f0;border-radius:14px;font-size:24px;font-weight:800;text-align:center;outline:none;transition:.3s;}
+.otp-input:focus{border-color:#14274e;box-shadow:0 0 0 4px rgba(20,39,78,.08);}
+.otp-input.filled{border-color:#14274e;background:#f0f5ff;}
+.btn{width:100%;padding:16px;background:#14274e;border:none;border-radius:14px;color:white;font-size:16px;font-weight:700;cursor:pointer;transition:.3s;}
+.btn:disabled{opacity:.6;cursor:not-allowed;}
+.btn:hover:not(:disabled){opacity:.92;}
+.resend{margin-top:25px;font-size:14px;color:#64748b;}
+.resend a{color:#14274e;font-weight:700;text-decoration:none;cursor:pointer;}
+.resend a.disabled{color:#94a3b8;cursor:not-allowed;pointer-events:none;}
+.timer{margin-top:10px;font-size:13px;color:#94a3b8;}
+.back{display:block;margin-top:25px;color:#64748b;text-decoration:none;font-size:14px;}
+.msg{margin-top:16px;font-size:14px;padding:10px 16px;border-radius:10px;display:none;}
+.msg.error{background:#fef2f2;color:#dc2626;display:block;}
+.msg.success{background:#f0fdf4;color:#16a34a;display:block;}
+@media(max-width:768px){.card{padding:30px 20px;}.brand-title{font-size:26px;}.title{font-size:24px;}.otp-container{gap:6px;}.otp-input{width:45px;height:50px;font-size:20px;}}
 </style>
-
 </head>
-
 <body>
-
 <div class="card">
+  <div class="brand-title">PEJUANG KEDINASAN</div>
+  <div class="brand-tagline">Platform Tryout Kedinasan No.1 Indonesia</div>
 
-<div class="brand-header">
+  <div class="title">Verifikasi Email</div>
+  <div class="subtitle">Masukkan 6 digit kode OTP yang telah dikirim ke email Anda untuk mengaktifkan akun.</div>
 
-<div class="brand-title">
-PEJUANG KEDINASAN
-</div>
+  <div class="email-box" id="userEmail">memuat...</div>
 
-<div class="brand-tagline">
-Platform Tryout Kedinasan No.1 Indonesia
-</div>
+  <div class="otp-container">
+    <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]">
+    <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]">
+    <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]">
+    <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]">
+    <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]">
+    <input class="otp-input" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]">
+  </div>
 
-</div>
+  <div id="msg" class="msg"></div>
 
-<div class="title">
-Verifikasi Email
-</div>
+  <button class="btn" id="verifyBtn" onclick="verifyOTP()">Verifikasi Sekarang</button>
 
-<div class="subtitle">
-Masukkan 6 digit kode OTP yang telah dikirim ke email Anda untuk mengaktifkan akun.
-</div>
+  <div class="resend">
+    Belum menerima kode?
+    <a id="resendLink" class="disabled" onclick="resendOTP()">Kirim Ulang OTP</a>
+  </div>
+  <div class="timer" id="timer">Kirim ulang dalam 60 detik</div>
 
-<div
-class="email-box"
-id="userEmail">
-
-[user@email.com](mailto:user@email.com)
-
-</div>
-
-<div class="otp-container">
-
-<input class="otp-input" maxlength="1" type="text">
-<input class="otp-input" maxlength="1" type="text">
-<input class="otp-input" maxlength="1" type="text">
-<input class="otp-input" maxlength="1" type="text">
-<input class="otp-input" maxlength="1" type="text">
-<input class="otp-input" maxlength="1" type="text">
-
-</div>
-
-<button
-class="btn"
-onclick="verifyOTP()">
-
-Verifikasi Sekarang
-
-</button>
-
-<div class="resend">
-
-Belum menerima kode?
-
-<a
-href="#"
-onclick="resendOTP()">
-
-Kirim Ulang OTP
-
-</a>
-
-</div>
-
-<div
-class="timer"
-id="timer">
-
-Kirim ulang dalam 60 detik
-
-</div>
-
-<a
-href="register.html"
-class="back">
-
-← Kembali ke Registrasi
-
-</a>
-
+  <a href="register.html" class="back">← Kembali ke Registrasi</a>
 </div>
 
 <script>
+// Ambil email dari URL
+const params = new URLSearchParams(window.location.search);
+const email = params.get("email") || "";
+document.getElementById("userEmail").innerText = email || "Email tidak ditemukan";
 
-/* =====================================
-AUTO PINDAH OTP
-===================================== */
-
-const inputs =
-document.querySelectorAll('.otp-input');
-
-inputs.forEach((input,index)=>{
-
-input.addEventListener('input',()=>{
-
-if(
-input.value.length === 1 &&
-index < inputs.length - 1
-){
-inputs[index + 1].focus();
-}
-
+// Auto-pindah antar input
+const inputs = document.querySelectorAll('.otp-input');
+inputs.forEach((input, index) => {
+  input.addEventListener('input', (e) => {
+    // Hanya terima angka
+    input.value = input.value.replace(/[^0-9]/g, '');
+    if (input.value.length === 1) {
+      input.classList.add('filled');
+      if (index < inputs.length - 1) inputs[index + 1].focus();
+    }
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === "Backspace") {
+      input.classList.remove('filled');
+      if (input.value === "" && index > 0) inputs[index - 1].focus();
+    }
+  });
+  // Support paste OTP langsung
+  input.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
+    if (pasted.length === 6) {
+      inputs.forEach((inp, i) => {
+        inp.value = pasted[i] || '';
+        if (pasted[i]) inp.classList.add('filled');
+      });
+      inputs[5].focus();
+    }
+  });
 });
 
-input.addEventListener('keydown',(e)=>{
-
-if(
-e.key === "Backspace" &&
-input.value === "" &&
-index > 0
-){
-inputs[index - 1].focus();
-}
-
-});
-
-});
-
-/* =====================================
-TAMPILKAN EMAIL DARI URL
-contoh:
-verify-otp.html?email=user@gmail.com
-===================================== */
-
-const params =
-new URLSearchParams(
-window.location.search
-);
-
-const email =
-params.get("email");
-
-if(email){
-
-document.getElementById(
-"userEmail"
-).innerText = email;
-
-}
-
-/* =====================================
-TIMER RESEND
-===================================== */
-
+// Timer countdown
 let seconds = 60;
+const timerEl = document.getElementById("timer");
+const resendLink = document.getElementById("resendLink");
 
-const timerEl =
-document.getElementById("timer");
+const countdown = setInterval(() => {
+  seconds--;
+  timerEl.textContent = "Kirim ulang dalam " + seconds + " detik";
+  if (seconds <= 0) {
+    clearInterval(countdown);
+    timerEl.textContent = "";
+    resendLink.classList.remove("disabled");
+  }
+}, 1000);
 
-const interval =
-setInterval(()=>{
-
-seconds--;
-
-timerEl.innerHTML =
-"Kirim ulang dalam " +
-seconds +
-" detik";
-
-if(seconds <= 0){
-
-clearInterval(interval);
-
-timerEl.innerHTML =
-"Anda dapat meminta OTP baru";
-
+function showMsg(text, type) {
+  const el = document.getElementById("msg");
+  el.textContent = text;
+  el.className = "msg " + type;
 }
 
-},1000);
+// Verifikasi OTP
+async function verifyOTP() {
+  let otp = "";
+  inputs.forEach(inp => otp += inp.value);
 
-/* =====================================
-VERIFY OTP
-===================================== */
+  if (otp.length !== 6) {
+    showMsg("Masukkan 6 digit kode OTP terlebih dahulu.", "error");
+    return;
+  }
 
-function verifyOTP(){
+  if (!email) {
+    showMsg("Email tidak ditemukan. Kembali ke halaman registrasi.", "error");
+    return;
+  }
 
-let otp = "";
+  const btn = document.getElementById("verifyBtn");
+  btn.disabled = true;
+  btn.textContent = "Memverifikasi...";
 
-inputs.forEach(input=>{
+  try {
+    const res = await fetch("/api/otp/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, otp })
+    });
+    const data = await res.json();
 
-otp += input.value;
-
-});
-
-if(otp.length !== 6){
-
-alert(
-"Masukkan 6 digit OTP"
-);
-
-return;
-
+    if (data.success) {
+      showMsg("✅ Verifikasi berhasil! Mengalihkan ke dashboard...", "success");
+      // Simpan email ke localStorage untuk halaman dashboard
+      localStorage.setItem("verified_email", email);
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1500);
+    } else {
+      showMsg("❌ " + data.message, "error");
+      btn.disabled = false;
+      btn.textContent = "Verifikasi Sekarang";
+    }
+  } catch (err) {
+    showMsg("Terjadi kesalahan. Coba lagi.", "error");
+    btn.disabled = false;
+    btn.textContent = "Verifikasi Sekarang";
+  }
 }
 
-console.log(
-"OTP:",
-otp
-);
+// Kirim ulang OTP
+async function resendOTP() {
+  if (!email) return;
+  resendLink.classList.add("disabled");
+  showMsg("Mengirim ulang OTP...", "success");
 
-/*
-API VERIFY OTP
-TARUH DISINI
-*/
+  try {
+    const res = await fetch("/api/otp/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
 
-alert(
-"Verifikasi berhasil"
-);
-
-window.location.href =
-"dashboard.html";
-
+    if (data.success) {
+      showMsg("✅ OTP baru telah dikirim ke " + email, "success");
+      // Reset timer
+      seconds = 60;
+      timerEl.textContent = "Kirim ulang dalam 60 detik";
+      const newCountdown = setInterval(() => {
+        seconds--;
+        timerEl.textContent = "Kirim ulang dalam " + seconds + " detik";
+        if (seconds <= 0) {
+          clearInterval(newCountdown);
+          timerEl.textContent = "";
+          resendLink.classList.remove("disabled");
+        }
+      }, 1000);
+      // Reset input
+      inputs.forEach(inp => { inp.value = ""; inp.classList.remove("filled"); });
+      inputs[0].focus();
+    } else {
+      showMsg("❌ " + data.message, "error");
+      resendLink.classList.remove("disabled");
+    }
+  } catch (err) {
+    showMsg("Gagal mengirim ulang. Coba lagi.", "error");
+    resendLink.classList.remove("disabled");
+  }
 }
-
-/* =====================================
-RESEND OTP
-===================================== */
-
-function resendOTP(){
-
-alert(
-"OTP baru berhasil dikirim"
-);
-
-}
-
 </script>
-
 </body>
 </html>
