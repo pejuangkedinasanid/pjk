@@ -21,9 +21,9 @@ const supabase = createClient(
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const tryoutId = params.id;
+  const { id: tryoutId } = await params;
 
   const { data, error } = await supabase
     .from("soal")
