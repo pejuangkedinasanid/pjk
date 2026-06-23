@@ -5,89 +5,410 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard | Pejuang Kedinasan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#14274e;--primary2:#1f3f7a;--bg:#f5f7fb;--card:#ffffff;--border:#e2e8f0;--text:#334155;--muted:#64748b;}
+
+:root{
+--navy:#0f172a;
+--navy2:#1e293b;
+--orange:#f97316;
+--orange2:#fb923c;
+--blue:#2563eb;
+--bg:#f5f7fb;
+--card:#ffffff;
+--text:#1e293b;
+--muted:#64748b;
+--border:#e2e8f0;
+--shadow:0 20px 50px rgba(15,23,42,.08);
+}
+
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
-body{background:var(--bg);display:flex;min-height:100vh;}
+html{scroll-behavior:smooth;}
 
-/* SIDEBAR */
-.sidebar{width:280px;background:#14274e;position:fixed;left:0;top:0;bottom:0;color:white;overflow-y:auto;transition:transform .3s;z-index:100;}
-.sidebar-header{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
-.brand{font-size:20px;font-weight:800;line-height:1.2;}
-.brand-sub{font-size:11px;opacity:.65;margin-top:4px;}
-.btn-close{flex-shrink:0;width:30px;height:30px;border-radius:8px;border:none;background:rgba(255,255,255,.1);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;}
-.btn-close:hover{background:rgba(255,255,255,.2);}
-.menu{padding:16px 12px;}
-.menu-title{font-size:11px;font-weight:700;opacity:.4;text-transform:uppercase;letter-spacing:1px;margin:16px 12px 8px;}
-.menu a{display:block;padding:13px 14px;border-radius:14px;color:white;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:3px;transition:.2s;}
-.menu a:hover{background:rgba(255,255,255,.08);}
-.menu a.active{background:rgba(255,255,255,.12);}
-.sidebar-footer{padding:16px 12px;border-top:1px solid rgba(255,255,255,.08);}
-.btn-logout{display:block;width:100%;padding:13px 14px;border-radius:14px;color:rgba(255,255,255,.6);font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;text-align:left;transition:.2s;}
-.btn-logout:hover{background:rgba(239,68,68,.15);color:#fca5a5;}
+body{
+background:linear-gradient(180deg,#eef2ff 0%,#f8fafc 45%,#ffffff 100%);
+display:flex;
+min-height:100vh;
+overflow-x:hidden;
+position:relative;
+}
 
-/* HAMBURGER */
-.hamburger{display:none;position:fixed;top:15px;left:15px;width:44px;height:44px;border:none;background:#14274e;border-radius:12px;color:white;font-size:20px;cursor:pointer;z-index:200;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(20,39,78,.3);}
+body::before{
+content:"";
+position:fixed;
+top:-250px;right:-250px;
+width:550px;height:550px;
+border-radius:50%;
+background:rgba(249,115,22,.14);
+filter:blur(90px);
+pointer-events:none;
+}
 
-/* OVERLAY */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90;}
-.overlay.active{display:block;}
+body::after{
+content:"";
+position:fixed;
+bottom:-250px;left:-250px;
+width:500px;height:500px;
+border-radius:50%;
+background:rgba(249,115,22,.08);
+filter:blur(90px);
+pointer-events:none;
+}
 
-/* MAIN */
-.main{margin-left:280px;width:100%;padding:30px;transition:margin .3s;}
+/* =========================
+SIDEBAR
+========================= */
 
-/* HERO */
-.hero{background:linear-gradient(135deg,#14274e,#1f3f7a);padding:35px;border-radius:25px;color:white;margin-bottom:25px;}
-.hero h1{font-size:32px;font-weight:800;margin-bottom:8px;}
-.hero p{opacity:.8;line-height:1.8;font-size:14px;}
+.sidebar{
+width:290px;
+background:linear-gradient(180deg,#0f172a,#1e293b);
+position:fixed;
+left:0;top:0;bottom:0;
+color:white;
+z-index:999;
+overflow-y:auto;
+display:flex;
+flex-direction:column;
+box-shadow:10px 0 40px rgba(0,0,0,.15);
+transform:translateX(0);
+transition:.3s;
+}
 
-/* STATS */
+.sidebar.closed{transform:translateX(-290px);}
+
+.sidebar-header{
+padding:28px 25px;
+border-bottom:1px solid rgba(255,255,255,.08);
+display:flex;
+align-items:flex-start;
+justify-content:space-between;
+gap:12px;
+}
+
+.brand{font-size:21px;font-weight:800;line-height:1.25;}
+.brand-sub{font-size:11px;opacity:.65;margin-top:5px;}
+
+.btn-close{
+flex-shrink:0;
+width:34px;height:34px;
+border-radius:10px;
+border:none;
+background:rgba(255,255,255,.08);
+color:white;
+cursor:pointer;
+display:flex;align-items:center;justify-content:center;
+transition:.2s;
+}
+.btn-close:hover{background:rgba(255,255,255,.18);}
+
+.menu{padding:18px 12px;flex:1;}
+
+.menu-title{
+font-size:11px;font-weight:700;opacity:.45;
+text-transform:uppercase;letter-spacing:1px;
+margin:18px 12px 8px;
+}
+
+.menu a{
+display:flex;align-items:center;
+padding:13px 16px;
+border-radius:14px;
+color:white;text-decoration:none;
+font-size:14px;font-weight:600;
+margin-bottom:4px;
+transition:.25s;
+}
+
+.menu a:hover{background:rgba(255,255,255,.08);transform:translateX(4px);}
+
+.menu a.active{
+background:linear-gradient(135deg,rgba(249,115,22,.85),rgba(251,146,60,.85));
+}
+
+.sidebar-footer{padding:18px 12px;border-top:1px solid rgba(255,255,255,.08);}
+
+.btn-logout{
+display:block;width:100%;
+padding:13px 16px;
+border-radius:14px;
+color:rgba(255,255,255,.65);
+font-size:14px;font-weight:600;
+cursor:pointer;border:none;background:rgba(255,255,255,.05);
+text-align:left;transition:.2s;
+}
+.btn-logout:hover{background:rgba(239,68,68,.18);color:#fca5a5;}
+
+/* =========================
+HAMBURGER & OVERLAY
+========================= */
+
+.hamburger{
+display:flex;
+position:fixed;top:15px;left:15px;
+width:48px;height:48px;
+border:none;border-radius:14px;
+background:var(--navy);color:white;
+font-size:20px;cursor:pointer;
+z-index:1001;
+align-items:center;justify-content:center;
+transition:.3s;
+box-shadow:0 8px 20px rgba(15,23,42,.25);
+}
+.hamburger.inside{left:227px;}
+
+.overlay{display:none;}
+.overlay.active{
+display:block;
+position:fixed;inset:0;
+background:rgba(0,0,0,.45);
+z-index:998;
+}
+
+/* =========================
+MAIN
+========================= */
+
+.main{
+margin-left:290px;
+width:100%;
+padding:30px;
+position:relative;
+z-index:2;
+transition:.3s;
+}
+.main.full{margin-left:0;}
+
+/* =========================
+HERO
+========================= */
+
+.hero{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+padding:38px;
+border-radius:28px;
+color:white;
+margin-bottom:25px;
+overflow:hidden;
+position:relative;
+box-shadow:0 25px 60px rgba(15,23,42,.2);
+}
+
+.hero::before{
+content:"";
+position:absolute;top:-110px;right:-110px;
+width:320px;height:320px;
+border-radius:50%;
+background:rgba(249,115,22,.18);
+}
+
+.hero-badge{
+display:inline-block;
+padding:9px 16px;
+border-radius:999px;
+background:rgba(255,255,255,.1);
+font-size:11px;font-weight:700;
+letter-spacing:.5px;
+margin-bottom:14px;
+position:relative;z-index:2;
+}
+
+.hero h1{font-size:30px;font-weight:800;margin-bottom:8px;position:relative;z-index:2;}
+.hero p{opacity:.8;line-height:1.8;font-size:14px;position:relative;z-index:2;max-width:560px;}
+
+/* =========================
+STATS
+========================= */
+
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:25px;}
-.stat-card{background:white;padding:25px;border-radius:20px;box-shadow:0 5px 20px rgba(0,0,0,.05);}
-.stat-title{font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:10px;}
-.stat-value{font-size:34px;font-weight:800;color:#14274e;}
-.stat-sub{font-size:13px;color:#64748b;margin-top:5px;}
 
-/* GRID */
+.stat-card{
+background:white;
+padding:24px;
+border-radius:22px;
+box-shadow:var(--shadow);
+transition:.25s;
+}
+.stat-card:hover{transform:translateY(-4px);}
+
+.stat-title{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px;}
+.stat-value{font-size:32px;font-weight:800;color:var(--navy);}
+.stat-sub{font-size:13px;color:var(--muted);margin-top:5px;}
+
+/* =========================
+PENDAPATAN
+========================= */
+
+.revenue-card{
+background:white;
+border-radius:24px;
+padding:26px;
+box-shadow:var(--shadow);
+margin-bottom:25px;
+}
+
+.revenue-head{
+display:flex;
+align-items:center;
+justify-content:space-between;
+flex-wrap:wrap;
+gap:14px;
+margin-bottom:20px;
+}
+
+.revenue-filter{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+align-items:center;
+}
+
+.revenue-filter select{
+padding:11px 14px;
+border:1px solid var(--border);
+border-radius:12px;
+font-size:13px;
+font-weight:600;
+color:var(--text);
+background:white;
+outline:none;
+cursor:pointer;
+}
+.revenue-filter select:focus{border-color:var(--orange);}
+
+.btn-terapkan{
+padding:11px 18px;
+border:none;
+border-radius:12px;
+font-weight:700;
+font-size:13px;
+color:white;
+cursor:pointer;
+background:linear-gradient(135deg,#f97316,#fb923c);
+transition:.2s;
+}
+.btn-terapkan:hover{opacity:.9;}
+
+.revenue-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px;
+}
+
+.revenue-box{
+background:linear-gradient(135deg,#fff7ed,#ffedd5);
+border-radius:18px;
+padding:22px;
+border:1px solid #fed7aa;
+}
+
+.revenue-box.total{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+border:none;
+}
+
+.revenue-label{
+font-size:12px;
+font-weight:700;
+color:#c2410c;
+text-transform:uppercase;
+letter-spacing:.4px;
+margin-bottom:10px;
+}
+.revenue-box.total .revenue-label{color:rgba(255,255,255,.7);}
+
+.revenue-amount{
+font-size:26px;
+font-weight:800;
+color:var(--navy);
+}
+.revenue-box.total .revenue-amount{color:white;}
+
+/* =========================
+GRID
+========================= */
+
 .grid{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:20px;}
-.card{background:white;padding:25px;border-radius:20px;box-shadow:0 5px 20px rgba(0,0,0,.05);}
-.card-title{font-size:20px;font-weight:800;color:#14274e;margin-bottom:20px;}
 
-/* QUICK ACTIONS */
-.quick-btn{display:block;width:100%;padding:14px;margin-bottom:10px;background:#14274e;color:white;text-decoration:none;text-align:center;border-radius:12px;font-weight:700;font-size:14px;transition:.2s;border:none;cursor:pointer;}
-.quick-btn:hover{background:#1f3f7a;}
+.card{background:white;padding:25px;border-radius:24px;box-shadow:var(--shadow);}
+.card-title{font-size:19px;font-weight:800;color:var(--navy);margin-bottom:20px;}
 
-/* ACTIVITY */
-.activity-item{padding:12px;background:#f8fafc;border-radius:10px;margin-bottom:8px;font-size:13px;color:#334155;}
+/* =========================
+QUICK ACTIONS
+========================= */
 
-/* SUMMARY */
-.stats-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
-.summary-box{background:#f8fafc;padding:20px;border-radius:16px;text-align:center;}
-.summary-value{font-size:32px;font-weight:800;color:#14274e;}
-.summary-label{font-size:13px;color:#64748b;margin-top:5px;}
+.quick-btn{
+display:block;width:100%;
+padding:14px;margin-bottom:10px;
+background:linear-gradient(135deg,#f97316,#fb923c);
+color:white;text-decoration:none;text-align:center;
+border-radius:14px;font-weight:700;font-size:14px;
+transition:.2s;border:none;cursor:pointer;
+}
+.quick-btn:hover{opacity:.92;}
 
-/* BADGES */
-.badge-premium{background:#ede9fe;color:#6d28d9;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;}
-.badge-free{background:#f1f5f9;color:#64748b;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;}
-.badge-admin{background:#fef9c3;color:#854d0e;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;}
+.quick-btn.secondary{
+background:#f1f5f9;
+color:var(--navy);
+}
 
-/* TABLE */
+/* =========================
+ACTIVITY
+========================= */
+
+.activity-item{padding:12px 14px;background:#f8fafc;border-radius:12px;margin-bottom:8px;font-size:13px;color:var(--text);}
+
+/* =========================
+SUMMARY
+========================= */
+
+.stats-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+.summary-box{background:#f8fafc;padding:20px;border-radius:18px;text-align:center;}
+.summary-value{font-size:28px;font-weight:800;color:var(--navy);}
+.summary-label{font-size:13px;color:var(--muted);margin-top:5px;}
+
+/* =========================
+BADGES
+========================= */
+
+.badge-premium{background:#fff7ed;color:#c2410c;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;}
+.badge-free{background:#dcfce7;color:#166534;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;}
+.badge-admin{background:#fef9c3;color:#854d0e;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;}
+
+/* =========================
+TABLE
+========================= */
+
 table{width:100%;border-collapse:collapse;}
 thead tr{background:#f8fafc;}
-th{padding:12px;text-align:left;font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;}
-td{padding:12px;border-top:1px solid #e2e8f0;font-size:13px;}
+th{padding:12px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;}
+td{padding:12px;border-top:1px solid #eef2f7;font-size:13px;}
 
-/* RESPONSIVE */
-@media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr);}.stats-summary{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:1000px){.sidebar{transform:translateX(-280px);}.sidebar.active{transform:translateX(0);}.main{margin-left:0 !important;}.hamburger{display:flex;}.grid{grid-template-columns:1fr;}}
-@media(max-width:600px){.stats{grid-template-columns:1fr 1fr;}.stats-summary{grid-template-columns:1fr 1fr;}.main{padding:20px;}}
+/* =========================
+RESPONSIVE
+========================= */
+
+@media(max-width:1100px){
+.stats{grid-template-columns:repeat(2,1fr);}
+.stats-summary{grid-template-columns:repeat(2,1fr);}
+.revenue-grid{grid-template-columns:1fr;}
+}
+
+@media(max-width:1000px){
+.main{margin-left:0;padding:20px;}
+.grid{grid-template-columns:1fr;}
+}
+
+@media(max-width:600px){
+.stats{grid-template-columns:1fr 1fr;}
+.stats-summary{grid-template-columns:1fr 1fr;}
+}
+
 </style>
 </head>
 <body>
 
 <div class="overlay" id="overlay"></div>
-<button class="hamburger" id="hamburger" onclick="openSidebar()">&#9776;</button>
+<button class="hamburger" id="hamburger">☰</button>
 
 <div class="sidebar" id="sidebar">
   <div class="sidebar-header">
@@ -95,7 +416,7 @@ td{padding:12px;border-top:1px solid #e2e8f0;font-size:13px;}
       <div class="brand">ADMIN PANEL</div>
       <div class="brand-sub">Pejuang Kedinasan</div>
     </div>
-    <button class="btn-close" onclick="closeSidebar()">
+    <button class="btn-close" id="closeSidebarBtn">
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
   </div>
@@ -105,6 +426,7 @@ td{padding:12px;border-top:1px solid #e2e8f0;font-size:13px;}
     <a href="admin-dashboard.html" class="active">Dashboard</a>
     <a href="admin-tryout.html">Kelola Tryout</a>
     <a href="admin-soal.html">Kelola Soal</a>
+    <a href="admin-modul.html">Kelola Modul</a>
 
     <div class="menu-title">Peserta</div>
     <a href="admin-users.html">Daftar User</a>
@@ -125,8 +447,9 @@ td{padding:12px;border-top:1px solid #e2e8f0;font-size:13px;}
 <div class="main" id="main">
 
   <div class="hero">
+    <div class="hero-badge">🛠️ ADMIN PANEL</div>
     <h1>Dashboard Admin</h1>
-    <p>Kelola tryout, peserta, dan statistik platform Pejuang Kedinasan.</p>
+    <p>Kelola tryout, peserta, modul, dan pantau statistik &amp; pendapatan platform Pejuang Kedinasan.</p>
   </div>
 
   <!-- Stats -->
@@ -153,6 +476,43 @@ td{padding:12px;border-top:1px solid #e2e8f0;font-size:13px;}
     </div>
   </div>
 
+  <!-- =========================
+  TOTAL PENDAPATAN
+  ========================= -->
+
+  <div class="revenue-card">
+
+    <div class="revenue-head">
+      <div class="card-title" style="margin-bottom:0;">💰 Total Pendapatan</div>
+
+      <div class="revenue-filter">
+        <select id="filterBulan"></select>
+        <select id="filterTahun"></select>
+        <button class="btn-terapkan" onclick="loadPendapatan()">Terapkan</button>
+      </div>
+    </div>
+
+    <div class="revenue-grid">
+
+      <div class="revenue-box">
+        <div class="revenue-label">Minggu Ini</div>
+        <div class="revenue-amount" id="revenueMingguIni">Memuat...</div>
+      </div>
+
+      <div class="revenue-box">
+        <div class="revenue-label" id="revenueBulanLabel">Bulan Ini</div>
+        <div class="revenue-amount" id="revenueBulanIni">Memuat...</div>
+      </div>
+
+      <div class="revenue-box total">
+        <div class="revenue-label">Total Keseluruhan</div>
+        <div class="revenue-amount" id="revenueTotal">Memuat...</div>
+      </div>
+
+    </div>
+
+  </div>
+
   <!-- Grid -->
   <div class="grid">
 
@@ -173,7 +533,8 @@ td{padding:12px;border-top:1px solid #e2e8f0;font-size:13px;}
         <div class="card-title">Quick Action</div>
         <a href="admin-create-tryout.html" class="quick-btn">+ Buat Tryout Baru</a>
         <a href="admin-create-soal.html" class="quick-btn">+ Tambah Soal</a>
-        <button class="quick-btn" onclick="openNotifModal()">+ Kirim Notifikasi</button>
+        <a href="admin-modul.html" class="quick-btn">+ Kelola Modul</a>
+        <button class="quick-btn secondary" onclick="openNotifModal()">+ Kirim Notifikasi</button>
       </div>
 
       <div class="card">
@@ -210,12 +571,12 @@ td{padding:12px;border-top:1px solid #e2e8f0;font-size:13px;}
 </div><!-- /main -->
 
 <!-- Modal Notifikasi -->
-<div id="notifModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;">
-  <div style="background:white;border-radius:20px;padding:30px;width:100%;max-width:480px;margin:20px;">
-    <div style="font-size:18px;font-weight:800;color:#14274e;margin-bottom:16px;">Kirim Notifikasi</div>
+<div id="notifModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:2000;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:22px;padding:30px;width:100%;max-width:480px;margin:20px;">
+    <div style="font-size:18px;font-weight:800;color:#0f172a;margin-bottom:16px;">Kirim Notifikasi</div>
     <textarea id="notifPesan" placeholder="Tulis pesan notifikasi..." style="width:100%;padding:14px;border:1px solid #e2e8f0;border-radius:12px;font-size:14px;resize:vertical;min-height:100px;outline:none;font-family:inherit;margin-bottom:14px;"></textarea>
     <div style="display:flex;gap:10px;">
-      <button onclick="kirimNotif()" style="flex:1;padding:13px;background:#14274e;color:white;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;">Kirim</button>
+      <button onclick="kirimNotif()" style="flex:1;padding:13px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;">Kirim</button>
       <button onclick="closeNotifModal()" style="flex:1;padding:13px;background:#f1f5f9;color:#64748b;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;">Batal</button>
     </div>
   </div>
@@ -226,20 +587,70 @@ td{padding:12px;border-top:1px solid #e2e8f0;font-size:13px;}
 <script>
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+const BULAN_FULL = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
 
 /* ── Auth guard ── */
 const rawUser = localStorage.getItem('user');
 if (!rawUser) window.location.href = 'login.html';
 const user = JSON.parse(rawUser);
 
-// Pastikan yang masuk adalah admin atau super_admin
 if (user.role !== 'admin' && user.role !== 'super_admin') {
   window.location.href = 'dashboard.html';
 }
 
 const adminEmail = user.email;
 
-/* ── Load stats via API route ── */
+/* =========================
+SIDEBAR TOGGLE (DESKTOP & MOBILE)
+========================= */
+
+const sidebar         = document.getElementById('sidebar');
+const hamburger        = document.getElementById('hamburger');
+const overlay          = document.getElementById('overlay');
+const mainEl           = document.getElementById('main');
+const closeSidebarBtn  = document.getElementById('closeSidebarBtn');
+
+function openSidebar(){
+  sidebar.classList.remove('closed');
+  hamburger.style.display = 'none';
+
+  if (window.innerWidth <= 1000) {
+    overlay.classList.add('active');
+  } else {
+    overlay.classList.remove('active');
+  }
+  mainEl.classList.remove('full');
+}
+
+function closeSidebar(){
+  sidebar.classList.add('closed');
+  overlay.classList.remove('active');
+  mainEl.classList.add('full');
+  hamburger.style.display = 'flex';
+}
+
+hamburger.addEventListener('click', openSidebar);
+closeSidebarBtn.addEventListener('click', closeSidebar);
+overlay.addEventListener('click', closeSidebar);
+
+function initSidebar(){
+  window.innerWidth <= 1000 ? closeSidebar() : openSidebar();
+}
+window.addEventListener('resize', initSidebar);
+initSidebar();
+
+/* =========================
+FORMAT RUPIAH
+========================= */
+
+function formatRupiah(n){
+  return 'Rp' + (n || 0).toLocaleString('id-ID');
+}
+
+/* =========================
+LOAD STATS via API route
+========================= */
+
 async function loadStats() {
   try {
     const res = await fetch('/api/admin/stats', {
@@ -255,6 +666,72 @@ async function loadStats() {
     document.getElementById('newUser7').textContent     = d.newUser7;
     document.getElementById('totalHasil').textContent   = d.totalHasil;
   } catch(e) { console.error('Stats error:', e); }
+}
+
+/* =========================
+PENDAPATAN — filter bulan/tahun
+GET /api/admin/revenue?bulan=&tahun=
+(dari tabel "transaksi", status = 'success')
+========================= */
+
+function initFilterPendapatan(){
+
+  const now = new Date();
+
+  const bulanSelect = document.getElementById('filterBulan');
+  bulanSelect.innerHTML = BULAN_FULL.map((nama, i) =>
+    '<option value="' + (i+1) + '"' + (i+1 === now.getMonth()+1 ? ' selected' : '') + '>' + nama + '</option>'
+  ).join('');
+
+  const tahunSelect = document.getElementById('filterTahun');
+  const tahunSekarang = now.getFullYear();
+  let opts = '';
+  for (let t = tahunSekarang; t >= tahunSekarang - 4; t--) {
+    opts += '<option value="' + t + '"' + (t === tahunSekarang ? ' selected' : '') + '>' + t + '</option>';
+  }
+  tahunSelect.innerHTML = opts;
+
+}
+
+async function loadPendapatan(){
+
+  const bulan = document.getElementById('filterBulan').value;
+  const tahun = document.getElementById('filterTahun').value;
+
+  document.getElementById('revenueBulanLabel').textContent =
+    'Bulan ' + BULAN_FULL[bulan - 1] + ' ' + tahun;
+
+  document.getElementById('revenueMingguIni').textContent = 'Memuat...';
+  document.getElementById('revenueBulanIni').textContent  = 'Memuat...';
+  document.getElementById('revenueTotal').textContent     = 'Memuat...';
+
+  try {
+
+    const res = await fetch(
+      '/api/admin/revenue?bulan=' + bulan + '&tahun=' + tahun,
+      { headers: { 'x-admin-email': adminEmail } }
+    );
+
+    const json = await res.json();
+
+    if (!json.success) {
+      document.getElementById('revenueMingguIni').textContent = '—';
+      document.getElementById('revenueBulanIni').textContent  = '—';
+      document.getElementById('revenueTotal').textContent     = '—';
+      return;
+    }
+
+    document.getElementById('revenueMingguIni').textContent = formatRupiah(json.data.mingguIni);
+    document.getElementById('revenueBulanIni').textContent  = formatRupiah(json.data.bulanTerpilih);
+    document.getElementById('revenueTotal').textContent     = formatRupiah(json.data.totalKeseluruhan);
+
+  } catch(e) {
+    console.error('Revenue error:', e);
+    document.getElementById('revenueMingguIni').textContent = '—';
+    document.getElementById('revenueBulanIni').textContent  = '—';
+    document.getElementById('revenueTotal').textContent     = '—';
+  }
+
 }
 
 /* ── Load user terbaru langsung dari Supabase (anon key cukup untuk read) ── */
@@ -330,34 +807,6 @@ async function kirimNotif() {
   }
 }
 
-/* ── Sidebar ── */
-const sidebar  = document.getElementById('sidebar');
-const overlay  = document.getElementById('overlay');
-const hamburger= document.getElementById('hamburger');
-
-function openSidebar() {
-  sidebar.classList.add('active');
-  overlay.classList.add('active');
-  hamburger.style.display = 'none';
-}
-function closeSidebar() {
-  sidebar.classList.remove('active');
-  overlay.classList.remove('active');
-  if (window.innerWidth <= 1000) hamburger.style.display = 'flex';
-}
-overlay.addEventListener('click', closeSidebar);
-
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 1000) {
-    sidebar.classList.remove('active');
-    overlay.classList.remove('active');
-    hamburger.style.display = 'none';
-    document.getElementById('main').style.marginLeft = '280px';
-  } else {
-    document.getElementById('main').style.marginLeft = '0';
-  }
-});
-
 /* ── Logout ── */
 function logout() {
   if (confirm('Yakin ingin keluar?')) {
@@ -367,9 +816,11 @@ function logout() {
 }
 
 /* ── Init ── */
+initFilterPendapatan();
 loadStats();
 loadLatestUsers();
 loadTodayTryout();
+loadPendapatan();
 </script>
 </body>
 </html>
