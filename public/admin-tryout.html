@@ -439,6 +439,18 @@ RESPONSIVE
         </div>
       </div>
 
+      <div id="passwordAksesRow" class="form-group" style="display:none;">
+        <label>Password Akses Gratis — 6 digit angka (opsional)</label>
+        <input type="text" id="f_password_akses" placeholder="Contoh: 123456 — kosongkan jika tidak perlu password" maxlength="6" pattern="[0-9]{6}" inputmode="numeric">
+        <div style="font-size:12px;color:#64748b;margin-top:6px;line-height:1.6;">
+          Password ini akan diminta ke user (6 digit angka) saat memilih jalur <b>gratis</b>. Kosongkan jika ingin tryout gratis ini bisa diakses langsung tanpa password.
+        </div>
+      </div>
+
+      <div id="periodeInfoBox" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:14px 16px;margin-bottom:16px;font-size:12.5px;color:#1e40af;line-height:1.7;">
+        ⏰ <b>Otomatis jadi Premium setelah periode habis:</b> Jika <b>Tanggal Selesai</b> sudah lewat dan opsi "akses fleksibel" di bawah <u>tidak</u> dicentang, tryout gratis/gratis+berbayar ini akan otomatis hanya bisa diakses lewat <b>Premium</b> — user akan melihat keterangan "Periode gratis sudah berakhir, sekarang hanya bisa diakses Premium" di halaman mereka.
+      </div>
+
       <div class="form-row">
         <div class="form-group">
           <label>Durasi (menit) *</label>
@@ -666,6 +678,7 @@ function filterTable() {
 function togglePasswordField() {
   const val = document.getElementById('f_akses').value;
   document.getElementById('aksesInfoRow').style.display = val === 'semua' ? 'block' : 'none';
+  document.getElementById('passwordAksesRow').style.display = (val === 'gratis' || val === 'semua') ? 'block' : 'none';
 }
 
 function toggleBebasWaktu() {
@@ -709,6 +722,7 @@ function openModal() {
   document.getElementById('aksesInfoRow').style.display = 'none';
   document.getElementById('f_tanggal_mulai').disabled  = false;
   document.getElementById('f_tanggal_selesai').disabled = false;
+  togglePasswordField();
   document.getElementById('modalBg').classList.add('show');
 }
 
@@ -730,6 +744,7 @@ function editTryout(encoded) {
   document.getElementById('f_video_url').value      = r.video_url || '';
   document.getElementById('f_pdf_url').value        = r.pdf_url || '';
   document.getElementById('f_gform_url').value      = r.gform_url || '';
+  document.getElementById('f_password_akses').value = r.password_akses || '';
   document.getElementById('f_bebas_waktu').checked  = r.bebas_waktu || false;
 
   if (r.tanggal_mulai)  document.getElementById('f_tanggal_mulai').value  = r.tanggal_mulai.slice(0,16);
@@ -802,6 +817,7 @@ async function saveTryout(e) {
       video_url:       document.getElementById('f_video_url').value || null,
       pdf_url:         document.getElementById('f_pdf_url').value || null,
       gform_url:       document.getElementById('f_gform_url').value || null,
+      password_akses:  document.getElementById('f_password_akses').value.trim() || null,
       banner_url:      bannerUrl,
     };
 

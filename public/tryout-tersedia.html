@@ -273,6 +273,12 @@ async function loadTryout() {
   }
 }
 
+function isPeriodeBerakhir(r) {
+  if (r.bebas_waktu) return false;
+  if (!r.tanggal_selesai) return false;
+  return new Date(r.tanggal_selesai) < new Date();
+}
+
 function renderCards(rows) {
   const grid = document.getElementById("tryoutGrid");
   if (!rows.length) {
@@ -281,12 +287,21 @@ function renderCards(rows) {
   }
 
   grid.innerHTML = rows.map(r => {
-    const akses = r.akses || (r.is_premium ? "premium" : "gratis");
+    const aksesAsli = r.akses || (r.is_premium ? "premium" : "gratis");
+    const periodeHabis = isPeriodeBerakhir(r);
+
+    // Jika periode pengerjaan sudah lewat & bukan "akses fleksibel",
+    // tryout gratis/gratis+berbayar otomatis hanya bisa diakses Premium.
+    const akses = (periodeHabis && aksesAsli !== "premium") ? "premium" : aksesAsli;
 
     let badgeHtml = "";
     if      (akses === "premium")  badgeHtml = '<span class="badge badge-premium">PREMIUM</span>';
     else if (akses === "semua")    badgeHtml = '<span class="badge badge-mixed">GRATIS + PREMIUM</span>';
     else                           badgeHtml = '<span class="badge badge-free">GRATIS</span>';
+
+    const periodeNote = (periodeHabis && aksesAsli !== "premium")
+      ? '<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:8px 12px;font-size:11.5px;color:#9a3412;margin-bottom:12px;line-height:1.5;">⏰ Periode gratis sudah berakhir. Sekarang hanya bisa diakses dengan <b>Premium</b>.</div>'
+      : '';
 
     const banner = r.banner_url
       ? '<img src="' + r.banner_url + '" alt="' + (r.nama||"") + '" onerror="this.parentElement.innerHTML=\'<div class=\\\"card-banner-fallback\\\">&#128196;</div>\'">'
@@ -331,6 +346,7 @@ function renderCards(rows) {
     return '<div class="tryout-card">' +
       '<div class="card-banner-wrap">' + banner + '</div>' +
       badgeHtml +
+      periodeNote +
       '<div class="tryout-title">' + (r.nama||"Tanpa Nama") + '</div>' +
       '<div class="tryout-desc">' + (r.deskripsi||"") + '</div>' +
       '<div class="meta">' +
@@ -360,6 +376,14 @@ function handleStart(id, action) {
 }
 
 function bukaModalPassword(row) {
+  // Kalau admin tidak set password untuk tryout ini, langsung
+  // buka akses tanpa perlu modal password sama sekali.
+  if (row.has_password_akses === false) {
+    activeMulaiMode = "gratis";
+    tampilModalMulai(row, "gratis");
+    return;
+  }
+
   pendingPasswordId = row.id;
 
   const inputs = document.querySelectorAll(".otp-box");
