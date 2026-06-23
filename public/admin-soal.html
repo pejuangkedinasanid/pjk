@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelola Soal | Admin Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+
+<style>
+
+:root{
+--navy:#0f172a;--navy2:#1e293b;--orange:#f97316;--orange2:#fb923c;
+--blue:#2563eb;--bg:#f5f7fb;--card:#ffffff;--text:#1e293b;--muted:#64748b;
+--border:#e2e8f0;--shadow:0 20px 50px rgba(15,23,42,.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:linear-gradient(180deg,#eef2ff 0%,#f8fafc 45%,#ffffff 100%);display:flex;min-height:100vh;overflow-x:hidden;position:relative;}
+body::before{content:"";position:fixed;top:-250px;right:-250px;width:550px;height:550px;border-radius:50%;background:rgba(249,115,22,.14);filter:blur(90px);pointer-events:none;}
+body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;height:500px;border-radius:50%;background:rgba(249,115,22,.08);filter:blur(90px);pointer-events:none;}
+
+.sidebar{width:290px;background:linear-gradient(180deg,#0f172a,#1e293b);position:fixed;left:0;top:0;bottom:0;color:white;z-index:999;overflow-y:auto;display:flex;flex-direction:column;box-shadow:10px 0 40px rgba(0,0,0,.15);transform:translateX(0);transition:.3s;}
+.sidebar.closed{transform:translateX(-290px);}
+.sidebar-header{padding:28px 25px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.brand{font-size:21px;font-weight:800;line-height:1.25;}
+.brand-sub{font-size:11px;opacity:.65;margin-top:5px;}
+.btn-close{flex-shrink:0;width:34px;height:34px;border-radius:10px;border:none;background:rgba(255,255,255,.08);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.2s;}
+.btn-close:hover{background:rgba(255,255,255,.18);}
+.menu{padding:18px 12px;flex:1;}
+.menu-title{font-size:11px;font-weight:700;opacity:.45;text-transform:uppercase;letter-spacing:1px;margin:18px 12px 8px;}
+.menu a{display:flex;align-items:center;padding:13px 16px;border-radius:14px;color:white;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:4px;transition:.25s;}
+.menu a:hover{background:rgba(255,255,255,.08);transform:translateX(4px);}
+.menu a.active{background:linear-gradient(135deg,rgba(249,115,22,.85),rgba(251,146,60,.85));}
+.sidebar-footer{padding:18px 12px;border-top:1px solid rgba(255,255,255,.08);}
+.btn-logout{display:block;width:100%;padding:13px 16px;border-radius:14px;color:rgba(255,255,255,.65);font-size:14px;font-weight:600;cursor:pointer;border:none;background:rgba(255,255,255,.05);text-align:left;transition:.2s;}
+.btn-logout:hover{background:rgba(239,68,68,.18);color:#fca5a5;}
+
+.hamburger{display:flex;position:fixed;top:15px;left:15px;width:48px;height:48px;border:none;border-radius:14px;background:var(--navy);color:white;font-size:20px;cursor:pointer;z-index:1001;align-items:center;justify-content:center;transition:.3s;box-shadow:0 8px 20px rgba(15,23,42,.25);}
+.hamburger.inside{left:227px;}
+.overlay{display:none;}
+.overlay.active{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:998;}
+
+.main{margin-left:290px;width:100%;padding:30px;position:relative;z-index:2;transition:.3s;}
+.main.full{margin-left:0;}
+
+.hero{background:linear-gradient(135deg,#0f172a,#1e293b);padding:32px 35px;border-radius:28px;color:white;margin-bottom:25px;overflow:hidden;position:relative;box-shadow:0 25px 60px rgba(15,23,42,.2);}
+.hero::before{content:"";position:absolute;top:-110px;right:-110px;width:300px;height:300px;border-radius:50%;background:rgba(249,115,22,.18);}
+.hero h1{font-size:28px;font-weight:800;margin-bottom:6px;position:relative;z-index:2;}
+.hero p{opacity:.8;font-size:14px;position:relative;z-index:2;}
+
+.tryout-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;}
+.tryout-card{background:white;border-radius:22px;padding:22px;box-shadow:var(--shadow);transition:.25s;display:flex;flex-direction:column;}
+.tryout-card:hover{transform:translateY(-4px);}
+.tryout-card-name{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:8px;cursor:pointer;transition:.2s;}
+.tryout-card-name:hover{color:var(--orange);}
+.tryout-card-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:18px;flex-wrap:wrap;}
+.badge{padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;}
+.badge-green{background:#dcfce7;color:#15803d;}
+.badge-gray{background:#f1f5f9;color:#64748b;}
+.badge-twk{background:#dbeafe;color:#1d4ed8;}
+.badge-tiu{background:#dcfce7;color:#15803d;}
+.badge-tkp{background:#fff7ed;color:#c2410c;}
+.btn-input-soal{margin-top:auto;width:100%;padding:12px;border:none;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:700;font-size:13px;cursor:pointer;transition:.2s;}
+.btn-input-soal:hover{opacity:.92;}
+.empty-overview{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-overview b{display:block;font-size:17px;color:var(--navy);margin-bottom:8px;}
+
+.btn-back{display:inline-flex;align-items:center;gap:8px;background:white;border:1px solid var(--border);padding:10px 18px;border-radius:999px;font-weight:700;font-size:13px;color:var(--navy);cursor:pointer;margin-bottom:18px;transition:.2s;}
+.btn-back:hover{background:#f8fafc;border-color:var(--orange);}
+.soal-list-header{background:white;border-radius:22px;padding:22px 25px;box-shadow:var(--shadow);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.soal-list-title{font-size:19px;font-weight:800;color:var(--navy);}
+.soal-list-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+
+.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.search-wrap{position:relative;flex:1;min-width:200px;}
+.search-wrap input{width:100%;padding:12px 14px 12px 40px;border:1px solid var(--border);border-radius:14px;font-size:14px;outline:none;background:white;}
+.search-wrap input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(249,115,22,.1);}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#94a3b8;}
+.filter-select{padding:12px 14px;border:1px solid var(--border);border-radius:14px;font-size:13px;font-weight:600;color:var(--text);background:white;outline:none;cursor:pointer;}
+.filter-select:focus{border-color:var(--orange);}
+
+.card{background:white;border-radius:24px;box-shadow:var(--shadow);overflow:hidden;}
+.dtable{width:100%;border-collapse:collapse;}
+.dtable thead tr{background:#f8fafc;}
+.dtable th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
+.dtable td{padding:14px 16px;border-top:1px solid #f1f5f9;font-size:13px;color:var(--text);vertical-align:middle;}
+.dtable tr:hover td{background:#fffaf5;}
+.act-btn{padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:none;cursor:pointer;transition:.15s;}
+.act-edit{background:#fff7ed;color:#c2410c;}
+.act-edit:hover{background:#ffedd5;}
+.act-del{background:#fee2e2;color:#dc2626;}
+.act-del:hover{background:#fecaca;}
+.empty{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty b{display:block;font-size:16px;color:var(--navy);margin-bottom:8px;}
+
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:2000;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;}
+.modal-bg.show{display:flex;}
+.modal{background:white;border-radius:26px;padding:32px;width:100%;max-width:720px;position:relative;margin:auto;}
+.modal.small{max-width:380px;}
+.modal-title{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:24px;}
+.modal-close{position:absolute;top:20px;right:20px;width:32px;height:32px;border-radius:10px;border:none;background:#f1f5f9;color:#64748b;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:#e2e8f0;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;font-size:14px;outline:none;font-family:inherit;transition:.2s;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(249,115,22,.1);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-row5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.section-divider{font-size:12px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin:20px 0 12px;padding-bottom:8px;border-bottom:2px solid #f1f5f9;}
+.btn-save{width:100%;padding:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;margin-top:10px;transition:.2s;}
+.btn-save:hover{opacity:.92;}
+.btn-save:disabled{opacity:.6;cursor:not-allowed;}
+.btn-save.dark{background:linear-gradient(135deg,#0f172a,#1e293b);}
+
+.opsi-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.opsi-letter{flex-shrink:0;width:36px;height:36px;border-radius:10px;background:#f1f5f9;color:var(--navy);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.opsi-row input{flex:1;}
+.jawaban-pick{display:flex;gap:10px;flex-wrap:wrap;}
+.jawaban-pick label{display:flex;align-items:center;gap:6px;padding:10px 16px;border-radius:12px;border:1px solid var(--border);font-weight:700;font-size:13px;cursor:pointer;transition:.2s;}
+.jawaban-pick input{width:auto;}
+.jawaban-pick label:has(input:checked){border-color:var(--orange);background:#fff7ed;}
+.poin-box{text-align:center;}
+.poin-box label{font-size:12px;}
+.poin-box input{text-align:center;font-weight:700;}
+
+.img-upload{border:2px dashed var(--border);border-radius:16px;padding:18px;text-align:center;cursor:pointer;transition:.2s;position:relative;}
+.img-upload:hover{border-color:var(--orange);background:#fffaf5;}
+.img-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.img-preview{width:100%;max-height:160px;object-fit:contain;border-radius:12px;margin-bottom:10px;display:none;}
+.img-label{font-size:12px;color:#94a3b8;font-weight:600;}
+
+.latex-hint{font-size:11.5px;color:#64748b;background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:8px 12px;margin-top:6px;line-height:1.6;}
+.latex-hint code{background:#e2e8f0;padding:1px 5px;border-radius:5px;}
+.latex-preview{background:#f8fafc;border:1px dashed var(--border);border-radius:12px;padding:12px 14px;margin-top:8px;font-size:14px;color:var(--text);min-height:24px;}
+.latex-preview-label{font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;}
+
+.json-help{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:14px 16px;font-size:12px;color:#9a3412;line-height:1.7;margin-bottom:14px;}
+.json-help pre{background:#0f172a;color:#e2e8f0;padding:14px;border-radius:10px;overflow-x:auto;font-size:11.5px;margin-top:10px;line-height:1.6;}
+.btn-toggle-help{background:none;border:none;color:#c2410c;font-weight:700;font-size:12px;cursor:pointer;text-decoration:underline;padding:0;margin-bottom:10px;}
+textarea#jsonInput{width:100%;min-height:220px;padding:14px;border:1px solid var(--border);border-radius:14px;font-family:'Courier New',monospace;font-size:12.5px;outline:none;resize:vertical;}
+textarea#jsonInput:focus{border-color:var(--orange);}
+
+.bucket-warning{background:#fee2e2;border:1px solid #fecaca;color:#dc2626;border-radius:10px;padding:10px 12px;font-size:12px;margin-top:8px;display:none;}
+
+@media(max-width:1000px){.main{margin-left:0;padding:20px 16px;}}
+@media(max-width:700px){.form-row{grid-template-columns:1fr;}.form-row5{grid-template-columns:repeat(5,1fr);}}
+@media(max-width:600px){.form-row5{grid-template-columns:1fr 1fr;}}
+
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+<button class="hamburger" id="hamburger">☰</button>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div><div class="brand">ADMIN PANEL</div><div class="brand-sub">Pejuang Kedinasan</div></div>
+    <button class="btn-close" id="closeSidebarBtn">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="menu">
+    <div class="menu-title">Utama</div>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-tryout.html">Kelola Tryout</a>
+    <a href="admin-soal.html" class="active">Kelola Soal</a>
+    <a href="admin-modul.html">Kelola Modul</a>
+    <div class="menu-title">Peserta</div>
+    <a href="admin-users.html">Daftar User</a>
+    <a href="admin-premium.html">Member Premium</a>
+    <div class="menu-title">Lainnya</div>
+    <a href="admin-payment.html">Pembayaran</a>
+    <a href="admin-leaderboard.html">Leaderboard</a>
+    <a href="admin-notifikasi.html">Notifikasi</a>
+    <a href="admin-setting.html">Pengaturan</a>
+  </div>
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="logout()">Keluar</button>
+  </div>
+</div>
+
+<div class="main" id="main">
+
+  <div class="hero">
+    <h1>Kelola Soal</h1>
+    <p>Pilih tryout di bawah untuk mengelola soal TWK, TIU, dan TKP.</p>
+  </div>
+
+  <div id="viewOverview">
+    <div class="tryout-grid" id="tryoutGrid">
+      <div class="empty-overview">Memuat daftar tryout...</div>
+    </div>
+  </div>
+
+  <div id="viewSoalList" style="display:none;">
+
+    <button class="btn-back" onclick="backToOverview()">← Kembali ke Daftar Tryout</button>
+
+    <div class="soal-list-header">
+      <div>
+        <div class="soal-list-title" id="soalListTitle">Nama Tryout</div>
+        <div class="soal-list-sub" id="soalListSub">0 soal</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn-input-soal" style="margin-top:0;width:auto;padding:12px 20px;background:linear-gradient(135deg,#0f172a,#1e293b);" onclick="openImportModal()">📥 Import JSON</button>
+        <button class="btn-input-soal" style="margin-top:0;width:auto;padding:12px 20px;" onclick="openSoalModal()">✍️ Input Manual</button>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="searchInput" placeholder="Cari teks soal..." oninput="filterTable()">
+      </div>
+      <select class="filter-select" id="filterKategori" onchange="filterTable()">
+        <option value="">Semua Kategori</option>
+        <option value="TWK">TWK</option>
+        <option value="TIU">TIU</option>
+        <option value="TKP">TKP</option>
+      </select>
+    </div>
+
+    <div class="card">
+      <div style="overflow-x:auto;">
+        <table class="dtable">
+          <thead>
+            <tr><th>#</th><th>Seksi</th><th>Teks Soal</th><th>Jawaban / Bobot</th><th>Pembahasan</th><th>Aksi</th></tr>
+          </thead>
+          <tbody id="tableBody">
+            <tr><td colspan="6" style="text-align:center;padding:40px;color:#64748b;">Memuat...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+</div><!-- /main -->
+
+<!-- ══ MODAL FORM SOAL MANUAL ══ -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSoalModal()">&#x2715;</button>
+    <div class="modal-title" id="modalTitle">Tambah Soal</div>
+
+    <form id="soalForm" onsubmit="saveSoal(event)">
+      <input type="hidden" id="editId">
+      <input type="hidden" id="existingGambar">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Seksi *</label>
+          <select id="f_seksi" onchange="toggleKategoriFields()" required>
+            <option value="TWK">TWK — Tes Wawasan Kebangsaan</option>
+            <option value="TIU">TIU — Tes Intelegensia Umum</option>
+            <option value="TKP">TKP — Tes Karakteristik Pribadi</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nomor Soal (global 1–110)</label>
+          <input type="number" id="f_nomor" min="1" placeholder="Otomatis jika kosong">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Teks Pertanyaan *</label>
+        <textarea id="f_teks" rows="3" placeholder="Tulis soal di sini..." oninput="updateLatexPreview()" required></textarea>
+        <div class="latex-hint">
+          💡 Mendukung rumus matematika (LaTeX). Inline: <code>$x^2+y^2=r^2$</code> &nbsp; Blok: <code>$$\frac{a}{b}$$</code>
+        </div>
+        <div class="latex-preview-label">Preview</div>
+        <div class="latex-preview" id="latexPreview">—</div>
+      </div>
+
+      <div class="section-divider">Gambar Soal (Opsional)</div>
+      <div class="img-upload" id="imgUploadArea">
+        <input type="file" id="f_gambar" accept="image/*" onchange="previewGambar(this)">
+        <img id="gambarPreview" class="img-preview" alt="Preview gambar soal">
+        <div class="img-label" id="gambarLabel">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 6px;display:block;color:#94a3b8;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Klik untuk upload gambar soal (JPG/PNG, maks 2MB)
+        </div>
+      </div>
+      <div class="bucket-warning" id="bucketWarning">
+        ⚠️ Bucket Storage "soal-images" belum dibuat di Supabase. Buka Supabase → Storage → New Bucket → nama "soal-images" → Public.
+      </div>
+
+      <div class="section-divider">Opsi Jawaban</div>
+      <div class="opsi-row"><div class="opsi-letter">A</div><input type="text" id="f_opsi_a" placeholder="Opsi A (boleh pakai LaTeX juga)" required></div>
+      <div class="opsi-row"><div class="opsi-letter">B</div><input type="text" id="f_opsi_b" placeholder="Opsi B" required></div>
+      <div class="opsi-row"><div class="opsi-letter">C</div><input type="text" id="f_opsi_c" placeholder="Opsi C" required></div>
+      <div class="opsi-row"><div class="opsi-letter">D</div><input type="text" id="f_opsi_d" placeholder="Opsi D" required></div>
+      <div class="opsi-row"><div class="opsi-letter">E</div><input type="text" id="f_opsi_e" placeholder="Opsi E" required></div>
+
+      <div id="jawabanBenarRow">
+        <div class="section-divider">Jawaban Benar (Benar = 5 poin, Salah = 0 poin)</div>
+        <div class="jawaban-pick">
+          <label><input type="radio" name="f_jawaban_benar" value="A"><span>A</span></label>
+          <label><input type="radio" name="f_jawaban_benar" value="B"><span>B</span></label>
+          <label><input type="radio" name="f_jawaban_benar" value="C"><span>C</span></label>
+          <label><input type="radio" name="f_jawaban_benar" value="D"><span>D</span></label>
+          <label><input type="radio" name="f_jawaban_benar" value="E"><span>E</span></label>
+        </div>
+      </div>
+
+      <div id="poinTkpRow" style="display:none;">
+        <div class="section-divider">Bobot Per Opsi (TKP, isi 1–5 untuk setiap opsi)</div>
+        <div class="form-row5">
+          <div class="poin-box"><label>Bobot A</label><input type="number" id="f_poin_a" min="1" max="5"></div>
+          <div class="poin-box"><label>Bobot B</label><input type="number" id="f_poin_b" min="1" max="5"></div>
+          <div class="poin-box"><label>Bobot C</label><input type="number" id="f_poin_c" min="1" max="5"></div>
+          <div class="poin-box"><label>Bobot D</label><input type="number" id="f_poin_d" min="1" max="5"></div>
+          <div class="poin-box"><label>Bobot E</label><input type="number" id="f_poin_e" min="1" max="5"></div>
+        </div>
+      </div>
+
+      <div class="section-divider">Pembahasan (khusus user Premium)</div>
+      <div class="form-group">
+        <textarea id="f_pembahasan" rows="3" placeholder="Penjelasan jawaban — boleh pakai LaTeX juga..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-save" id="saveSoalBtn">Simpan Soal</button>
+    </form>
+  </div>
+</div>
+
+<!-- ══ MODAL IMPORT JSON ══ -->
+<div class="modal-bg" id="importModalBg">
+  <div class="modal">
+    <button class="modal-close" onclick="closeImportModal()">&#x2715;</button>
+    <div class="modal-title">Import Soal via JSON</div>
+
+    <button type="button" class="btn-toggle-help" onclick="toggleJsonHelp()">📖 Lihat format JSON yang benar</button>
+
+    <div class="json-help" id="jsonHelpBox" style="display:none;">
+      Format harus berupa <b>array JSON</b>. Setiap soal wajib punya <code>kategori</code>, <code>pertanyaan</code>, dan <code>opsi</code> (objek A–E).
+      <br><br>
+      • <b>TWK / TIU</b> → wajib isi <code>jawaban_benar</code> (satu huruf A–E). Otomatis: benar = 5 poin, salah = 0.<br>
+      • <b>TKP</b> → wajib isi <code>poin</code> (objek angka 1–5 untuk tiap huruf A–E), <u>jangan</u> isi <code>jawaban_benar</code>.<br>
+      • <code>gambar_url</code> dan <code>pembahasan</code> sifatnya opsional.
+      <pre>[
+  {
+    "kategori": "TWK",
+    "pertanyaan": "Pancasila disahkan pada tanggal...",
+    "opsi": { "A": "17 Agustus 1945", "B": "18 Agustus 1945", "C": "1 Juni 1945", "D": "22 Juni 1945", "E": "29 Mei 1945" },
+    "jawaban_benar": "B",
+    "pembahasan": "Pancasila disahkan 18 Agustus 1945 dalam sidang PPKI."
+  },
+  {
+    "kategori": "TKP",
+    "pertanyaan": "Ketika rekan kerja melakukan kesalahan, saya...",
+    "opsi": { "A": "Menegur keras", "B": "Mendiamkan saja", "C": "Lapor atasan", "D": "Membantu tanpa menyalahkan", "E": "Mengabaikan" },
+    "poin": { "A": 2, "B": 1, "C": 3, "D": 5, "E": 1 },
+    "pembahasan": "Opsi D paling tepat."
+  }
+]</pre>
+    </div>
+
+    <div class="form-group">
+      <label>Tempel JSON Soal di Sini</label>
+      <textarea id="jsonInput" placeholder="Tempel array JSON soal di sini..."></textarea>
+    </div>
+
+    <div id="importResultBox" style="display:none;margin-bottom:14px;font-size:13px;font-weight:600;"></div>
+
+    <button class="btn-save" id="importBtn" onclick="importJson()">Import Sekarang</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const rawUser = localStorage.getItem('user');
+if (!rawUser) window.location.href = 'login.html';
+const user = JSON.parse(rawUser);
+if (user.role !== 'admin' && user.role !== 'super_admin') window.location.href = 'dashboard.html';
+
+const adminEmail = user.email;
+
+const sidebar        = document.getElementById('sidebar');
+const hamburger       = document.getElementById('hamburger');
+const overlay         = document.getElementById('overlay');
+const mainEl          = document.getElementById('main');
+const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+
+function openSidebar(){
+  sidebar.classList.remove('closed');
+  hamburger.style.display = 'none';
+  if (window.innerWidth <= 1000) overlay.classList.add('active');
+  else overlay.classList.remove('active');
+  mainEl.classList.remove('full');
+}
+function closeSidebar(){
+  sidebar.classList.add('closed');
+  overlay.classList.remove('active');
+  mainEl.classList.add('full');
+  hamburger.style.display = 'flex';
+}
+hamburger.addEventListener('click', openSidebar);
+closeSidebarBtn.addEventListener('click', closeSidebar);
+overlay.addEventListener('click', closeSidebar);
+function initSidebar(){ window.innerWidth <= 1000 ? closeSidebar() : openSidebar(); }
+window.addEventListener('resize', initSidebar);
+initSidebar();
+
+let allTryout        = [];
+let allSoal          = [];
+let currentTryoutId  = null;
+let currentTryoutNama = '';
+
+const KATEGORI_ORDER = { TWK: 0, TIU: 1, TKP: 2 };
+
+function renderMath(el){
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    window.MathJax.typesetPromise([el]).catch(err => console.warn('MathJax error:', err));
+  }
+}
+let latexPreviewTimer = null;
+function updateLatexPreview(){
+  clearTimeout(latexPreviewTimer);
+  latexPreviewTimer = setTimeout(() => {
+    const text = document.getElementById('f_teks').value;
+    const preview = document.getElementById('latexPreview');
+    preview.textContent = text || '—';
+    renderMath(preview);
+  }, 350);
+}
+
+async function loadTryoutOptions() {
+  const grid = document.getElementById('tryoutGrid');
+  try {
+    const res = await fetch('/api/admin/tryout', { headers: { 'x-admin-email': adminEmail } });
+    const json = await res.json();
+    if (!json.success) { grid.innerHTML = '<div class="empty-overview"><b>Gagal memuat tryout</b>' + json.message + '</div>'; return; }
+
+    allTryout = json.data || [];
+    if (!allTryout.length) { grid.innerHTML = '<div class="empty-overview"><b>Belum ada tryout</b>Buat tryout dulu di menu "Kelola Tryout".</div>'; return; }
+
+    grid.innerHTML = allTryout.map(t => {
+      const statusBadge = (t.status === 'publish' || t.aktif) ? '<span class="badge badge-green">Publish</span>' : '<span class="badge badge-gray">Draft</span>';
+      const namaEsc = (t.nama || 'Tanpa Nama').replace(/'/g, "\\'");
+      return '<div class="tryout-card">' +
+        '<div class="tryout-card-name" onclick="viewSoalList(' + t.id + ',\'' + namaEsc + '\')">' + (t.nama || 'Tanpa Nama') + '</div>' +
+        '<div class="tryout-card-meta">' + statusBadge + '<span>Target: ' + (t.jumlah_soal || 0) + ' soal</span></div>' +
+        '<button class="btn-input-soal" onclick="viewSoalList(' + t.id + ',\'' + namaEsc + '\')">📝 Input Soal</button>' +
+      '</div>';
+    }).join('');
+  } catch (e) {
+    console.error('loadTryoutOptions error:', e);
+    grid.innerHTML = '<div class="empty-overview"><b>Gagal memuat tryout</b>Silakan refresh halaman.</div>';
+  }
+}
+
+function viewSoalList(tryoutId, nama) {
+  currentTryoutId   = tryoutId;
+  currentTryoutNama = nama;
+  document.getElementById('soalListTitle').textContent = nama;
+  document.getElementById('viewOverview').style.display = 'none';
+  document.getElementById('viewSoalList').style.display = 'block';
+  loadSoal();
+}
+function backToOverview() {
+  currentTryoutId = null;
+  document.getElementById('viewSoalList').style.display = 'none';
+  document.getElementById('viewOverview').style.display = 'block';
+}
+
+async function loadSoal() {
+  document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#64748b;">Memuat soal...</td></tr>';
+  try {
+    const res = await fetch('/api/admin/soal?tryout_id=' + currentTryoutId, { headers: { 'x-admin-email': adminEmail } });
+    const json = await res.json();
+    if (!json.success) {
+      document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#dc2626;">Gagal memuat: ' + json.message + '</td></tr>';
+      return;
+    }
+    allSoal = json.data || [];
+    renderTable(allSoal);
+  } catch (e) { console.error('loadSoal error:', e); }
+}
+
+function sortedRows(rows) {
+  return [...rows].sort((a, b) => {
+    const ka = KATEGORI_ORDER[a.seksi] ?? 99;
+    const kb = KATEGORI_ORDER[b.seksi] ?? 99;
+    if (ka !== kb) return ka - kb;
+    return (a.nomor || 0) - (b.nomor || 0);
+  });
+}
+
+/* Cari opsi tertentu berdasarkan huruf dari kolom JSONB "opsi" */
+function findOpsi(row, huruf) {
+  return (row.opsi || []).find(o => o.huruf === huruf) || {};
+}
+
+function renderTable(rows) {
+  const tbody = document.getElementById('tableBody');
+  const sorted = sortedRows(rows);
+  document.getElementById('soalListSub').textContent = sorted.length + ' soal';
+
+  if (!sorted.length) {
+    tbody.innerHTML = '<tr><td colspan="6"><div class="empty"><b>Belum ada soal</b>Kembali ke daftar tryout, klik "📝 Input Soal" untuk menambahkan.</div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = sorted.map((r, i) => {
+    const badgeClass = r.seksi === 'TWK' ? 'badge-twk' : r.seksi === 'TIU' ? 'badge-tiu' : 'badge-tkp';
+
+    let jawabanInfo;
+    if (r.seksi === 'TKP') {
+      jawabanInfo = (r.opsi || []).map(o => o.huruf + (o.bobot ?? '-')).join(' ');
+    } else {
+      const benarOpt = (r.opsi || []).find(o => o.benar === true);
+      jawabanInfo = benarOpt ? 'Jawaban: ' + benarOpt.huruf : '<span style="color:#dc2626;">Belum diisi</span>';
+    }
+
+    const teksPreview = (r.teks || '').slice(0, 70) + ((r.teks||'').length > 70 ? '…' : '');
+    const safeR = encodeURIComponent(JSON.stringify(r));
+
+    return '<tr>' +
+      '<td style="color:#94a3b8;font-size:12px;">' + (i+1) + '</td>' +
+      '<td><span class="badge ' + badgeClass + '">' + r.seksi + '</span></td>' +
+      '<td class="soal-text">' + teksPreview + (r.gambar_url ? ' 🖼️' : '') + '</td>' +
+      '<td style="font-size:12px;font-weight:600;color:#334155;">' + jawabanInfo + '</td>' +
+      '<td style="font-size:12px;color:#64748b;">' + (r.pembahasan ? '✅ Ada' : '— Kosong') + '</td>' +
+      '<td><div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+        '<button class="act-btn act-edit" onclick=\'editSoal(decodeURIComponent("' + safeR + '"))\'>Edit</button>' +
+        '<button class="act-btn act-del" onclick="deleteSoal(' + r.id + ')">Hapus</button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
+
+  renderMath(tbody);
+}
+
+function filterTable() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const kategori = document.getElementById('filterKategori').value;
+  const filtered = allSoal.filter(r => {
+    const matchQ = !q || (r.teks || '').toLowerCase().includes(q);
+    const matchK = !kategori || r.seksi === kategori;
+    return matchQ && matchK;
+  });
+  renderTable(filtered);
+}
+
+function toggleKategoriFields() {
+  const seksi = document.getElementById('f_seksi').value;
+  document.getElementById('jawabanBenarRow').style.display = seksi === 'TKP' ? 'none' : 'block';
+  document.getElementById('poinTkpRow').style.display      = seksi === 'TKP' ? 'block' : 'none';
+}
+
+function previewGambar(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { alert('Ukuran file maksimal 2MB.'); input.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('gambarPreview');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    document.getElementById('gambarLabel').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadGambarSoal(file) {
+  const ext      = file.name.split('.').pop();
+  const fileName = 'soal_' + Date.now() + '.' + ext;
+  const { error } = await sb.storage.from('soal-images').upload(fileName, file, { cacheControl: '3600', upsert: false });
+  if (error) {
+    if ((error.message || '').toLowerCase().includes('bucket not found')) {
+      document.getElementById('bucketWarning').style.display = 'block';
+    }
+    throw new Error('Upload gagal: ' + error.message);
+  }
+  const { data: urlData } = sb.storage.from('soal-images').getPublicUrl(fileName);
+  return urlData.publicUrl;
+}
+
+function openSoalModal() {
+  if (!currentTryoutId) { alert('Pilih tryout terlebih dahulu.'); return; }
+  document.getElementById('modalTitle').textContent = 'Tambah Soal — ' + currentTryoutNama;
+  document.getElementById('soalForm').reset();
+  document.getElementById('editId').value = '';
+  document.getElementById('existingGambar').value = '';
+  document.getElementById('gambarPreview').style.display = 'none';
+  document.getElementById('gambarLabel').style.display = 'block';
+  document.getElementById('bucketWarning').style.display = 'none';
+  document.getElementById('latexPreview').textContent = '—';
+  toggleKategoriFields();
+  document.getElementById('modalBg').classList.add('show');
+}
+function closeSoalModal() { document.getElementById('modalBg').classList.remove('show'); }
+document.getElementById('modalBg').addEventListener('click', e => { if (e.target===e.currentTarget) closeSoalModal(); });
+
+function editSoal(encoded) {
+  const r = JSON.parse(encoded);
+  document.getElementById('modalTitle').textContent = 'Edit Soal — ' + currentTryoutNama;
+  document.getElementById('editId').value         = r.id;
+  document.getElementById('existingGambar').value = r.gambar_url || '';
+  document.getElementById('f_seksi').value        = r.seksi;
+  document.getElementById('f_nomor').value        = r.nomor || '';
+  document.getElementById('f_teks').value         = r.teks || '';
+  document.getElementById('f_pembahasan').value   = r.pembahasan || '';
+
+  document.getElementById('f_opsi_a').value = findOpsi(r,'A').teks || '';
+  document.getElementById('f_opsi_b').value = findOpsi(r,'B').teks || '';
+  document.getElementById('f_opsi_c').value = findOpsi(r,'C').teks || '';
+  document.getElementById('f_opsi_d').value = findOpsi(r,'D').teks || '';
+  document.getElementById('f_opsi_e').value = findOpsi(r,'E').teks || '';
+
+  if (r.seksi === 'TKP') {
+    document.getElementById('f_poin_a').value = findOpsi(r,'A').bobot ?? '';
+    document.getElementById('f_poin_b').value = findOpsi(r,'B').bobot ?? '';
+    document.getElementById('f_poin_c').value = findOpsi(r,'C').bobot ?? '';
+    document.getElementById('f_poin_d').value = findOpsi(r,'D').bobot ?? '';
+    document.getElementById('f_poin_e').value = findOpsi(r,'E').bobot ?? '';
+  } else {
+    const benarOpt = (r.opsi || []).find(o => o.benar === true);
+    if (benarOpt) {
+      const radio = document.querySelector('input[name="f_jawaban_benar"][value="' + benarOpt.huruf + '"]');
+      if (radio) radio.checked = true;
+    }
+  }
+
+  document.getElementById('bucketWarning').style.display = 'none';
+  if (r.gambar_url) {
+    const img = document.getElementById('gambarPreview');
+    img.src = r.gambar_url;
+    img.style.display = 'block';
+    document.getElementById('gambarLabel').style.display = 'none';
+  } else {
+    document.getElementById('gambarPreview').style.display = 'none';
+    document.getElementById('gambarLabel').style.display = 'block';
+  }
+
+  toggleKategoriFields();
+  updateLatexPreview();
+  document.getElementById('modalBg').classList.add('show');
+}
+
+/* ── Bangun array JSONB "opsi" dari isian form ── */
+function buildOpsiFromForm(seksi) {
+  const huruf = ['A','B','C','D','E'];
+  const teksOpsi = huruf.map(h => document.getElementById('f_opsi_' + h.toLowerCase()).value);
+
+  if (seksi === 'TKP') {
+    const poin = {
+      A: parseInt(document.getElementById('f_poin_a').value),
+      B: parseInt(document.getElementById('f_poin_b').value),
+      C: parseInt(document.getElementById('f_poin_c').value),
+      D: parseInt(document.getElementById('f_poin_d').value),
+      E: parseInt(document.getElementById('f_poin_e').value),
+    };
+    const vals = Object.values(poin);
+    if (vals.some(v => !v || v < 1 || v > 5)) throw new Error('Semua bobot opsi TKP wajib diisi angka 1-5.');
+    return huruf.map((h, i) => ({ huruf: h, teks: teksOpsi[i], bobot: poin[h] }));
+  } else {
+    const checked = document.querySelector('input[name="f_jawaban_benar"]:checked');
+    if (!checked) throw new Error('Pilih jawaban benar untuk soal TWK/TIU.');
+    return huruf.map((h, i) => ({ huruf: h, teks: teksOpsi[i], benar: h === checked.value }));
+  }
+}
+
+async function saveSoal(e) {
+  e.preventDefault();
+  const btn = document.getElementById('saveSoalBtn');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+
+  try {
+    const id    = document.getElementById('editId').value;
+    const seksi = document.getElementById('f_seksi').value;
+
+    let gambarUrl = document.getElementById('existingGambar').value || null;
+    const gambarFile = document.getElementById('f_gambar').files[0];
+    if (gambarFile) {
+      btn.textContent = 'Upload gambar...';
+      gambarUrl = await uploadGambarSoal(gambarFile);
+    }
+
+    const opsi = buildOpsiFromForm(seksi);
+
+    const payload = {
+      tryout_id:   currentTryoutId,
+      seksi:       seksi,
+      nomor:       parseInt(document.getElementById('f_nomor').value) || (allSoal.length + 1),
+      teks:        document.getElementById('f_teks').value,
+      opsi:        opsi,
+      bobot_benar: 1,
+      gambar_url:  gambarUrl,
+      pembahasan:  document.getElementById('f_pembahasan').value || null,
+    };
+
+    btn.textContent = 'Menyimpan...';
+
+    const res = await fetch('/api/admin/soal', {
+      method: id ? 'PATCH' : 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-email': adminEmail },
+      body: JSON.stringify(id ? { id, ...payload } : payload)
+    });
+
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+
+    alert(id ? 'Soal berhasil diperbarui!' : 'Soal berhasil ditambahkan!');
+    closeSoalModal();
+    loadSoal();
+  } catch (err) {
+    alert('Gagal: ' + err.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Simpan Soal';
+  }
+}
+
+async function deleteSoal(id) {
+  if (!confirm('Yakin hapus soal ini?')) return;
+  try {
+    const res = await fetch('/api/admin/soal?id=' + id, { method: 'DELETE', headers: { 'x-admin-email': adminEmail } });
+    const json = await res.json();
+    if (!json.success) { alert('Gagal: ' + json.message); return; }
+    loadSoal();
+  } catch (e) { alert('Gagal menghapus soal.'); }
+}
+
+function openImportModal() {
+  if (!currentTryoutId) { alert('Pilih tryout terlebih dahulu.'); return; }
+  document.getElementById('jsonInput').value = '';
+  document.getElementById('importResultBox').style.display = 'none';
+  document.getElementById('importModalBg').classList.add('show');
+}
+function closeImportModal() { document.getElementById('importModalBg').classList.remove('show'); }
+document.getElementById('importModalBg').addEventListener('click', e => { if (e.target===e.currentTarget) closeImportModal(); });
+function toggleJsonHelp() {
+  const box = document.getElementById('jsonHelpBox');
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+}
+
+async function importJson() {
+  const btn = document.getElementById('importBtn');
+  const resultBox = document.getElementById('importResultBox');
+  const raw = document.getElementById('jsonInput').value.trim();
+  resultBox.style.display = 'none';
+  if (!raw) { alert('JSON masih kosong.'); return; }
+
+  let parsed;
+  try { parsed = JSON.parse(raw); } catch (e) { alert('JSON tidak valid: ' + e.message); return; }
+  if (!Array.isArray(parsed) || !parsed.length) { alert('JSON harus berupa array berisi minimal 1 soal.'); return; }
+
+  btn.disabled = true; btn.textContent = 'Mengimpor...';
+
+  try {
+    const res = await fetch('/api/admin/soal/import', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-email': adminEmail },
+      body: JSON.stringify({ tryout_id: currentTryoutId, soal: parsed })
+    });
+    const json = await res.json();
+
+    if (!json.success) {
+      resultBox.style.display = 'block'; resultBox.style.color = '#dc2626';
+      resultBox.textContent = 'Gagal: ' + json.message;
+      return;
+    }
+
+    resultBox.style.display = 'block'; resultBox.style.color = '#16a34a';
+    resultBox.textContent = '✅ Berhasil import ' + json.inserted + ' soal.' +
+      (json.errors && json.errors.length ? ' (' + json.errors.length + ' baris dilewati — cek console)' : '');
+    if (json.errors && json.errors.length) console.warn('Import errors:', json.errors);
+
+    loadSoal();
+  } catch (e) {
+    resultBox.style.display = 'block'; resultBox.style.color = '#dc2626';
+    resultBox.textContent = 'Gagal mengimpor: ' + e.message;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Import Sekarang';
+  }
+}
+
+function logout() { if(confirm('Yakin keluar?')) { localStorage.removeItem('user'); window.location.href='login.html'; } }
+
+loadTryoutOptions();
+</script>
+</body>
+</html>

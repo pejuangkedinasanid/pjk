@@ -1,7 +1,11 @@
 // FILE: app/api/kuota/pakai/route.ts
 // POST /api/kuota/pakai
 // Body: { email, tryout_id }
-// Kurangi 1 kuota_tryout milik user.
+//
+// PERBAIKAN: pakai kolom "plan" (bukan "status_akun"), dan
+// tambahkan flag "kuota_habis" di response gagal — supaya
+// tryout-tersedia.html bisa langsung deteksi & redirect ke
+// premium.html.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -24,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     const { data: userRow, error: errUser } = await supabase
       .from("users")
-      .select("kuota_tryout, status_akun")
+      .select("kuota_tryout, plan")
       .eq("email", email)
       .single();
 
@@ -35,14 +39,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (
-      userRow.status_akun !== "premium" ||
-      !userRow.kuota_tryout ||
-      userRow.kuota_tryout <= 0
-    ) {
+    if (userRow.plan !== "premium" || !userRow.kuota_tryout || userRow.kuota_tryout <= 0) {
       return NextResponse.json(
         {
           success: false,
+          kuota_habis: true,
           message: "Kuota tryout premium kamu sudah habis.",
           kuota: userRow.kuota_tryout || 0,
         },
@@ -71,7 +72,11 @@ export async function POST(req: NextRequest) {
       jumlah: -1,
     });
 
-    return NextResponse.json({ success: true, kuota: kuotaBaru });
+    return NextResponse.json({
+      success: true,
+      kuota: kuotaBaru,
+      plan: userRow.plan,
+    });
   } catch (err) {
     console.error("kuota/pakai error:", err);
     return NextResponse.json(

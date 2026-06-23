@@ -1,6 +1,9 @@
 // FILE: app/api/kuota/cek/route.ts
 // GET /api/kuota/cek?email=
-// Baca status_akun & sisa kuota_tryout milik user (read-only).
+//
+// PERBAIKAN: sebelumnya route ini salah pakai nama kolom
+// "status_akun" — skema tabel "users" yang sebenarnya pakai
+// kolom "plan" ('free' | 'premium'). Disesuaikan di sini.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -23,12 +26,11 @@ export async function GET(req: NextRequest) {
 
   const { data, error } = await supabase
     .from("users")
-    .select("status_akun, kuota_tryout")
+    .select("plan, kuota_tryout")
     .eq("email", email)
     .single();
 
   if (error || !data) {
-    console.error("kuota/cek error:", error);
     return NextResponse.json(
       { success: false, message: "User tidak ditemukan." },
       { status: 404 }
@@ -37,7 +39,7 @@ export async function GET(req: NextRequest) {
 
   return NextResponse.json({
     success: true,
-    status_akun: data.status_akun,
+    plan: data.plan || "free",
     kuota: data.kuota_tryout || 0,
   });
 }

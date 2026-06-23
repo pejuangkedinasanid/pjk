@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mengerjakan Tryout | Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+
+<style>
+:root{--navy:#0f172a;--navy2:#1e293b;--orange:#f97316;--orange2:#fb923c;--blue:#2563eb;--bg:#f5f7fb;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--shadow:0 20px 50px rgba(15,23,42,.08);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+html,body{height:100%;}
+body{background:var(--bg);display:flex;flex-direction:column;min-height:100vh;}
+
+/* ── TOPBAR ── */
+.topbar{background:linear-gradient(135deg,#0f172a,#1e293b);color:white;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;position:sticky;top:0;z-index:100;box-shadow:0 8px 20px rgba(15,23,42,.15);}
+.topbar-title{font-weight:800;font-size:15px;}
+.topbar-sub{font-size:11px;opacity:.65;}
+.timer{background:rgba(255,255,255,.1);padding:10px 18px;border-radius:14px;font-weight:800;font-size:18px;font-family:monospace;letter-spacing:1px;}
+.timer.warning{background:#dc2626;animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+
+/* ── LAYOUT ── */
+.exam-wrap{flex:1;display:flex;gap:18px;padding:18px;max-width:1400px;margin:0 auto;width:100%;}
+.exam-main{flex:1;min-width:0;}
+.exam-side{width:300px;flex-shrink:0;}
+
+@media(max-width:900px){
+  .exam-wrap{flex-direction:column;padding:12px;}
+  .exam-side{width:100%;order:2;}
+  .exam-main{order:1;}
+}
+
+/* ── SOAL CARD ── */
+.soal-card{background:white;border-radius:22px;padding:28px;box-shadow:var(--shadow);margin-bottom:16px;}
+.soal-meta{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.badge-seksi{padding:6px 14px;border-radius:999px;font-size:11px;font-weight:800;}
+.badge-twk{background:#dbeafe;color:#1d4ed8;}
+.badge-tiu{background:#dcfce7;color:#15803d;}
+.badge-tkp{background:#fff7ed;color:#c2410c;}
+.soal-nomor{font-size:13px;font-weight:700;color:var(--muted);}
+.btn-ragu{margin-left:auto;padding:7px 14px;border-radius:10px;border:1px solid var(--border);background:white;font-size:12px;font-weight:700;color:var(--muted);cursor:pointer;transition:.2s;}
+.btn-ragu.active{background:#fef9c3;border-color:#eab308;color:#854d0e;}
+
+.soal-teks{font-size:16px;line-height:1.8;color:var(--text);margin-bottom:18px;}
+.soal-gambar{max-width:100%;border-radius:14px;margin-bottom:18px;display:block;}
+
+.opsi-list{display:flex;flex-direction:column;gap:12px;}
+.opsi-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:16px;border:2px solid var(--border);border-radius:16px;
+  cursor:pointer;transition:.2s;
+}
+.opsi-item:hover{border-color:var(--orange);background:#fffaf5;}
+.opsi-item.selected{border-color:var(--orange);background:#fff7ed;}
+.opsi-huruf{
+  flex-shrink:0;width:32px;height:32px;border-radius:50%;
+  background:#f1f5f9;color:var(--navy);font-weight:800;font-size:14px;
+  display:flex;align-items:center;justify-content:center;transition:.2s;
+}
+.opsi-item.selected .opsi-huruf{background:var(--orange);color:white;}
+.opsi-teks{flex:1;font-size:14.5px;line-height:1.6;padding-top:4px;}
+
+.nav-buttons{display:flex;gap:10px;margin-top:18px;}
+.btn-nav{flex:1;padding:14px;border:none;border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;transition:.2s;font-family:inherit;}
+.btn-nav.prev{background:#f1f5f9;color:var(--navy);}
+.btn-nav.prev:hover{background:#e2e8f0;}
+.btn-nav.next{background:linear-gradient(135deg,#f97316,#fb923c);color:white;}
+.btn-nav.next:hover{opacity:.92;}
+.btn-nav:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ── SIDEBAR NAVIGASI SOAL ── */
+.side-card{background:white;border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px;}
+.side-title{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:14px;}
+.legend span{display:inline-flex;align-items:center;gap:5px;}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+.dot.gray{background:#e2e8f0;}
+.dot.orange{background:var(--orange);}
+.dot.yellow{background:#eab308;}
+
+.seksi-group{margin-bottom:14px;}
+.seksi-label{font-size:11px;font-weight:800;color:var(--muted);margin-bottom:8px;}
+.nomor-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.nomor-btn{
+  aspect-ratio:1;border-radius:8px;border:1px solid var(--border);
+  background:#f8fafc;color:var(--text);font-size:12px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;
+}
+.nomor-btn.answered{background:var(--orange);color:white;border-color:var(--orange);}
+.nomor-btn.ragu{border-color:#eab308;background:#fef9c3;color:#854d0e;}
+.nomor-btn.current{outline:2px solid var(--navy);outline-offset:2px;}
+
+.progress-bar-wrap{background:#f1f5f9;border-radius:999px;height:10px;overflow:hidden;margin-bottom:8px;}
+.progress-bar-fill{height:100%;background:linear-gradient(135deg,#f97316,#fb923c);border-radius:999px;transition:.3s;}
+.progress-text{font-size:12px;color:var(--muted);text-align:center;}
+
+.btn-selesai{width:100%;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,#dc2626,#ef4444);color:white;font-weight:800;font-size:14px;cursor:pointer;transition:.2s;}
+.btn-selesai:hover{opacity:.92;}
+
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:3000;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.show{display:flex;}
+.modal{background:white;border-radius:24px;padding:32px;width:100%;max-width:440px;box-shadow:0 25px 60px rgba(15,23,42,.3);text-align:center;}
+.modal-icon{font-size:48px;margin-bottom:12px;}
+.modal-title{font-size:19px;font-weight:800;color:var(--navy);margin-bottom:10px;}
+.modal-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+.modal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
+.modal-stat-box{background:#f8fafc;border-radius:12px;padding:12px;}
+.modal-stat-val{font-size:20px;font-weight:800;color:var(--navy);}
+.modal-stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;margin-top:4px;}
+.modal-actions{display:flex;flex-direction:column;gap:10px;}
+.modal-btn{padding:14px;border:none;border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;transition:.2s;font-family:inherit;}
+.modal-btn-primary{background:linear-gradient(135deg,#f97316,#fb923c);color:white;}
+.modal-btn-secondary{background:#f1f5f9;color:var(--navy);}
+
+/* ── HASIL AKHIR ── */
+.hasil-wrap{max-width:560px;margin:60px auto;padding:0 20px;text-align:center;}
+.hasil-card{background:white;border-radius:28px;padding:40px;box-shadow:var(--shadow);}
+.hasil-icon{font-size:60px;margin-bottom:16px;}
+.hasil-total{font-size:48px;font-weight:800;color:var(--orange);margin-bottom:6px;}
+.hasil-label{font-size:13px;color:var(--muted);margin-bottom:24px;}
+.hasil-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.hasil-box{background:#f8fafc;border-radius:14px;padding:16px;}
+.hasil-box-val{font-size:24px;font-weight:800;color:var(--navy);}
+.hasil-box-label{font-size:11px;color:var(--muted);margin-top:4px;}
+.hasil-actions{display:flex;flex-direction:column;gap:10px;}
+
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--muted);gap:14px;}
+.spinner{width:40px;height:40px;border-radius:50%;border:3px solid #e2e8f0;border-top-color:var(--orange);animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<!-- LOADING -->
+<div class="loading-wrap" id="loadingWrap">
+  <div class="spinner"></div>
+  <div>Memuat soal tryout...</div>
+</div>
+
+<!-- HALAMAN UJIAN (disembunyikan sampai data siap) -->
+<div id="examWrap" style="display:none;">
+
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="topbarTitle">Tryout</div>
+      <div class="topbar-sub" id="topbarSub">Mode: Gratis</div>
+    </div>
+    <div class="timer" id="timerDisplay">--:--:--</div>
+  </div>
+
+  <div class="exam-wrap">
+
+    <div class="exam-main">
+      <div class="soal-card" id="soalCard">
+        <!-- diisi JS -->
+      </div>
+    </div>
+
+    <div class="exam-side">
+
+      <div class="side-card">
+        <div class="side-title">Progres</div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill" style="width:0%;"></div></div>
+        <div class="progress-text" id="progressText">0 / 0 terjawab</div>
+      </div>
+
+      <div class="side-card">
+        <div class="side-title">Navigasi Soal</div>
+        <div class="legend">
+          <span><i class="dot gray"></i>Belum</span>
+          <span><i class="dot orange"></i>Terjawab</span>
+          <span><i class="dot yellow"></i>Ragu</span>
+        </div>
+        <div id="navigasiWrap"><!-- diisi JS per seksi --></div>
+      </div>
+
+      <button class="btn-selesai" onclick="bukaModalSelesai()">Selesai &amp; Kumpulkan</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- HALAMAN HASIL (setelah submit) -->
+<div class="hasil-wrap" id="hasilWrap" style="display:none;">
+  <div class="hasil-card">
+    <div class="hasil-icon">🎉</div>
+    <div class="hasil-total" id="hasilTotal">0</div>
+    <div class="hasil-label">Total Nilai</div>
+    <div class="hasil-grid">
+      <div class="hasil-box"><div class="hasil-box-val" id="hasilTwk">0</div><div class="hasil-box-label">TWK</div></div>
+      <div class="hasil-box"><div class="hasil-box-val" id="hasilTiu">0</div><div class="hasil-box-label">TIU</div></div>
+      <div class="hasil-box"><div class="hasil-box-val" id="hasilTkp">0</div><div class="hasil-box-label">TKP</div></div>
+    </div>
+    <div class="hasil-actions">
+      <a href="tryout-tersedia.html" class="modal-btn modal-btn-primary" style="text-decoration:none;display:block;">Kembali ke Tryout Tersedia</a>
+      <a href="dashboard.html" class="modal-btn modal-btn-secondary" style="text-decoration:none;display:block;">Ke Dashboard</a>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: KONFIRMASI SELESAI -->
+<div class="modal-bg" id="modalSelesai">
+  <div class="modal">
+    <div class="modal-icon">🏁</div>
+    <div class="modal-title">Kumpulkan Tryout?</div>
+    <div class="modal-desc">Pastikan semua soal sudah kamu kerjakan. Setelah dikumpulkan, jawaban tidak bisa diubah lagi.</div>
+    <div class="modal-stats">
+      <div class="modal-stat-box"><div class="modal-stat-val" id="stTerjawab">0</div><div class="modal-stat-label">Terjawab</div></div>
+      <div class="modal-stat-box"><div class="modal-stat-val" id="stKosong">0</div><div class="modal-stat-label">Kosong</div></div>
+      <div class="modal-stat-box"><div class="modal-stat-val" id="stRagu">0</div><div class="modal-stat-label">Ragu-ragu</div></div>
+    </div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-primary" onclick="submitTryout()" id="btnSubmitFinal">Ya, Kumpulkan Sekarang</button>
+      <button class="modal-btn modal-btn-secondary" onclick="closeModal('modalSelesai')">Kembali Mengerjakan</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================
+AUTH & PARAM
+========================= */
+const rawUser = localStorage.getItem("user");
+if (!rawUser) window.location.href = "login.html";
+const user = JSON.parse(rawUser);
+
+const params    = new URLSearchParams(window.location.search);
+const tryoutId  = params.get("id");
+const mode      = params.get("mode") || "gratis";
+
+if (!tryoutId) window.location.href = "tryout-tersedia.html";
+
+let soalList     = [];
+let currentIndex = 0;
+let jawabanMap   = {};   // {soal_id: huruf}
+let raguSet      = new Set();
+let tryoutInfo   = null;
+let waktuMulai   = Date.now();
+let sisaDetik    = 0;
+let timerInterval = null;
+let autosaveInterval = null;
+
+const SEKSI_ORDER = ["TWK","TIU","TKP"];
+
+/* =========================
+INIT
+========================= */
+async function init() {
+  try {
+    const [resTryout, resSoal] = await Promise.all([
+      fetch("/api/tryout/" + tryoutId),
+      fetch("/api/tryout/" + tryoutId + "/soal")
+    ]);
+
+    const jsonTryout = await resTryout.json();
+    const jsonSoal   = await resSoal.json();
+
+    if (!jsonTryout.success || !jsonSoal.success) {
+      alert("Gagal memuat data tryout.");
+      window.location.href = "tryout-tersedia.html";
+      return;
+    }
+
+    tryoutInfo = jsonTryout.data;
+    soalList   = sortSoal(jsonSoal.data || []);
+
+    if (!soalList.length) {
+      alert("Tryout ini belum memiliki soal.");
+      window.location.href = "tryout-tersedia.html";
+      return;
+    }
+
+    sisaDetik = (tryoutInfo.durasi || 100) * 60;
+
+    // Coba resume sesi sebelumnya (kalau ada, autosave)
+    await tryResumeSesi();
+
+    document.getElementById("topbarTitle").textContent = tryoutInfo.nama || "Tryout";
+    document.getElementById("topbarSub").textContent =
+      "Mode: " + (mode === "premium" ? "⭐ Premium" : "Gratis") + " • " + soalList.length + " soal";
+
+    document.getElementById("loadingWrap").style.display = "none";
+    document.getElementById("examWrap").style.display = "block";
+
+    renderNavigasi();
+    renderSoal();
+    startTimer();
+    startAutosave();
+
+  } catch (err) {
+    console.error(err);
+    alert("Terjadi kesalahan saat memuat tryout.");
+    window.location.href = "tryout-tersedia.html";
+  }
+}
+
+function sortSoal(rows) {
+  return [...rows].sort((a, b) => {
+    const ia = SEKSI_ORDER.indexOf(a.seksi), ib = SEKSI_ORDER.indexOf(b.seksi);
+    if (ia !== ib) return ia - ib;
+    return (a.nomor || 0) - (b.nomor || 0);
+  });
+}
+
+/* =========================
+RESUME SESI (autosave sebelumnya)
+========================= */
+async function tryResumeSesi() {
+  try {
+    const res = await fetch("/api/tryout/sesi?email=" + encodeURIComponent(user.email) + "&tryout_id=" + tryoutId);
+    const json = await res.json();
+    if (json.success && json.data) {
+      jawabanMap = json.data.jawaban_cache || {};
+      raguSet    = new Set(json.data.raguan_cache || []);
+      if (json.data.sisa_detik) sisaDetik = json.data.sisa_detik;
+    }
+  } catch (e) {
+    // tidak fatal kalau gagal resume, mulai dari awal
+    console.warn("Tidak ada sesi sebelumnya / gagal resume:", e);
+  }
+}
+
+/* =========================
+RENDER SOAL UTAMA
+========================= */
+function renderSoal() {
+  const soal = soalList[currentIndex];
+  const card = document.getElementById("soalCard");
+
+  const badgeClass = soal.seksi === "TWK" ? "badge-twk" : soal.seksi === "TIU" ? "badge-tiu" : "badge-tkp";
+  const isRagu = raguSet.has(soal.id);
+  const selected = jawabanMap[soal.id];
+
+  card.innerHTML =
+    '<div class="soal-meta">' +
+      '<span class="badge-seksi ' + badgeClass + '">' + soal.seksi + '</span>' +
+      '<span class="soal-nomor">Soal ' + (currentIndex + 1) + ' dari ' + soalList.length + '</span>' +
+      '<button class="btn-ragu' + (isRagu ? ' active' : '') + '" onclick="toggleRagu(' + soal.id + ')">' +
+        (isRagu ? '★ Ditandai Ragu' : '☆ Tandai Ragu-ragu') +
+      '</button>' +
+    '</div>' +
+    '<div class="soal-teks">' + (soal.teks || "") + '</div>' +
+    (soal.gambar_url ? '<img class="soal-gambar" src="' + soal.gambar_url + '" alt="Gambar soal">' : '') +
+    '<div class="opsi-list">' +
+      (soal.opsi || []).map(o =>
+        '<div class="opsi-item' + (selected === o.huruf ? ' selected' : '') + '" onclick="pilihJawaban(' + soal.id + ',\'' + o.huruf + '\')">' +
+          '<div class="opsi-huruf">' + o.huruf + '</div>' +
+          '<div class="opsi-teks">' + o.teks + '</div>' +
+        '</div>'
+      ).join('') +
+    '</div>' +
+    '<div class="nav-buttons">' +
+      '<button class="btn-nav prev" onclick="goPrev()" ' + (currentIndex === 0 ? 'disabled' : '') + '>← Sebelumnya</button>' +
+      '<button class="btn-nav next" onclick="goNext()" ' + (currentIndex === soalList.length - 1 ? 'disabled' : '') + '>Selanjutnya →</button>' +
+    '</div>';
+
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    window.MathJax.typesetPromise([card]).catch(() => {});
+  }
+
+  highlightNavigasi();
+}
+
+function pilihJawaban(soalId, huruf) {
+  jawabanMap[soalId] = huruf;
+  renderSoal();
+  renderNavigasi();
+  updateProgress();
+}
+
+function toggleRagu(soalId) {
+  if (raguSet.has(soalId)) raguSet.delete(soalId);
+  else raguSet.add(soalId);
+  renderSoal();
+  renderNavigasi();
+}
+
+function goPrev() { if (currentIndex > 0) { currentIndex--; renderSoal(); } }
+function goNext() { if (currentIndex < soalList.length - 1) { currentIndex++; renderSoal(); } }
+function gotoSoal(idx) { currentIndex = idx; renderSoal(); }
+
+/* =========================
+NAVIGASI SAMPING
+========================= */
+function renderNavigasi() {
+  const wrap = document.getElementById("navigasiWrap");
+  let html = "";
+
+  SEKSI_ORDER.forEach(seksi => {
+    const items = soalList
+      .map((s, idx) => ({ ...s, idx }))
+      .filter(s => s.seksi === seksi);
+
+    if (!items.length) return;
+
+    html += '<div class="seksi-group"><div class="seksi-label">' + seksi + '</div><div class="nomor-grid">' +
+      items.map(s => {
+        const answered = jawabanMap[s.id] !== undefined;
+        const isRagu = raguSet.has(s.id);
+        const isCurrent = s.idx === currentIndex;
+        let cls = "nomor-btn";
+        if (answered) cls += " answered";
+        if (isRagu) cls += " ragu";
+        if (isCurrent) cls += " current";
+        return '<button class="' + cls + '" onclick="gotoSoal(' + s.idx + ')">' + (s.idx + 1) + '</button>';
+      }).join('') +
+    '</div></div>';
+  });
+
+  wrap.innerHTML = html;
+  updateProgress();
+}
+
+function highlightNavigasi() {
+  document.querySelectorAll(".nomor-btn").forEach(btn => btn.classList.remove("current"));
+}
+
+function updateProgress() {
+  const total = soalList.length;
+  const terjawab = Object.keys(jawabanMap).length;
+  const pct = total ? Math.round((terjawab / total) * 100) : 0;
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressText").textContent = terjawab + " / " + total + " terjawab";
+}
+
+/* =========================
+TIMER
+========================= */
+function startTimer() {
+  timerInterval = setInterval(() => {
+    sisaDetik--;
+    if (sisaDetik <= 0) {
+      clearInterval(timerInterval);
+      sisaDetik = 0;
+      alert("Waktu habis! Tryout akan otomatis dikumpulkan.");
+      submitTryout();
+      return;
+    }
+    renderTimer();
+  }, 1000);
+  renderTimer();
+}
+
+function renderTimer() {
+  const h = Math.floor(sisaDetik / 3600);
+  const m = Math.floor((sisaDetik % 3600) / 60);
+  const s = sisaDetik % 60;
+  const el = document.getElementById("timerDisplay");
+  el.textContent =
+    String(h).padStart(2,'0') + ":" + String(m).padStart(2,'0') + ":" + String(s).padStart(2,'0');
+  el.classList.toggle("warning", sisaDetik <= 300); // 5 menit terakhir
+}
+
+/* =========================
+AUTOSAVE BERKALA (ke sesi_tryout)
+========================= */
+function startAutosave() {
+  autosaveInterval = setInterval(doAutosave, 15000); // tiap 15 detik
+}
+
+async function doAutosave() {
+  try {
+    await fetch("/api/tryout/autosave", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: user.email,
+        tryout_id: tryoutId,
+        mode: mode,
+        jawaban_cache: jawabanMap,
+        raguan_cache: Array.from(raguSet),
+        sisa_detik: sisaDetik
+      })
+    });
+  } catch (e) {
+    console.warn("Autosave gagal:", e);
+  }
+}
+
+/* =========================
+MODAL SELESAI & SUBMIT
+========================= */
+function bukaModalSelesai() {
+  const total = soalList.length;
+  const terjawab = Object.keys(jawabanMap).length;
+  document.getElementById("stTerjawab").textContent = terjawab;
+  document.getElementById("stKosong").textContent   = total - terjawab;
+  document.getElementById("stRagu").textContent     = raguSet.size;
+  document.getElementById("modalSelesai").classList.add("show");
+}
+function closeModal(id) { document.getElementById(id).classList.remove("show"); }
+
+async function submitTryout() {
+  clearInterval(timerInterval);
+  clearInterval(autosaveInterval);
+
+  const btn = document.getElementById("btnSubmitFinal");
+  if (btn) { btn.disabled = true; btn.textContent = "Mengirim..."; }
+
+  const durasiMenit = Math.round((Date.now() - waktuMulai) / 60000);
+
+  try {
+    const res = await fetch("/api/tryout/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: user.email,
+        tryout_id: tryoutId,
+        mode: mode,
+        durasi_menit: durasiMenit,
+        jawaban: jawabanMap
+      })
+    });
+    const json = await res.json();
+
+    if (!json.success) {
+      alert("Gagal mengirim jawaban: " + json.message);
+      if (btn) { btn.disabled = false; btn.textContent = "Ya, Kumpulkan Sekarang"; }
+      return;
+    }
+
+    closeModal("modalSelesai");
+    document.getElementById("examWrap").style.display = "none";
+
+    document.getElementById("hasilTotal").textContent = json.nilai;
+    document.getElementById("hasilTwk").textContent   = json.nilai_twk;
+    document.getElementById("hasilTiu").textContent   = json.nilai_tiu;
+    document.getElementById("hasilTkp").textContent   = json.nilai_tkp;
+    document.getElementById("hasilWrap").style.display = "block";
+
+  } catch (err) {
+    console.error(err);
+    alert("Terjadi kesalahan saat mengirim jawaban. Silakan coba lagi.");
+    if (btn) { btn.disabled = false; btn.textContent = "Ya, Kumpulkan Sekarang"; }
+  }
+}
+
+/* =========================
+CEGAH TUTUP TAB TANPA SENGAJA
+========================= */
+window.addEventListener("beforeunload", (e) => {
+  if (document.getElementById("examWrap").style.display !== "none") {
+    e.preventDefault();
+    e.returnValue = "";
+  }
+});
+
+init();
+</script>
+</body>
+</html>

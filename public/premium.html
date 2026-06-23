@@ -1213,364 +1213,199 @@ MODAL STATUS PEMBAYARAN
 
 </div>
 
+<!--
+  GANTI SELURUH BAGIAN <script src="config.js"> sampai </script> terakhir
+  di premium.html kamu dengan script di bawah ini.
+  
+  Yang difix:
+  1. loadStatusAkun() → pakai field 'plan' bukan 'status_akun'
+  2. pollStatus onSuccess → reload kuota dari DB setelah bayar
+  3. Sidebar toggle → pakai classList.contains agar konsisten
+-->
+
 <script src="config.js"></script>
-
+<!--
+  GANTI SELURUH BAGIAN <script src="config.js"> sampai </script> terakhir
+  di premium.html dengan script ini
+-->
+<script src="config.js"></script>
 <script>
-
-/* =========================
-AUTH GUARD
-========================= */
 
 const rawUser = localStorage.getItem("user");
 if (!rawUser) { window.location.href = "login.html"; }
 const user = JSON.parse(rawUser);
 
-/* =========================
-SIDEBAR TOGGLE (DESKTOP & MOBILE)
-========================= */
-
+/* ── SIDEBAR ── */
 const sidebar   = document.getElementById("sidebar");
 const hamburger = document.getElementById("hamburger");
 const overlay   = document.getElementById("overlay");
 const mainEl    = document.querySelector(".main");
 
-function openSidebar(){
-  sidebar.classList.remove("closed");
-  hamburger.innerHTML = "&#x2715;";
-  hamburger.classList.add("inside");
-
-  if (window.innerWidth <= 1000) {
-    overlay.classList.add("active");
-  } else {
-    overlay.classList.remove("active");
-  }
-  mainEl.classList.remove("full");
-}
-
-function closeSidebar(){
-  sidebar.classList.add("closed");
-  overlay.classList.remove("active");
-  mainEl.classList.add("full");
-  hamburger.innerHTML = "&#9776;";
-  hamburger.classList.remove("inside");
-}
-
-hamburger.addEventListener("click", () => {
-  const isOpen = !sidebar.classList.contains("closed");
-  isOpen ? closeSidebar() : openSidebar();
-});
-
+function openSidebar()  { sidebar.classList.remove("closed"); hamburger.innerHTML="&#x2715;"; hamburger.classList.add("inside"); window.innerWidth<=1000 ? overlay.classList.add("active") : overlay.classList.remove("active"); mainEl.classList.remove("full"); }
+function closeSidebar() { sidebar.classList.add("closed"); overlay.classList.remove("active"); mainEl.classList.add("full"); hamburger.innerHTML="&#9776;"; hamburger.classList.remove("inside"); }
+hamburger.addEventListener("click", () => sidebar.classList.contains("closed") ? openSidebar() : closeSidebar());
 overlay.addEventListener("click", closeSidebar);
+window.addEventListener("resize", () => window.innerWidth<=1000 ? closeSidebar() : openSidebar());
+window.innerWidth<=1000 ? closeSidebar() : openSidebar();
 
-function initSidebar(){
-  window.innerWidth <= 1000 ? closeSidebar() : openSidebar();
-}
-
-window.addEventListener("resize", initSidebar);
-initSidebar();
-
-/* =========================
-DAFTAR PAKET
-(harga FINAL tetap divalidasi ulang
-di server saat create-transaction,
-daftar ini hanya untuk tampilan)
-========================= */
-
+/* ── PAKET ── */
 const PAKET = [
-  { jumlah: 1,  harga: 10000 },
-  { jumlah: 2,  harga: 19600 },
-  { jumlah: 3,  harga: 28800 },
-  { jumlah: 4,  harga: 37200 },
-  { jumlah: 5,  harga: 45500 },
-  { jumlah: 6,  harga: 53400 },
-  { jumlah: 7,  harga: 60900 },
-  { jumlah: 8,  harga: 67200 },
-  { jumlah: 9,  harga: 73800 },
-  { jumlah: 10, harga: 80000 }
+  { jumlah:1,  harga:10000 }, { jumlah:2,  harga:19600 },
+  { jumlah:3,  harga:28800 }, { jumlah:4,  harga:37200 },
+  { jumlah:5,  harga:45500 }, { jumlah:6,  harga:53400 },
+  { jumlah:7,  harga:60900 }, { jumlah:8,  harga:67200 },
+  { jumlah:9,  harga:73800 }, { jumlah:10, harga:80000 }
 ];
 
-const BEST_VALUE_JUMLAH = 10; // per-unit termurah (Rp8.000/tryout)
-const POPULER_JUMLAH    = 5;
-
-function formatRupiah(n){
-  return "Rp" + n.toLocaleString("id-ID");
-}
+function formatRupiah(n){ return "Rp" + n.toLocaleString("id-ID"); }
 
 function renderPricing(){
-
   const grid = document.getElementById("pricingGrid");
-
   grid.innerHTML = PAKET.map(p => {
-
     const perUnit = Math.round(p.harga / p.jumlah);
-    const isBest  = p.jumlah === BEST_VALUE_JUMLAH;
-    const isPop   = p.jumlah === POPULER_JUMLAH;
-
+    const isBest  = p.jumlah === 10;
+    const isPop   = p.jumlah === 5;
     let badge = "";
     if (isBest) badge = '<div class="price-badge">Paling Hemat</div>';
     else if (isPop) badge = '<div class="price-badge">Populer</div>';
-
-    return (
-      '<div class="price-card' + (isBest ? ' best' : '') + '">' +
-        badge +
-        '<div class="price-jumlah"><b>' + p.jumlah + 'x</b> Tryout Premium</div>' +
-        '<div class="price-value">' + formatRupiah(p.harga) + '</div>' +
-        '<div class="price-per-unit">≈ ' + formatRupiah(perUnit) + ' / tryout</div>' +
-        '<button class="price-btn" onclick="beliPaket(' + p.jumlah + ',' + p.harga + ')">Beli Sekarang</button>' +
-      '</div>'
-    );
-
+    return '<div class="price-card' + (isBest ? ' best' : '') + '">' +
+      badge +
+      '<div class="price-jumlah"><b>' + p.jumlah + 'x</b> Tryout Premium</div>' +
+      '<div class="price-value">' + formatRupiah(p.harga) + '</div>' +
+      '<div class="price-per-unit">≈ ' + formatRupiah(perUnit) + ' / tryout</div>' +
+      '<button class="price-btn" onclick="beliPaket(' + p.jumlah + ',' + p.harga + ')">Beli Sekarang</button>' +
+    '</div>';
   }).join("");
-
 }
-
 renderPricing();
 
-/* =========================
-STATUS AKUN & KUOTA SAAT INI
-GET /api/kuota/cek?email=
-========================= */
-
-async function loadStatusAkun(){
-
+/* ── STATUS AKUN — selalu dari DB ──
+   Logika:
+   - kuota > 0  → Premium (kuota aktif)
+   - kuota = 0  → Reguler (perlu beli kuota)
+── */
+async function loadStatusAkun() {
   try {
-
     const res  = await fetch("/api/kuota/cek?email=" + encodeURIComponent(user.email));
     const json = await res.json();
+    if (!json.success) return;
 
-    if (!json.success) {
-      document.getElementById("statusAkunValue").textContent = "—";
-      document.getElementById("statusKuotaValue").textContent = "—";
-      return;
-    }
+    const kuota     = json.kuota ?? 0;
+    // Premium hanya jika plan=premium DAN kuota masih ada
+    const isPremium = json.plan === "premium" && kuota > 0;
 
     document.getElementById("statusAkunValue").textContent =
-      json.status_akun === "premium" ? "Premium ⭐" : "Gratis";
+      isPremium ? "Premium ⭐" : "Reguler";
 
     document.getElementById("statusKuotaValue").textContent =
-      (json.kuota || 0) + " Tryout";
+      kuota + " Tryout";
 
-    // sinkronkan ke localStorage juga
-    user.status_akun  = json.status_akun;
-    user.kuota_tryout = json.kuota;
+    // Sync localStorage
+    user.plan         = json.plan;
+    user.kuota_tryout = kuota;
     localStorage.setItem("user", JSON.stringify(user));
 
   } catch (err) {
-    console.error(err);
+    console.error("loadStatusAkun error:", err);
   }
-
 }
-
 loadStatusAkun();
 
-/* =========================
-MIDTRANS SNAP — load script
-dinamis pakai client key dari
-config.js (MIDTRANS_CLIENT_KEY)
-dan MIDTRANS_SNAP_URL (sandbox/
-production), supaya tidak hardcode
-key di HTML.
-========================= */
-
+/* ── MIDTRANS ── */
 let snapReady = false;
-
-function loadMidtransSnap(){
-
+function loadMidtransSnap() {
   return new Promise((resolve, reject) => {
-
-    if (snapReady && window.snap) {
-      resolve();
-      return;
-    }
-
+    if (snapReady && window.snap) { resolve(); return; }
     const script = document.createElement("script");
-
-    script.src =
-      (typeof MIDTRANS_SNAP_URL !== "undefined" && MIDTRANS_SNAP_URL) ||
-      "https://app.sandbox.midtrans.com/snap/snap.js"; // ganti ke app.midtrans.com saat production
-
-    script.setAttribute(
-      "data-client-key",
-      (typeof MIDTRANS_CLIENT_KEY !== "undefined" && MIDTRANS_CLIENT_KEY) || ""
-    );
-
+    script.src = (typeof MIDTRANS_SNAP_URL !== "undefined" && MIDTRANS_SNAP_URL) ||
+      "https://app.sandbox.midtrans.com/snap/snap.js";
+    script.setAttribute("data-client-key",
+      (typeof MIDTRANS_CLIENT_KEY !== "undefined" && MIDTRANS_CLIENT_KEY) || "");
     script.onload = () => { snapReady = true; resolve(); };
     script.onerror = reject;
-
     document.body.appendChild(script);
-
   });
-
 }
 
-/* =========================
-BELI PAKET
-1. Minta token Snap ke server (server yang
-   validasi ulang harga, jangan percaya
-   harga dari client)
-2. Buka popup Midtrans Snap
-========================= */
-
-async function beliPaket(jumlah, hargaTampil){
-
+/* ── BELI PAKET ── */
+async function beliPaket(jumlah, hargaTampil) {
   const btn = event.target;
   btn.disabled = true;
-  const originalLabel = btn.textContent;
+  const orig = btn.textContent;
   btn.textContent = "Memproses...";
-
   try {
-
     await loadMidtransSnap();
-
     const res = await fetch("/api/payment/create-transaction", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email: user.email,
-        paket_jumlah: jumlah
-      })
+      body: JSON.stringify({ email: user.email, paket_jumlah: jumlah })
     });
-
     const json = await res.json();
-
-    if (!json.success) {
-      alert(json.message || "Gagal membuat transaksi. Silakan coba lagi.");
-      btn.disabled = false;
-      btn.textContent = originalLabel;
-      return;
-    }
-
-    btn.disabled = false;
-    btn.textContent = originalLabel;
+    if (!json.success) { alert(json.message || "Gagal membuat transaksi."); btn.disabled=false; btn.textContent=orig; return; }
+    btn.disabled = false; btn.textContent = orig;
 
     window.snap.pay(json.token, {
-
-      onSuccess: function(result){
-        showPayModal("loading", "Memproses Pembayaran...", "Pembayaran kamu sedang diverifikasi. Mohon tunggu sebentar...");
+      onSuccess: function() {
+        showPayModal("loading", "Memverifikasi...", "Pembayaran sedang diproses...");
         pollStatus(json.order_id);
       },
-
-      onPending: function(result){
-        showPayModal(
-          "loading",
-          "Menunggu Pembayaran",
-          "Selesaikan pembayaran sesuai instruksi yang muncul. Kuota akan otomatis bertambah begitu pembayaran kamu terkonfirmasi."
-        );
+      onPending: function() {
+        showPayModal("loading", "Menunggu Pembayaran",
+          "Selesaikan pembayaran. Status & kuota otomatis update setelah terkonfirmasi.");
         pollStatus(json.order_id);
       },
-
-      onError: function(result){
-        showPayModal("error", "Pembayaran Gagal", "Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.");
-      },
-
-      onClose: function(){
-        // user menutup popup tanpa menyelesaikan pembayaran — tidak apa-apa, tidak perlu alert
-      }
-
+      onError:   function() { showPayModal("error","Pembayaran Gagal","Silakan coba lagi."); },
+      onClose:   function() {}
     });
-
-  } catch (err) {
+  } catch(err) {
     console.error(err);
-    alert("Gagal memulai pembayaran. Silakan coba lagi.");
-    btn.disabled = false;
-    btn.textContent = originalLabel;
+    alert("Gagal memulai pembayaran.");
+    btn.disabled = false; btn.textContent = orig;
   }
-
 }
 
-/* =========================
-POLL STATUS TRANSAKSI
-GET /api/payment/status?order_id=
-Dipanggil berulang sampai status
-final ('success'/'failed') atau
-mencapai batas percobaan.
-========================= */
-
-function pollStatus(orderId, attempt){
-
+/* ── POLL STATUS — reload kuota & status dari DB setelah bayar ── */
+function pollStatus(orderId, attempt) {
   attempt = attempt || 0;
-
   if (attempt >= 15) {
-    showPayModal(
-      "loading",
-      "Masih Diproses",
-      "Pembayaran masih diverifikasi sistem. Kamu bisa menutup jendela ini — kuota akan otomatis bertambah begitu selesai diverifikasi."
-    );
+    showPayModal("loading","Masih Diproses","Kuota akan otomatis bertambah setelah verifikasi.");
     return;
   }
-
   fetch("/api/payment/status?order_id=" + encodeURIComponent(orderId))
-    .then(res => res.json())
-    .then(json => {
-
+    .then(r => r.json())
+    .then(async json => {
       if (json.success && json.status === "success") {
-
-        loadStatusAkun();
-
-        showPayModal(
-          "success",
-          "Pembayaran Berhasil! 🎉",
-          "Kuota tryout premium kamu sudah ditambahkan. Status akun kamu sekarang Premium."
-        );
-
+        // Reload dari DB dulu, BARU tampilkan modal sukses
+        await loadStatusAkun();
+        showPayModal("success","Pembayaran Berhasil! 🎉",
+          "Kuota dan status akun kamu sudah diperbarui. Kamu sekarang bisa mengakses tryout premium.");
         return;
       }
-
-      if (json.success && (json.status === "failed" || json.status === "cancel" || json.status === "expire")) {
-        showPayModal("error", "Pembayaran Tidak Berhasil", "Transaksi dibatalkan/gagal. Silakan coba beli paket lagi.");
+      if (json.success && ["failed","cancel","expire"].includes(json.status)) {
+        showPayModal("error","Pembayaran Tidak Berhasil","Silakan coba beli paket lagi.");
         return;
       }
-
-      // masih pending — coba lagi
       setTimeout(() => pollStatus(orderId, attempt + 1), 3000);
-
     })
-    .catch(() => {
-      setTimeout(() => pollStatus(orderId, attempt + 1), 3000);
-    });
-
+    .catch(() => setTimeout(() => pollStatus(orderId, attempt + 1), 3000));
 }
 
-/* =========================
-MODAL STATUS PEMBAYARAN (UI)
-========================= */
-
-function showPayModal(type, title, desc){
-
-  const iconMap = {
-    loading: '<div class="spinner"></div>',
-    success: "✅",
-    error: "❌"
-  };
-
-  const content = document.getElementById("payModalContent");
-
-  content.innerHTML =
-    '<div class="modal-icon ' + type + '">' + iconMap[type] + '</div>' +
+/* ── MODAL ── */
+function showPayModal(type, title, desc) {
+  const icons = { loading:'<div class="spinner"></div>', success:"✅", error:"❌" };
+  document.getElementById("payModalContent").innerHTML =
+    '<div class="modal-icon ' + type + '">' + icons[type] + '</div>' +
     '<div class="modal-title">' + title + '</div>' +
     '<div class="modal-desc">' + desc + '</div>' +
-    (type !== "loading"
-      ? '<button class="modal-btn" onclick="closePayModal()">Tutup</button>'
-      : ''
-    );
-
+    (type !== "loading" ? '<button class="modal-btn" onclick="closePayModal()">Tutup</button>' : "");
   document.getElementById("payModalBg").classList.add("show");
-
 }
-
-function closePayModal(){
-  document.getElementById("payModalBg").classList.remove("show");
-}
-
+function closePayModal() { document.getElementById("payModalBg").classList.remove("show"); }
 document.getElementById("payModalBg").addEventListener("click", e => {
   if (e.target === e.currentTarget) closePayModal();
 });
 
-/* =========================
-LOGOUT
-========================= */
-
-function logout(){
+function logout() {
   if (confirm("Yakin ingin keluar?")) {
     localStorage.removeItem("user");
     window.location.href = "login.html";
