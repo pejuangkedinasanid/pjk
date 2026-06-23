@@ -10,136 +10,220 @@
 :root{--primary:#14274e;--secondary:#1f3f7a;--text:#334155;--border:#e2e8f0;}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
 body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding:30px;display:flex;justify-content:center;align-items:center;}
-.register-wrapper{width:100%;max-width:1300px;background:white;border-radius:35px;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;box-shadow:0 25px 60px rgba(0,0,0,.18);}
-.left-side{background:linear-gradient(135deg,#14274e,#1f3f7a);padding:70px;color:white;display:flex;flex-direction:column;justify-content:center;}
-.badge{display:inline-block;padding:10px 18px;background:rgba(255,255,255,.15);border-radius:999px;font-size:13px;font-weight:700;margin-bottom:25px;width:max-content;}
-.left-title{font-size:52px;font-weight:800;line-height:1.1;margin-bottom:20px;}
-.left-desc{font-size:18px;line-height:1.8;opacity:.9;margin-bottom:40px;}
-.feature{margin-bottom:15px;font-size:15px;}
-.right-side{padding:60px;overflow-y:auto;max-height:100vh;}
-.logo{text-align:center;margin-bottom:25px;}
-.logo img{height:75px;margin-bottom:12px;}
-.logo-title{font-size:30px;font-weight:800;color:#14274e;}
-.logo-sub{font-size:13px;color:#64748b;}
-.form-title{text-align:center;font-size:32px;font-weight:800;color:#14274e;margin-top:25px;margin-bottom:10px;}
-.form-subtitle{text-align:center;color:#64748b;margin-bottom:35px;}
-.form-group{margin-bottom:18px;}
-.form-group label{display:block;font-weight:700;margin-bottom:8px;color:#14274e;}
-.form-group input,.form-group select{width:100%;padding:15px;border:1px solid var(--border);border-radius:14px;font-size:14px;outline:none;}
-.form-group input:focus,.form-group select:focus{border-color:#14274e;box-shadow:0 0 0 4px rgba(20,39,78,.08);}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:15px;}
-.btn-register{width:100%;padding:16px;border:none;border-radius:14px;background:#14274e;color:white;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px;transition:.3s;}
+.register-wrapper{width:100%;max-width:780px;background:white;border-radius:35px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.18);}
+.right-side{padding:50px 60px;overflow-y:auto;max-height:100vh;}
+.logo-title{font-size:20px;font-weight:800;color:#14274e;text-align:center;margin-bottom:2px;}
+.logo-sub{font-size:12px;color:#64748b;text-align:center;margin-bottom:20px;}
+.form-title{text-align:center;font-size:26px;font-weight:800;color:#14274e;margin-bottom:6px;}
+.form-subtitle{text-align:center;color:#64748b;font-size:13px;margin-bottom:28px;}
+.form-group{margin-bottom:15px;}
+.form-group label{display:block;font-weight:700;margin-bottom:6px;color:#14274e;font-size:13px;}
+.form-group input,.form-group select{width:100%;padding:13px 15px;border:1px solid var(--border);border-radius:12px;font-size:13px;outline:none;transition:.2s;}
+.form-group input:focus,.form-group select:focus{border-color:#14274e;box-shadow:0 0 0 3px rgba(20,39,78,.08);}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+.btn-register{width:100%;padding:14px;border:none;border-radius:12px;background:#14274e;color:white;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;transition:.3s;}
 .btn-register:disabled{opacity:.6;cursor:not-allowed;}
-.error{display:none;color:#dc2626;font-size:13px;margin-top:8px;}
-@media(max-width:992px){.register-wrapper{grid-template-columns:1fr;max-width:700px;}.left-side{display:none;}.right-side{padding:40px;}}
-@media(max-width:768px){body{padding:15px;}.right-side{padding:25px;}.logo img{height:60px;}.logo-title{font-size:24px;}.form-title{font-size:26px;}.row{grid-template-columns:1fr;}.btn-register{padding:14px;}}
+.btn-register:hover:not(:disabled){background:#1f3f7a;}
+.error{display:none;color:#dc2626;font-size:12px;margin-top:5px;}
+.divider{border:none;border-top:1px solid #f1f5f9;margin:18px 0;}
+@media(max-width:768px){body{padding:15px;}.right-side{padding:30px 20px;}.row{grid-template-columns:1fr;}.row3{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 <div class="register-wrapper">
-
-  <div class="left-side">
-    <div class="badge">#1 Platform Tryout Kedinasan Indonesia</div>
-    <h1 class="left-title">Mulai Perjalananmu Menuju Sekolah Kedinasan</h1>
-    <p class="left-desc">Bergabung dengan ribuan pejuang kedinasan dari seluruh Indonesia dan tingkatkan peluang lolos melalui tryout, ranking nasional, dan analisis kemampuan.</p>
-    <div class="feature">🏆 Ranking Nasional Real-Time</div>
-    <div class="feature">📚 Ribuan Soal HOTS Terbaru</div>
-    <div class="feature">📊 Analisis Kemampuan Mendalam</div>
-    <div class="feature">🎥 Video Pembahasan Premium</div>
-    <div class="feature">🎯 Simulasi CAT Kedinasan</div>
-  </div>
-
   <div class="right-side">
-    <div class="logo">
-      <img src="assets/logo.png" alt="Pejuang Kedinasan">
-      <div class="logo-title">PEJUANG KEDINASAN</div>
-      <div class="logo-sub">Platform Tryout Kedinasan No.1 Indonesia</div>
-    </div>
+    <div class="logo-title">PEJUANG KEDINASAN</div>
+    <div class="logo-sub">Platform Tryout Kedinasan No.1 Indonesia</div>
 
     <div class="form-title">Buat Akun Baru</div>
-    <div class="form-subtitle">Lengkapi data berikut untuk memulai belajar</div>
+    <div class="form-subtitle">Lengkapi data di bawah ini untuk mulai belajar</div>
 
     <form id="registerForm">
+
+      <!-- Data Diri -->
       <div class="form-group">
-        <label>Nama Lengkap</label>
-        <input type="text" id="nama" placeholder="Masukkan nama lengkap" required>
+        <label>Nama Lengkap *</label>
+        <input type="text" id="nama" placeholder="Masukkan nama lengkap sesuai KTP" required>
       </div>
+
       <div class="row">
         <div class="form-group">
-          <label>Username</label>
-          <input type="text" id="username" placeholder="Username" required>
+          <label>Username *</label>
+          <input type="text" id="username" placeholder="contoh: pejuang123" required>
         </div>
         <div class="form-group">
-          <label>No WhatsApp</label>
-          <input type="text" id="whatsapp" placeholder="0812xxxxxxx" required>
+          <label>No WhatsApp *</label>
+          <input type="text" id="whatsapp" placeholder="08xxxxxxxxxx" required>
         </div>
       </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" id="email" placeholder="Masukkan email aktif" required>
-      </div>
+
       <div class="row">
         <div class="form-group">
-          <label>Provinsi</label>
-          <select id="provinsi">
+          <label>Email Aktif *</label>
+          <input type="email" id="email" placeholder="email@domain.com" required>
+        </div>
+        <div class="form-group">
+          <label>Instagram *</label>
+          <input type="text" id="instagram" placeholder="@username_instagram" required>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- Lokasi & Target -->
+      <div class="row">
+        <div class="form-group">
+          <label>Provinsi *</label>
+          <select id="provinsi" required>
             <option value="">Pilih Provinsi</option>
-            <option>Aceh</option><option>Sumatera Utara</option><option>Sumatera Barat</option>
-            <option>Riau</option><option>Jambi</option><option>Sumatera Selatan</option>
-            <option>Bengkulu</option><option>Lampung</option><option>Banten</option>
-            <option>DKI Jakarta</option><option>Jawa Barat</option><option>Jawa Tengah</option>
-            <option>DI Yogyakarta</option><option>Jawa Timur</option><option>Bali</option>
-            <option>NTB</option><option>NTT</option><option>Kalimantan Barat</option>
-            <option>Kalimantan Tengah</option><option>Kalimantan Selatan</option>
-            <option>Kalimantan Timur</option><option>Sulawesi Selatan</option>
-            <option>Sulawesi Tengah</option><option>Sulawesi Tenggara</option>
+            <option>Aceh</option>
+            <option>Sumatera Utara</option>
+            <option>Sumatera Barat</option>
+            <option>Riau</option>
+            <option>Kepulauan Riau</option>
+            <option>Jambi</option>
+            <option>Sumatera Selatan</option>
+            <option>Kepulauan Bangka Belitung</option>
+            <option>Bengkulu</option>
+            <option>Lampung</option>
+            <option>Banten</option>
+            <option>DKI Jakarta</option>
+            <option>Jawa Barat</option>
+            <option>Jawa Tengah</option>
+            <option>DI Yogyakarta</option>
+            <option>Jawa Timur</option>
+            <option>Bali</option>
+            <option>Nusa Tenggara Barat</option>
+            <option>Nusa Tenggara Timur</option>
+            <option>Kalimantan Barat</option>
+            <option>Kalimantan Tengah</option>
+            <option>Kalimantan Selatan</option>
+            <option>Kalimantan Timur</option>
+            <option>Kalimantan Utara</option>
+            <option>Sulawesi Utara</option>
+            <option>Gorontalo</option>
+            <option>Sulawesi Tengah</option>
+            <option>Sulawesi Barat</option>
+            <option>Sulawesi Selatan</option>
+            <option>Sulawesi Tenggara</option>
+            <option>Maluku</option>
+            <option>Maluku Utara</option>
+            <option>Papua Barat</option>
+            <option>Papua Barat Daya</option>
+            <option>Papua</option>
+            <option>Papua Selatan</option>
+            <option>Papua Tengah</option>
+            <option>Papua Pegunungan</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Tahun Seleksi</label>
+          <label>Tahun Seleksi *</label>
           <select id="tahun_seleksi">
-            <option>2026</option><option>2027</option><option>2028</option>
+            <option>2026</option>
+            <option>2027</option>
+            <option>2028</option>
           </select>
         </div>
       </div>
+
       <div class="form-group">
-        <label>Sekolah Kedinasan Impian</label>
-        <select id="sekolah_kedinasan">
+        <label>Sekolah Kedinasan Impian *</label>
+        <select id="sekolah_kedinasan" required>
           <option value="">Pilih Sekolah Kedinasan</option>
-          <option value="PKN STAN">PKN STAN</option>
-          <option value="IPDN">IPDN</option>
-          <option value="STIN">STIN</option>
-          <option value="Poltek SSN">Poltek SSN</option>
-          <option value="STMKG">STMKG</option>
-          <option value="Poltekim">Poltekim</option>
-          <option value="Poltekip">Poltekip</option>
-          <option value="STTD">STTD</option>
-          <option value="Politeknik Statistika STIS">Politeknik Statistika STIS</option>
-          <option value="Sekolah Tinggi Meteorologi">Sekolah Tinggi Meteorologi</option>
+          <optgroup label="— Kementerian Keuangan —">
+            <option value="PKN STAN">PKN STAN (Politeknik Keuangan Negara STAN)</option>
+          </optgroup>
+          <optgroup label="— Kementerian Dalam Negeri —">
+            <option value="IPDN">IPDN (Institut Pemerintahan Dalam Negeri)</option>
+          </optgroup>
+          <optgroup label="— Badan Intelijen Negara —">
+            <option value="STIN">STIN (Sekolah Tinggi Intelijen Negara)</option>
+          </optgroup>
+          <optgroup label="— BSSN —">
+            <option value="Poltek SSN">Politeknik Siber dan Sandi Negara (Poltek SSN)</option>
+          </optgroup>
+          <optgroup label="— BMKG —">
+            <option value="STMKG">STMKG (Sekolah Tinggi Meteorologi Klimatologi dan Geofisika)</option>
+          </optgroup>
+          <optgroup label="— Kementerian Hukum —">
+            <option value="Poltekim">Poltekim (Politeknik Imigrasi)</option>
+            <option value="Poltekip">Poltekip (Politeknik Ilmu Pemasyarakatan)</option>
+          </optgroup>
+          <optgroup label="— Kementerian Perhubungan —">
+            <option value="STTD">STTD (Sekolah Tinggi Transportasi Darat)</option>
+            <option value="STIP">STIP (Sekolah Tinggi Ilmu Pelayaran)</option>
+            <option value="PKTJ">PKTJ (Politeknik Keselamatan Transportasi Jalan)</option>
+            <option value="PIP Semarang">PIP Semarang (Politeknik Ilmu Pelayaran Semarang)</option>
+            <option value="PIP Makassar">PIP Makassar (Politeknik Ilmu Pelayaran Makassar)</option>
+            <option value="Poltekpel Surabaya">Poltekpel Surabaya</option>
+            <option value="Poltekpel Barombong">Poltekpel Barombong</option>
+            <option value="Poltekpel Banten">Poltekpel Banten</option>
+            <option value="Poltekpel Sorong">Poltekpel Sorong</option>
+            <option value="Politeknik Penerbangan Indonesia Curug">Politeknik Penerbangan Indonesia Curug</option>
+            <option value="Politeknik Penerbangan Makassar">Politeknik Penerbangan Makassar</option>
+            <option value="Politeknik Penerbangan Jayapura">Politeknik Penerbangan Jayapura</option>
+            <option value="Politeknik Penerbangan Surabaya">Politeknik Penerbangan Surabaya</option>
+            <option value="Politeknik Penerbangan Medan">Politeknik Penerbangan Medan</option>
+            <option value="Politeknik Perkeretaapian Indonesia Madiun">Politeknik Perkeretaapian Indonesia Madiun</option>
+          </optgroup>
+          <optgroup label="— BPS —">
+            <option value="Politeknik Statistika STIS">Politeknik Statistika STIS</option>
+          </optgroup>
+          <optgroup label="— Kementerian ATR/BPN —">
+            <option value="STPN">STPN (Sekolah Tinggi Pertanahan Nasional)</option>
+          </optgroup>
+          <optgroup label="— TNI —">
+            <option value="AKMIL">AKMIL (Akademi Militer)</option>
+            <option value="AAL">AAL (Akademi Angkatan Laut)</option>
+            <option value="AAU">AAU (Akademi Angkatan Udara)</option>
+            <option value="AKABRI">Sekolah Calon Perwira TNI</option>
+          </optgroup>
+          <optgroup label="— POLRI —">
+            <option value="AKPOL">AKPOL (Akademi Kepolisian)</option>
+            <option value="SIPSS">SIPSS (Sekolah Inspektur Polisi Sumber Sarjana)</option>
+            <option value="BINTARA POLRI">Bintara Polri</option>
+          </optgroup>
+          <optgroup label="— Lainnya —">
+            <option value="STIN Lainnya">Sekolah Kedinasan Lainnya</option>
+          </optgroup>
         </select>
       </div>
+
       <div class="form-group">
-        <label>Dari Mana Mengetahui Pejuang Kedinasan?</label>
-        <select id="source">
+        <label>Dari Mana Mengetahui Pejuang Kedinasan? *</label>
+        <select id="source" required>
           <option value="">Pilih Salah Satu</option>
-          <option>TikTok</option><option>Instagram</option><option>YouTube</option>
-          <option>Google</option><option>Teman</option><option>Telegram</option>
+          <option>TikTok</option>
+          <option>Instagram</option>
+          <option>YouTube</option>
+          <option>Google</option>
+          <option>Teman</option>
+          <option>Telegram</option>
+          <option>Twitter / X</option>
+          <option>Lainnya</option>
         </select>
       </div>
+
+      <hr class="divider">
+
+      <!-- Password -->
       <div class="row">
         <div class="form-group">
-          <label>Password</label>
+          <label>Password *</label>
           <input type="password" id="password" placeholder="Minimal 8 karakter" required>
         </div>
         <div class="form-group">
-          <label>Konfirmasi Password</label>
+          <label>Konfirmasi Password *</label>
           <input type="password" id="confirmPassword" placeholder="Ulangi Password" required>
           <div id="passwordError" class="error">Password tidak sama</div>
         </div>
       </div>
+
       <button type="submit" id="registerBtn" class="btn-register">Daftar Akun</button>
     </form>
 
-    <div style="text-align:center;margin-top:20px;">
+    <div style="text-align:center;margin-top:18px;font-size:13px;color:#64748b;">
       Sudah punya akun?
       <a href="login.html" style="color:#14274e;font-weight:700;text-decoration:none;">Masuk Sekarang</a>
     </div>
@@ -151,7 +235,6 @@ body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding
 <script>
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Validasi password
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirmPassword");
 const passwordError = document.getElementById("passwordError");
@@ -167,7 +250,6 @@ function validatePassword() {
 password.addEventListener("input", validatePassword);
 confirmPassword.addEventListener("input", validatePassword);
 
-// Submit register
 document.getElementById("registerForm").addEventListener("submit", async function(e) {
   e.preventDefault();
   if (!validatePassword()) return;
@@ -179,7 +261,6 @@ document.getElementById("registerForm").addEventListener("submit", async functio
   const email = document.getElementById("email").value.trim().toLowerCase();
 
   try {
-    // 1. Cek apakah email sudah ada
     const { data: existing } = await supabaseClient
       .from("users")
       .select("id")
@@ -193,13 +274,13 @@ document.getElementById("registerForm").addEventListener("submit", async functio
       return;
     }
 
-    // 2. Simpan user ke Supabase (is_verified: false dulu)
     const { error: insertError } = await supabaseClient.from("users").insert([{
       nama: document.getElementById("nama").value,
       username: document.getElementById("username").value,
       email: email,
       password: document.getElementById("password").value,
       whatsapp: document.getElementById("whatsapp").value,
+      instagram: document.getElementById("instagram").value,
       provinsi: document.getElementById("provinsi").value,
       tahun_seleksi: document.getElementById("tahun_seleksi").value,
       sekolah_kedinasan: document.getElementById("sekolah_kedinasan").value,
@@ -216,7 +297,6 @@ document.getElementById("registerForm").addEventListener("submit", async functio
       return;
     }
 
-    // 3. Minta API kirim OTP ke email
     btn.innerHTML = "Mengirim OTP...";
     const res = await fetch("/api/otp/send", {
       method: "POST",
@@ -232,7 +312,6 @@ document.getElementById("registerForm").addEventListener("submit", async functio
       return;
     }
 
-    // 4. Redirect ke halaman OTP
     window.location.href = "otp.html?email=" + encodeURIComponent(email);
 
   } catch (err) {

@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Akses Tryout | Pejuang Kedinasan</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+
+--navy:#0f172a;
+--navy2:#1e293b;
+
+--orange:#f97316;
+--orange2:#fb923c;
+
+--blue:#2563eb;
+
+--bg:#f5f7fb;
+
+--card:#ffffff;
+
+--text:#1e293b;
+
+--muted:#64748b;
+
+--border:#e2e8f0;
+
+--shadow:
+0 20px 50px rgba(15,23,42,.08);
+
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Open Sans',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+
+background:
+linear-gradient(
+180deg,
+#eef2ff 0%,
+#f8fafc 45%,
+#ffffff 100%
+);
+
+min-height:100vh;
+
+overflow-x:hidden;
+
+position:relative;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:24px;
+
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+top:-250px;
+right:-250px;
+
+width:550px;
+height:550px;
+
+border-radius:50%;
+
+background:
+rgba(249,115,22,.12);
+
+filter:blur(90px);
+
+pointer-events:none;
+
+}
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+bottom:-250px;
+left:-250px;
+
+width:500px;
+height:500px;
+
+border-radius:50%;
+
+background:
+rgba(37,99,235,.10);
+
+filter:blur(90px);
+
+pointer-events:none;
+
+}
+
+.back-link{
+
+position:fixed;
+
+top:24px;
+
+left:24px;
+
+display:inline-flex;
+
+align-items:center;
+
+gap:8px;
+
+font-size:14px;
+
+font-weight:700;
+
+color:var(--navy);
+
+text-decoration:none;
+
+background:white;
+
+padding:10px 16px;
+
+border-radius:999px;
+
+box-shadow:var(--shadow);
+
+z-index:10;
+
+}
+
+.back-link:hover{
+
+background:#f8fafc;
+
+}
+
+.gate-wrap{
+
+width:100%;
+
+max-width:480px;
+
+position:relative;
+
+z-index:2;
+
+}
+
+.gate-card{
+
+background:white;
+
+border-radius:28px;
+
+padding:36px;
+
+box-shadow:
+0 25px 60px rgba(15,23,42,.15);
+
+}
+
+.gate-banner{
+
+width:100%;
+
+height:130px;
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin-bottom:22px;
+
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e293b
+);
+
+}
+
+.gate-banner img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+display:block;
+
+}
+
+.gate-mode-badge{
+
+display:inline-block;
+
+padding:8px 14px;
+
+border-radius:999px;
+
+font-size:11px;
+
+font-weight:800;
+
+letter-spacing:.3px;
+
+margin-bottom:14px;
+
+}
+
+.gate-mode-badge.gratis{
+
+background:#dcfce7;
+
+color:#166534;
+
+}
+
+.gate-mode-badge.premium{
+
+background:#fff7ed;
+
+color:#c2410c;
+
+}
+
+.gate-title{
+
+font-size:22px;
+
+font-weight:800;
+
+color:var(--navy);
+
+margin-bottom:10px;
+
+line-height:1.3;
+
+}
+
+.gate-desc{
+
+font-size:14px;
+
+color:var(--muted);
+
+line-height:1.7;
+
+margin-bottom:24px;
+
+}
+
+.gate-actions{
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
+.gate-btn{
+
+display:block;
+
+width:100%;
+
+padding:15px;
+
+border:none;
+
+border-radius:14px;
+
+font-weight:700;
+
+font-size:14px;
+
+cursor:pointer;
+
+text-align:center;
+
+text-decoration:none;
+
+transition:.2s;
+
+}
+
+.gate-btn-primary{
+
+background:
+linear-gradient(
+135deg,
+#f97316,
+#fb923c
+);
+
+color:white;
+
+}
+
+.gate-btn-primary:hover{
+
+opacity:.92;
+
+}
+
+.gate-btn-secondary{
+
+background:#f1f5f9;
+
+color:var(--navy);
+
+border:1px solid var(--border);
+
+}
+
+.gate-btn-secondary:hover{
+
+background:#e2e8f0;
+
+}
+
+.gate-btn:disabled{
+
+opacity:.6;
+
+cursor:not-allowed;
+
+}
+
+.gate-input{
+
+width:100%;
+
+padding:14px;
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+font-size:14px;
+
+outline:none;
+
+margin-bottom:14px;
+
+font-family:inherit;
+
+letter-spacing:1px;
+
+}
+
+.gate-input:focus{
+
+border-color:var(--orange);
+
+}
+
+.gate-error{
+
+background:#fee2e2;
+
+color:#dc2626;
+
+padding:12px 14px;
+
+border-radius:12px;
+
+font-size:13px;
+
+font-weight:600;
+
+margin-bottom:14px;
+
+display:none;
+
+}
+
+.gate-error.show{
+
+display:block;
+
+}
+
+.gate-info-box{
+
+background:#f0f5ff;
+
+border-radius:14px;
+
+padding:16px 18px;
+
+margin-bottom:20px;
+
+}
+
+.gate-info-box .label{
+
+font-size:11px;
+
+font-weight:700;
+
+color:#64748b;
+
+text-transform:uppercase;
+
+letter-spacing:.5px;
+
+margin-bottom:6px;
+
+}
+
+.gate-info-box .value{
+
+font-size:24px;
+
+font-weight:800;
+
+color:var(--navy);
+
+}
+
+.gate-loading{
+
+text-align:center;
+
+padding:30px 0;
+
+color:var(--muted);
+
+font-size:14px;
+
+}
+
+.gate-spinner{
+
+width:32px;
+
+height:32px;
+
+border-radius:50%;
+
+border:3px solid #e2e8f0;
+
+border-top-color:var(--orange);
+
+margin:0 auto 14px;
+
+animation:spin .8s linear infinite;
+
+}
+
+@keyframes spin{
+to{transform:rotate(360deg);}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<a href="tryout-tersedia.html" class="back-link">
+← Kembali ke Tryout Tersedia
+</a>
+
+<div class="gate-wrap">
+
+<div class="gate-card" id="gateCard">
+
+<div class="gate-loading">
+<div class="gate-spinner"></div>
+Memeriksa akses tryout...
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+/* =========================
+AUTH GUARD
+========================= */
+
+const rawUser = localStorage.getItem("user");
+if (!rawUser) { window.location.href = "login.html"; }
+const user = JSON.parse(rawUser);
+
+/* =========================
+AMBIL PARAMETER URL
+========================= */
+
+const params   = new URLSearchParams(window.location.search);
+const tryoutId = params.get("id");
+const mode     = params.get("mode"); // 'gratis' | 'premium'
+
+const gateCard = document.getElementById("gateCard");
+
+if (!tryoutId || !mode) {
+  window.location.href = "tryout-tersedia.html";
+}
+
+let tryoutData = null;
+
+/* =========================
+INIT: AMBIL DATA TRYOUT
+GET /api/tryout/:id (dari view tryout_publik)
+========================= */
+
+async function init(){
+
+  try {
+
+    const res  = await fetch("/api/tryout/" + tryoutId);
+    const json = await res.json();
+
+    if (!json.success || !json.data) {
+      renderError("Tryout tidak ditemukan atau sudah tidak tersedia.");
+      return;
+    }
+
+    tryoutData = json.data;
+
+    if (mode === "gratis") {
+      checkAksesGratis();
+    } else if (mode === "premium") {
+      renderPremiumConfirm();
+    } else {
+      window.location.href = "tryout-tersedia.html";
+    }
+
+  } catch (err) {
+    console.error(err);
+    renderError("Gagal memuat data tryout. Silakan coba lagi.");
+  }
+
+}
+
+/* =========================
+BANNER + HEADER REUSABLE
+========================= */
+
+function headerHtml(){
+
+  const banner = tryoutData.banner_url
+    ? '<img src="' + tryoutData.banner_url + '" alt="Banner" onerror="this.parentElement.style.display=\'none\'">'
+    : "";
+
+  const badgeClass = mode === "premium" ? "premium" : "gratis";
+  const badgeLabel = mode === "premium" ? "⭐ AKSES PREMIUM" : "AKSES GRATIS";
+
+  return (
+    (tryoutData.banner_url ? '<div class="gate-banner">' + banner + '</div>' : '') +
+    '<div class="gate-mode-badge ' + badgeClass + '">' + badgeLabel + '</div>' +
+    '<div class="gate-title">' + (tryoutData.nama || "Tryout") + '</div>'
+  );
+
+}
+
+/* =========================
+MODE GRATIS — CEK STATUS AKSES
+GET /api/akses-gratis/status?tryout_id=&email=
+========================= */
+
+async function checkAksesGratis(){
+
+  gateCard.innerHTML =
+    headerHtml() +
+    '<div class="gate-loading"><div class="gate-spinner"></div>Memeriksa status akses kamu...</div>';
+
+  try {
+
+    const res = await fetch(
+      "/api/akses-gratis/status?tryout_id=" + tryoutId +
+      "&email=" + encodeURIComponent(user.email)
+    );
+
+    const json = await res.json();
+
+    if (json.hasAccess) {
+      renderPasswordForm();
+    } else {
+      renderBelumPunyaAkses();
+    }
+
+  } catch (err) {
+    console.error(err);
+    renderError("Gagal memeriksa status akses. Silakan coba lagi.");
+  }
+
+}
+
+function renderBelumPunyaAkses(){
+
+  const gformUrl = tryoutData.gform_url;
+
+  gateCard.innerHTML =
+    headerHtml() +
+    '<div class="gate-desc">' +
+      "Tryout ini gratis, tapi perlu verifikasi singkat dulu. Isi formulir berikut untuk mengajukan akses — admin akan memberikan password aksesmu setelah formulir diperiksa." +
+    '</div>' +
+    '<div class="gate-actions">' +
+      (gformUrl
+        ? '<a class="gate-btn gate-btn-primary" href="' + gformUrl + '" target="_blank" rel="noopener">📋 Ajukan Akses via Formulir</a>'
+        : '<div class="gate-desc" style="color:#dc2626;">Link formulir belum tersedia. Silakan hubungi admin.</div>'
+      ) +
+      '<button class="gate-btn gate-btn-secondary" onclick="checkAksesGratis()">🔄 Saya Sudah Isi Formulir, Cek Lagi</button>' +
+    '</div>';
+
+}
+
+function renderPasswordForm(){
+
+  gateCard.innerHTML =
+    headerHtml() +
+    '<div class="gate-desc">' +
+      "Akses kamu sudah disetujui admin. Masukkan password akses yang diberikan untuk mulai mengerjakan tryout ini." +
+    '</div>' +
+    '<div class="gate-error" id="gateError"></div>' +
+    '<input type="text" class="gate-input" id="passwordInput" placeholder="Masukkan password akses" autocomplete="off">' +
+    '<div class="gate-actions">' +
+      '<button class="gate-btn gate-btn-primary" id="verifyBtn" onclick="verifyPasswordAkses()">Buka Tryout</button>' +
+    '</div>';
+
+  document.getElementById("passwordInput").addEventListener("keyup", e => {
+    if (e.key === "Enter") verifyPasswordAkses();
+  });
+
+}
+
+async function verifyPasswordAkses(){
+
+  const input    = document.getElementById("passwordInput");
+  const errorBox = document.getElementById("gateError");
+  const btn      = document.getElementById("verifyBtn");
+
+  const password = input.value.trim();
+
+  if (!password) {
+    errorBox.textContent = "Password tidak boleh kosong.";
+    errorBox.classList.add("show");
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Memeriksa...";
+  errorBox.classList.remove("show");
+
+  try {
+
+    const res = await fetch("/api/akses-gratis/verify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tryout_id: tryoutId,
+        email: user.email,
+        password: password
+      })
+    });
+
+    const json = await res.json();
+
+    if (!json.success) {
+      errorBox.textContent = json.message || "Password salah. Silakan coba lagi.";
+      errorBox.classList.add("show");
+      btn.disabled = false;
+      btn.textContent = "Buka Tryout";
+      return;
+    }
+
+    window.location.href = "tryout-detail.html?id=" + tryoutId;
+
+  } catch (err) {
+    console.error(err);
+    errorBox.textContent = "Gagal memverifikasi password. Silakan coba lagi.";
+    errorBox.classList.add("show");
+    btn.disabled = false;
+    btn.textContent = "Buka Tryout";
+  }
+
+}
+
+/* =========================
+MODE PREMIUM — CEK & PAKAI KUOTA
+========================= */
+
+async function renderPremiumConfirm(){
+
+  gateCard.innerHTML =
+    headerHtml() +
+    '<div class="gate-loading"><div class="gate-spinner"></div>Memeriksa kuota tryout premium kamu...</div>';
+
+  try {
+
+    const res  = await fetch("/api/kuota/cek?email=" + encodeURIComponent(user.email));
+    const json = await res.json();
+
+    if (!json.success) {
+      renderError(json.message || "Gagal memeriksa kuota.");
+      return;
+    }
+
+    if (json.status_akun !== "premium" || !json.kuota || json.kuota <= 0) {
+      renderKuotaHabis(json.kuota || 0);
+      return;
+    }
+
+    gateCard.innerHTML =
+      headerHtml() +
+      '<div class="gate-desc">' +
+        "Mengerjakan tryout ini akan menggunakan 1 kuota tryout premium kamu." +
+      '</div>' +
+      '<div class="gate-info-box">' +
+        '<div class="label">Sisa Kuota Saat Ini</div>' +
+        '<div class="value">' + json.kuota + ' Tryout</div>' +
+      '</div>' +
+      '<div class="gate-actions">' +
+        '<button class="gate-btn gate-btn-primary" id="pakaiKuotaBtn" onclick="pakaiKuota()">Lanjutkan & Mulai Tryout</button>' +
+        '<a class="gate-btn gate-btn-secondary" href="tryout-tersedia.html">Batal</a>' +
+      '</div>';
+
+  } catch (err) {
+    console.error(err);
+    renderError("Gagal memeriksa kuota. Silakan coba lagi.");
+  }
+
+}
+
+async function pakaiKuota(){
+
+  const btn = document.getElementById("pakaiKuotaBtn");
+  btn.disabled = true;
+  btn.textContent = "Memproses...";
+
+  try {
+
+    const res = await fetch("/api/kuota/pakai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: user.email,
+        tryout_id: tryoutId
+      })
+    });
+
+    const json = await res.json();
+
+    if (!json.success) {
+      renderKuotaHabis(json.kuota || 0);
+      return;
+    }
+
+    // sinkronkan kuota terbaru ke localStorage user supaya tampilan lain ikut update
+    user.kuota_tryout = json.kuota;
+    localStorage.setItem("user", JSON.stringify(user));
+
+    window.location.href = "tryout-detail.html?id=" + tryoutId;
+
+  } catch (err) {
+    console.error(err);
+    alert("Gagal memproses kuota. Silakan coba lagi.");
+    btn.disabled = false;
+    btn.textContent = "Lanjutkan & Mulai Tryout";
+  }
+
+}
+
+function renderKuotaHabis(kuota){
+
+  gateCard.innerHTML =
+    headerHtml() +
+    '<div class="gate-desc">' +
+      "Kuota tryout premium kamu sudah habis (sisa " + kuota + "). Upgrade atau beli paket tambahan untuk terus mengerjakan tryout premium tanpa batas pengulangan." +
+    '</div>' +
+    '<div class="gate-actions">' +
+      '<a class="gate-btn gate-btn-primary" href="premium.html">⭐ Upgrade / Beli Paket Premium</a>' +
+      '<a class="gate-btn gate-btn-secondary" href="tryout-tersedia.html">Kembali</a>' +
+    '</div>';
+
+}
+
+/* =========================
+ERROR STATE UMUM
+========================= */
+
+function renderError(message){
+
+  gateCard.innerHTML =
+    '<div class="gate-title">Terjadi Kesalahan</div>' +
+    '<div class="gate-desc">' + message + '</div>' +
+    '<div class="gate-actions">' +
+      '<a class="gate-btn gate-btn-secondary" href="tryout-tersedia.html">Kembali ke Tryout Tersedia</a>' +
+    '</div>';
+
+}
+
+/* =========================
+INIT
+========================= */
+
+init();
+
+</script>
+
+</body>
+</html>

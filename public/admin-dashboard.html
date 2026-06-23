@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#14274e;--primary2:#1f3f7a;--bg:#f5f7fb;--card:#ffffff;--border:#e2e8f0;--text:#334155;--muted:#64748b;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+body{background:var(--bg);display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{width:280px;background:#14274e;position:fixed;left:0;top:0;bottom:0;color:white;overflow-y:auto;transition:transform .3s;z-index:100;}
+.sidebar-header{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.brand{font-size:20px;font-weight:800;line-height:1.2;}
+.brand-sub{font-size:11px;opacity:.65;margin-top:4px;}
+.btn-close{flex-shrink:0;width:30px;height:30px;border-radius:8px;border:none;background:rgba(255,255,255,.1);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.btn-close:hover{background:rgba(255,255,255,.2);}
+.menu{padding:16px 12px;}
+.menu-title{font-size:11px;font-weight:700;opacity:.4;text-transform:uppercase;letter-spacing:1px;margin:16px 12px 8px;}
+.menu a{display:block;padding:13px 14px;border-radius:14px;color:white;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:3px;transition:.2s;}
+.menu a:hover{background:rgba(255,255,255,.08);}
+.menu a.active{background:rgba(255,255,255,.12);}
+.sidebar-footer{padding:16px 12px;border-top:1px solid rgba(255,255,255,.08);}
+.btn-logout{display:block;width:100%;padding:13px 14px;border-radius:14px;color:rgba(255,255,255,.6);font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;text-align:left;transition:.2s;}
+.btn-logout:hover{background:rgba(239,68,68,.15);color:#fca5a5;}
+
+/* HAMBURGER */
+.hamburger{display:none;position:fixed;top:15px;left:15px;width:44px;height:44px;border:none;background:#14274e;border-radius:12px;color:white;font-size:20px;cursor:pointer;z-index:200;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(20,39,78,.3);}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90;}
+.overlay.active{display:block;}
+
+/* MAIN */
+.main{margin-left:280px;width:100%;padding:30px;transition:margin .3s;}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#14274e,#1f3f7a);padding:35px;border-radius:25px;color:white;margin-bottom:25px;}
+.hero h1{font-size:32px;font-weight:800;margin-bottom:8px;}
+.hero p{opacity:.8;line-height:1.8;font-size:14px;}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:25px;}
+.stat-card{background:white;padding:25px;border-radius:20px;box-shadow:0 5px 20px rgba(0,0,0,.05);}
+.stat-title{font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;margin-bottom:10px;}
+.stat-value{font-size:34px;font-weight:800;color:#14274e;}
+.stat-sub{font-size:13px;color:#64748b;margin-top:5px;}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:20px;}
+.card{background:white;padding:25px;border-radius:20px;box-shadow:0 5px 20px rgba(0,0,0,.05);}
+.card-title{font-size:20px;font-weight:800;color:#14274e;margin-bottom:20px;}
+
+/* QUICK ACTIONS */
+.quick-btn{display:block;width:100%;padding:14px;margin-bottom:10px;background:#14274e;color:white;text-decoration:none;text-align:center;border-radius:12px;font-weight:700;font-size:14px;transition:.2s;border:none;cursor:pointer;}
+.quick-btn:hover{background:#1f3f7a;}
+
+/* ACTIVITY */
+.activity-item{padding:12px;background:#f8fafc;border-radius:10px;margin-bottom:8px;font-size:13px;color:#334155;}
+
+/* SUMMARY */
+.stats-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.summary-box{background:#f8fafc;padding:20px;border-radius:16px;text-align:center;}
+.summary-value{font-size:32px;font-weight:800;color:#14274e;}
+.summary-label{font-size:13px;color:#64748b;margin-top:5px;}
+
+/* BADGES */
+.badge-premium{background:#ede9fe;color:#6d28d9;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;}
+.badge-free{background:#f1f5f9;color:#64748b;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;}
+.badge-admin{background:#fef9c3;color:#854d0e;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;}
+
+/* TABLE */
+table{width:100%;border-collapse:collapse;}
+thead tr{background:#f8fafc;}
+th{padding:12px;text-align:left;font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;}
+td{padding:12px;border-top:1px solid #e2e8f0;font-size:13px;}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr);}.stats-summary{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:1000px){.sidebar{transform:translateX(-280px);}.sidebar.active{transform:translateX(0);}.main{margin-left:0 !important;}.hamburger{display:flex;}.grid{grid-template-columns:1fr;}}
+@media(max-width:600px){.stats{grid-template-columns:1fr 1fr;}.stats-summary{grid-template-columns:1fr 1fr;}.main{padding:20px;}}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+<button class="hamburger" id="hamburger" onclick="openSidebar()">&#9776;</button>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="brand">ADMIN PANEL</div>
+      <div class="brand-sub">Pejuang Kedinasan</div>
+    </div>
+    <button class="btn-close" onclick="closeSidebar()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="menu">
+    <div class="menu-title">Utama</div>
+    <a href="admin-dashboard.html" class="active">Dashboard</a>
+    <a href="admin-tryout.html">Kelola Tryout</a>
+    <a href="admin-soal.html">Kelola Soal</a>
+
+    <div class="menu-title">Peserta</div>
+    <a href="admin-users.html">Daftar User</a>
+    <a href="admin-premium.html">Member Premium</a>
+
+    <div class="menu-title">Lainnya</div>
+    <a href="admin-payment.html">Pembayaran</a>
+    <a href="admin-leaderboard.html">Leaderboard</a>
+    <a href="admin-notifikasi.html">Notifikasi</a>
+    <a href="admin-setting.html">Pengaturan</a>
+  </div>
+
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="logout()">Keluar</button>
+  </div>
+</div>
+
+<div class="main" id="main">
+
+  <div class="hero">
+    <h1>Dashboard Admin</h1>
+    <p>Kelola tryout, peserta, dan statistik platform Pejuang Kedinasan.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-title">Total User</div>
+      <div class="stat-value" id="totalUser">—</div>
+      <div class="stat-sub">Peserta terdaftar</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Premium</div>
+      <div class="stat-value" id="totalPremium">—</div>
+      <div class="stat-sub">Member aktif</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Tryout</div>
+      <div class="stat-value" id="totalTryout">—</div>
+      <div class="stat-sub">Tryout tersedia</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-title">Pengerjaan Hari Ini</div>
+      <div class="stat-value" id="todayTryout">—</div>
+      <div class="stat-sub">Sesi tryout</div>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="grid">
+
+    <!-- User Terbaru -->
+    <div class="card">
+      <div class="card-title">User Terbaru</div>
+      <div id="latestUsers">
+        <table>
+          <thead><tr><th>Nama</th><th>Email</th><th>Plan</th><th>Tanggal Daftar</th></tr></thead>
+          <tbody id="latestUsersBody"><tr><td colspan="4" style="text-align:center;color:#64748b;padding:20px;">Memuat...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Quick Action + Aktivitas -->
+    <div>
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-title">Quick Action</div>
+        <a href="admin-create-tryout.html" class="quick-btn">+ Buat Tryout Baru</a>
+        <a href="admin-create-soal.html" class="quick-btn">+ Tambah Soal</a>
+        <button class="quick-btn" onclick="openNotifModal()">+ Kirim Notifikasi</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Aktivitas Terbaru</div>
+        <div id="activityList"><div class="activity-item">Memuat aktivitas...</div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Summary -->
+  <div class="card">
+    <div class="card-title">Ringkasan Platform</div>
+    <div class="stats-summary">
+      <div class="summary-box">
+        <div class="summary-value" id="todayRegister">—</div>
+        <div class="summary-label">Daftar Hari Ini</div>
+      </div>
+      <div class="summary-box">
+        <div class="summary-value" id="totalFree">—</div>
+        <div class="summary-label">User Gratis</div>
+      </div>
+      <div class="summary-box">
+        <div class="summary-value" id="newUser7">—</div>
+        <div class="summary-label">User Baru 7 Hari</div>
+      </div>
+      <div class="summary-box">
+        <div class="summary-value" id="totalHasil">—</div>
+        <div class="summary-label">Total Pengerjaan TO</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- Modal Notifikasi -->
+<div id="notifModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;">
+  <div style="background:white;border-radius:20px;padding:30px;width:100%;max-width:480px;margin:20px;">
+    <div style="font-size:18px;font-weight:800;color:#14274e;margin-bottom:16px;">Kirim Notifikasi</div>
+    <textarea id="notifPesan" placeholder="Tulis pesan notifikasi..." style="width:100%;padding:14px;border:1px solid #e2e8f0;border-radius:12px;font-size:14px;resize:vertical;min-height:100px;outline:none;font-family:inherit;margin-bottom:14px;"></textarea>
+    <div style="display:flex;gap:10px;">
+      <button onclick="kirimNotif()" style="flex:1;padding:13px;background:#14274e;color:white;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;">Kirim</button>
+      <button onclick="closeNotifModal()" style="flex:1;padding:13px;background:#f1f5f9;color:#64748b;border:none;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;">Batal</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+/* ── Auth guard ── */
+const rawUser = localStorage.getItem('user');
+if (!rawUser) window.location.href = 'login.html';
+const user = JSON.parse(rawUser);
+
+// Pastikan yang masuk adalah admin atau super_admin
+if (user.role !== 'admin' && user.role !== 'super_admin') {
+  window.location.href = 'dashboard.html';
+}
+
+const adminEmail = user.email;
+
+/* ── Load stats via API route ── */
+async function loadStats() {
+  try {
+    const res = await fetch('/api/admin/stats', {
+      headers: { 'x-admin-email': adminEmail }
+    });
+    const json = await res.json();
+    if (!json.success) return;
+    const d = json.data;
+    document.getElementById('totalUser').textContent    = d.totalUser;
+    document.getElementById('totalPremium').textContent = d.totalPremium;
+    document.getElementById('totalTryout').textContent  = d.totalTryout;
+    document.getElementById('totalFree').textContent    = d.totalFree;
+    document.getElementById('newUser7').textContent     = d.newUser7;
+    document.getElementById('totalHasil').textContent   = d.totalHasil;
+  } catch(e) { console.error('Stats error:', e); }
+}
+
+/* ── Load user terbaru langsung dari Supabase (anon key cukup untuk read) ── */
+async function loadLatestUsers() {
+  const { data, error } = await sb.from('users')
+    .select('nama,email,plan,role,created_at')
+    .order('created_at', { ascending: false })
+    .limit(10);
+
+  if (error || !data) return;
+
+  const body = document.getElementById('latestUsersBody');
+  body.innerHTML = data.map(u => {
+    const d = new Date(u.created_at);
+    const tgl = d.getDate() + ' ' + BULAN[d.getMonth()] + ' ' + d.getFullYear();
+    const badgePlan = u.plan === 'premium'
+      ? '<span class="badge-premium">Premium</span>'
+      : '<span class="badge-free">Gratis</span>';
+    return '<tr>' +
+      '<td>'+(u.nama||'—')+'</td>' +
+      '<td style="color:#64748b;">'+(u.email||'—')+'</td>' +
+      '<td>'+badgePlan+'</td>' +
+      '<td style="color:#64748b;">'+tgl+'</td>' +
+      '</tr>';
+  }).join('');
+
+  // Aktivitas terbaru
+  const actEl = document.getElementById('activityList');
+  actEl.innerHTML = data.slice(0,5).map(u => {
+    const d = new Date(u.created_at);
+    const tgl = d.getDate() + ' ' + BULAN[d.getMonth()];
+    return '<div class="activity-item"><b>'+(u.nama||u.email)+'</b> mendaftar akun — <span style="color:#64748b;">'+tgl+'</span></div>';
+  }).join('');
+}
+
+/* ── Tryout dikerjakan hari ini ── */
+async function loadTodayTryout() {
+  const today = new Date().toISOString().slice(0, 10);
+  const { data } = await sb.from('hasil_tryout')
+    .select('id,created_at');
+  const count = (data||[]).filter(r => r.created_at && r.created_at.startsWith(today)).length;
+  document.getElementById('todayTryout').textContent = count;
+
+  // Daftar hari ini
+  const { data: todayUsers } = await sb.from('users')
+    .select('id').gte('created_at', today + 'T00:00:00');
+  document.getElementById('todayRegister').textContent = todayUsers ? todayUsers.length : 0;
+}
+
+/* ── Kirim notifikasi ── */
+function openNotifModal() {
+  document.getElementById('notifModal').style.display = 'flex';
+}
+function closeNotifModal() {
+  document.getElementById('notifModal').style.display = 'none';
+  document.getElementById('notifPesan').value = '';
+}
+async function kirimNotif() {
+  const pesan = document.getElementById('notifPesan').value.trim();
+  if (!pesan) { alert('Pesan tidak boleh kosong.'); return; }
+
+  const res = await fetch('/api/admin/notifikasi', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-admin-email': adminEmail },
+    body: JSON.stringify({ pesan, target: 'all' })
+  });
+  const json = await res.json();
+  if (json.success) {
+    alert('Notifikasi berhasil dikirim!');
+    closeNotifModal();
+  } else {
+    alert('Gagal: ' + json.message);
+  }
+}
+
+/* ── Sidebar ── */
+const sidebar  = document.getElementById('sidebar');
+const overlay  = document.getElementById('overlay');
+const hamburger= document.getElementById('hamburger');
+
+function openSidebar() {
+  sidebar.classList.add('active');
+  overlay.classList.add('active');
+  hamburger.style.display = 'none';
+}
+function closeSidebar() {
+  sidebar.classList.remove('active');
+  overlay.classList.remove('active');
+  if (window.innerWidth <= 1000) hamburger.style.display = 'flex';
+}
+overlay.addEventListener('click', closeSidebar);
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1000) {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+    hamburger.style.display = 'none';
+    document.getElementById('main').style.marginLeft = '280px';
+  } else {
+    document.getElementById('main').style.marginLeft = '0';
+  }
+});
+
+/* ── Logout ── */
+function logout() {
+  if (confirm('Yakin ingin keluar?')) {
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
+  }
+}
+
+/* ── Init ── */
+loadStats();
+loadLatestUsers();
+loadTodayTryout();
+</script>
+</body>
+</html>

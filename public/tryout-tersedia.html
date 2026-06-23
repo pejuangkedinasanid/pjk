@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Tryout Tersedia | Pejuang Kedinasan</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+
+--navy:#0f172a;
+--navy2:#1e293b;
+
+--orange:#f97316;
+--orange2:#fb923c;
+
+--blue:#2563eb;
+
+--bg:#f5f7fb;
+
+--card:#ffffff;
+
+--text:#1e293b;
+
+--muted:#64748b;
+
+--border:#e2e8f0;
+
+--shadow:
+0 20px 50px rgba(15,23,42,.08);
+
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Open Sans',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+
+background:
+linear-gradient(
+180deg,
+#eef2ff 0%,
+#f8fafc 45%,
+#ffffff 100%
+);
+
+display:flex;
+
+min-height:100vh;
+
+overflow-x:hidden;
+
+position:relative;
+
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+top:-250px;
+right:-250px;
+
+width:550px;
+height:550px;
+
+border-radius:50%;
+
+background:
+rgba(249,115,22,.12);
+
+filter:blur(90px);
+
+pointer-events:none;
+
+}
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+bottom:-250px;
+left:-250px;
+
+width:500px;
+height:500px;
+
+border-radius:50%;
+
+background:
+rgba(37,99,235,.10);
+
+filter:blur(90px);
+
+pointer-events:none;
+
+}
+
+/* =========================
+SIDEBAR
+========================= */
+
+.sidebar{
+
+width:290px;
+
+background:
+linear-gradient(
+180deg,
+#0f172a,
+#1e293b
+);
+
+position:fixed;
+
+left:0;
+top:0;
+bottom:0;
+
+color:white;
+
+z-index:999;
+
+overflow-y:auto;
+
+display:flex;
+
+flex-direction:column;
+
+box-shadow:
+10px 0 40px rgba(0,0,0,.15);
+
+transform:translateX(0);
+
+transition:.3s;
+
+}
+
+.sidebar.closed{
+transform:translateX(-290px);
+}
+
+.sidebar-header{
+
+padding:30px 25px;
+
+border-bottom:
+1px solid rgba(255,255,255,.08);
+
+}
+
+.brand-title{
+
+font-size:24px;
+
+font-weight:800;
+
+line-height:1.2;
+
+}
+
+.brand-subtitle{
+
+margin-top:6px;
+
+font-size:12px;
+
+opacity:.7;
+
+}
+
+.menu{
+
+padding:20px 12px;
+
+flex:1;
+
+}
+
+.menu-group{
+
+font-size:11px;
+
+font-weight:700;
+
+opacity:.45;
+
+letter-spacing:1px;
+
+text-transform:uppercase;
+
+margin:18px 12px 10px;
+
+}
+
+.menu a{
+
+display:flex;
+
+align-items:center;
+
+padding:14px 16px;
+
+border-radius:16px;
+
+color:white;
+
+text-decoration:none;
+
+font-size:14px;
+
+font-weight:600;
+
+margin-bottom:6px;
+
+transition:.25s;
+
+}
+
+.menu a:hover{
+
+background:
+rgba(255,255,255,.08);
+
+transform:translateX(4px);
+
+}
+
+.menu a.active{
+
+background:
+linear-gradient(
+135deg,
+rgba(249,115,22,.85),
+rgba(251,146,60,.85)
+);
+
+}
+
+.menu-premium{
+
+background:
+linear-gradient(
+135deg,
+#f59e0b,
+#fbbf24
+) !important;
+
+color:#1f2937 !important;
+
+font-weight:800 !important;
+
+}
+
+.menu-premium:hover{
+
+background:
+linear-gradient(
+135deg,
+#fbbf24,
+#f59e0b
+) !important;
+
+}
+
+.sidebar-footer{
+
+padding:20px;
+
+border-top:
+1px solid rgba(255,255,255,.08);
+
+}
+
+.logout-btn{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:16px;
+
+background:
+rgba(255,255,255,.08);
+
+color:white;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.logout-btn:hover{
+
+background:
+rgba(255,255,255,.15);
+
+}
+
+/* =========================
+MAIN
+========================= */
+
+.main{
+
+margin-left:290px;
+
+width:100%;
+
+padding:30px;
+
+position:relative;
+
+z-index:2;
+
+transition:.3s;
+
+}
+
+.main.full{
+margin-left:0;
+}
+
+/* =========================
+HERO
+========================= */
+
+.hero{
+
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e293b
+);
+
+border-radius:30px;
+
+padding:40px;
+
+color:white;
+
+margin-bottom:25px;
+
+overflow:hidden;
+
+position:relative;
+
+box-shadow:
+0 25px 60px rgba(15,23,42,.2);
+
+}
+
+.hero::before{
+
+content:"";
+
+position:absolute;
+
+top:-120px;
+right:-120px;
+
+width:350px;
+height:350px;
+
+border-radius:50%;
+
+background:
+rgba(249,115,22,.15);
+
+}
+
+.hero-badge{
+
+display:inline-block;
+
+padding:10px 18px;
+
+border-radius:999px;
+
+background:
+rgba(255,255,255,.1);
+
+font-size:12px;
+
+font-weight:700;
+
+margin-bottom:18px;
+
+position:relative;
+
+z-index:2;
+
+}
+
+.hero h1{
+
+font-size:40px;
+
+font-weight:800;
+
+margin-bottom:12px;
+
+position:relative;
+
+z-index:2;
+
+}
+
+.hero p{
+
+max-width:650px;
+
+opacity:.85;
+
+line-height:1.8;
+
+position:relative;
+
+z-index:2;
+
+}
+
+/* =========================
+FILTER
+========================= */
+
+.filter-bar{
+
+background:white;
+
+padding:20px;
+
+border-radius:24px;
+
+margin-bottom:25px;
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+box-shadow:var(--shadow);
+
+}
+
+.search-box{
+
+flex:1;
+
+min-width:250px;
+
+}
+
+.search-box input{
+
+width:100%;
+
+padding:14px;
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+outline:none;
+
+font-size:14px;
+
+}
+
+.search-box input:focus{
+
+border-color:var(--orange);
+
+}
+
+.filter-select{
+
+padding:14px;
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+min-width:180px;
+
+font-size:14px;
+
+cursor:pointer;
+
+}
+
+.filter-select:focus{
+
+border-color:var(--orange);
+
+}
+
+/* =========================
+TRYOUT GRID
+========================= */
+
+.tryout-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fill,minmax(320px,1fr));
+
+gap:20px;
+
+}
+
+.tryout-card{
+
+background:white;
+
+border-radius:24px;
+
+padding:24px;
+
+box-shadow:var(--shadow);
+
+transition:.3s;
+
+border:1px solid #eef2f7;
+
+}
+
+.tryout-card:hover{
+
+transform:translateY(-5px);
+
+}
+
+.card-banner-wrap{
+
+width:100%;
+
+height:140px;
+
+border-radius:16px;
+
+overflow:hidden;
+
+margin-bottom:15px;
+
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e293b
+);
+
+}
+
+.card-banner-wrap img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+display:block;
+
+}
+
+.card-banner-fallback{
+
+width:100%;
+
+height:100%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:32px;
+
+background:
+linear-gradient(
+135deg,
+rgba(249,115,22,.85),
+rgba(251,146,60,.85)
+);
+
+color:white;
+
+}
+
+.badge{
+
+display:inline-block;
+
+padding:8px 14px;
+
+border-radius:999px;
+
+font-size:11px;
+
+font-weight:700;
+
+margin-bottom:15px;
+
+}
+
+.badge-free{
+
+background:#dcfce7;
+
+color:#166534;
+
+}
+
+.badge-premium{
+
+background:#fff7ed;
+
+color:#c2410c;
+
+}
+
+.badge-mixed{
+
+background:#dbeafe;
+
+color:#1d4ed8;
+
+}
+
+.tryout-title{
+
+font-size:20px;
+
+font-weight:800;
+
+color:var(--navy);
+
+margin-bottom:10px;
+
+}
+
+.tryout-desc{
+
+font-size:14px;
+
+color:var(--muted);
+
+line-height:1.7;
+
+margin-bottom:15px;
+
+min-height:24px;
+
+}
+
+.meta{
+
+display:flex;
+
+justify-content:space-between;
+
+font-size:12px;
+
+color:var(--muted);
+
+margin-bottom:18px;
+
+gap:10px;
+
+}
+
+.btn-start{
+
+display:block;
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+linear-gradient(
+135deg,
+#f97316,
+#fb923c
+);
+
+color:white;
+
+font-weight:700;
+
+cursor:pointer;
+
+text-align:center;
+
+text-decoration:none;
+
+transition:.2s;
+
+}
+
+.btn-start:hover{
+
+opacity:.92;
+
+}
+
+.btn-start.blue{
+
+background:
+linear-gradient(
+135deg,
+#2563eb,
+#3b82f6
+);
+
+}
+
+.btn-start.neutral{
+
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e293b
+);
+
+}
+
+/* =========================
+MODAL "PILIH CARA AKSES"
+========================= */
+
+.modal-bg{
+
+display:none;
+
+position:fixed;
+
+inset:0;
+
+background:rgba(15,23,42,.6);
+
+z-index:2000;
+
+align-items:center;
+
+justify-content:center;
+
+padding:20px;
+
+}
+
+.modal-bg.show{
+
+display:flex;
+
+}
+
+.modal{
+
+background:white;
+
+border-radius:24px;
+
+padding:32px;
+
+width:100%;
+
+max-width:420px;
+
+position:relative;
+
+box-shadow:
+0 25px 60px rgba(15,23,42,.25);
+
+}
+
+.modal-close{
+
+position:absolute;
+
+top:18px;
+
+right:18px;
+
+width:32px;
+
+height:32px;
+
+border-radius:10px;
+
+border:none;
+
+background:#f1f5f9;
+
+color:#64748b;
+
+cursor:pointer;
+
+font-size:14px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+.modal-close:hover{
+
+background:#e2e8f0;
+
+}
+
+.modal-title{
+
+font-size:20px;
+
+font-weight:800;
+
+color:var(--navy);
+
+margin-bottom:10px;
+
+}
+
+.modal-desc{
+
+font-size:14px;
+
+color:var(--muted);
+
+line-height:1.6;
+
+margin-bottom:22px;
+
+}
+
+.modal-actions{
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+}
+
+.modal-btn{
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+font-weight:700;
+
+font-size:14px;
+
+cursor:pointer;
+
+text-align:center;
+
+text-decoration:none;
+
+display:block;
+
+transition:.2s;
+
+}
+
+.modal-btn-premium{
+
+background:
+linear-gradient(
+135deg,
+#f97316,
+#fb923c
+);
+
+color:white;
+
+}
+
+.modal-btn-premium:hover{
+
+opacity:.92;
+
+}
+
+.modal-btn-gratis{
+
+background:#f1f5f9;
+
+color:var(--navy);
+
+border:1px solid var(--border);
+
+}
+
+.modal-btn-gratis:hover{
+
+background:#e2e8f0;
+
+}
+
+.modal-note{
+
+font-size:12px;
+
+color:var(--muted);
+
+text-align:center;
+
+line-height:1.6;
+
+margin-top:6px;
+
+}
+
+.empty-state{
+
+grid-column:1/-1;
+
+text-align:center;
+
+padding:60px 20px;
+
+color:var(--muted);
+
+}
+
+.empty-state b{
+
+display:block;
+
+font-size:18px;
+
+color:var(--navy);
+
+margin-bottom:8px;
+
+}
+
+/* =========================
+HAMBURGER & OVERLAY
+========================= */
+
+.hamburger{
+
+display:flex;
+
+position:fixed;
+
+top:15px;
+
+left:15px;
+
+width:48px;
+
+height:48px;
+
+border:none;
+
+border-radius:14px;
+
+background:var(--navy);
+
+color:white;
+
+font-size:20px;
+
+cursor:pointer;
+
+z-index:1001;
+
+align-items:center;
+
+justify-content:center;
+
+transition:.3s;
+
+}
+
+.hamburger.inside{
+
+left:227px;
+
+}
+
+.overlay{
+
+display:none;
+
+}
+
+.overlay.active{
+
+display:block;
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.45);
+
+z-index:998;
+
+}
+
+@media(max-width:1000px){
+
+.main{
+margin-left:0;
+padding:20px;
+}
+
+}
+
+@media(max-width:700px){
+
+.hero h1{
+font-size:30px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<button class="hamburger" id="hamburger">
+☰
+</button>
+
+<!-- =========================
+SIDEBAR
+========================= -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="sidebar-header">
+
+<div class="brand-title">
+PEJUANG KEDINASAN
+</div>
+
+<div class="brand-subtitle">
+Platform Tryout Kedinasan No.1 Indonesia
+</div>
+
+</div>
+
+<div class="menu">
+
+<div class="menu-group">
+Utama
+</div>
+
+<a href="dashboard.html">
+Dashboard
+</a>
+
+<a href="tryout-tersedia.html" class="active">
+Tryout Tersedia
+</a>
+
+<a href="tryout-saya.html">
+Tryout Saya
+</a>
+
+<div class="menu-group">
+Belajar
+</div>
+
+<a href="latihan.html">
+Bank Soal
+</a>
+
+<a href="materi.html">
+Materi Belajar
+</a>
+
+<a href="video.html">
+Video Pembahasan
+</a>
+
+<div class="menu-group">
+Kompetisi
+</div>
+
+<a href="leaderboard.html">
+Ranking Nasional
+</a>
+
+<a href="target.html">
+Target Kedinasan
+</a>
+
+<div class="menu-group">
+Akun
+</div>
+
+<a href="premium.html" class="menu-premium">
+⭐ Premium
+</a>
+
+<a href="profil.html">
+Profil Saya
+</a>
+
+<a href="pengaturan.html">
+Pengaturan
+</a>
+
+</div>
+
+<div class="sidebar-footer">
+
+<button class="logout-btn" onclick="logout()">
+Logout
+</button>
+
+</div>
+
+</div>
+
+<!-- =========================
+MAIN
+========================= -->
+
+<div class="main">
+
+<!-- HERO -->
+
+<div class="hero">
+
+<div class="hero-badge">
+🔥 PEJUANG KEDINASAN 2026
+</div>
+
+<h1>
+Tryout Tersedia
+</h1>
+
+<p>
+Pilih tryout yang ingin kamu kerjakan untuk meningkatkan peluang lolos sekolah kedinasan impian.
+</p>
+
+</div>
+
+<!-- =========================
+FILTER
+========================= -->
+
+<div class="filter-bar">
+
+<div class="search-box">
+
+<input
+type="text"
+id="searchTryout"
+placeholder="Cari tryout...">
+
+</div>
+
+<select
+class="filter-select"
+id="filterAkses">
+
+<option value="">
+Semua Akses
+</option>
+
+<option value="gratis">
+Gratis
+</option>
+
+<option value="premium">
+Premium
+</option>
+
+<option value="semua">
+Gratis + Premium
+</option>
+
+</select>
+
+</div>
+
+<!-- =========================
+GRID TRYOUT (DIISI DARI SUPABASE)
+========================= -->
+
+<div class="tryout-grid" id="tryoutGrid">
+
+<div class="empty-state">
+Memuat tryout...
+</div>
+
+</div>
+
+</div>
+<!-- END MAIN -->
+
+<!-- =========================
+MODAL: PILIH CARA AKSES
+(untuk tryout akses = 'semua')
+========================= -->
+
+<div class="modal-bg" id="accessModalBg">
+
+<div class="modal">
+
+<button class="modal-close" onclick="closeAccessModal()">
+✕
+</button>
+
+<div class="modal-title" id="accessModalTitle">
+Pilih Cara Akses
+</div>
+
+<div class="modal-desc" id="accessModalDesc">
+</div>
+
+<div class="modal-actions" id="accessModalActions">
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+/* =========================
+AUTH GUARD
+========================= */
+
+const rawUser = localStorage.getItem("user");
+if (!rawUser) { window.location.href = "login.html"; }
+const user = JSON.parse(rawUser);
+
+/* Status premium user, dipakai untuk gating akses tryout premium.
+   Sesuaikan nama field jika berbeda di tabel users Anda. */
+const userPlan = (
+  user.plan ||
+  user.status_akun ||
+  user.tipe_akun ||
+  "free"
+).toString().toLowerCase();
+
+const isUserPremium = userPlan === "premium";
+
+/* =========================
+SIDEBAR TOGGLE (DESKTOP & MOBILE)
+========================= */
+
+const sidebar   = document.getElementById("sidebar");
+const hamburger = document.getElementById("hamburger");
+const overlay   = document.getElementById("overlay");
+const mainEl    = document.querySelector(".main");
+
+function openSidebar(){
+  sidebar.classList.remove("closed");
+  hamburger.innerHTML = "&#x2715;";
+  hamburger.classList.add("inside");
+
+  if (window.innerWidth <= 1000) {
+    overlay.classList.add("active");
+  } else {
+    overlay.classList.remove("active");
+  }
+  mainEl.classList.remove("full");
+}
+
+function closeSidebar(){
+  sidebar.classList.add("closed");
+  overlay.classList.remove("active");
+  mainEl.classList.add("full");
+  hamburger.innerHTML = "&#9776;";
+  hamburger.classList.remove("inside");
+}
+
+hamburger.addEventListener("click", () => {
+  const isOpen = !sidebar.classList.contains("closed");
+  isOpen ? closeSidebar() : openSidebar();
+});
+
+overlay.addEventListener("click", closeSidebar);
+
+function initSidebar(){
+  window.innerWidth <= 1000 ? closeSidebar() : openSidebar();
+}
+
+window.addEventListener("resize", initSidebar);
+initSidebar();
+
+/* =========================
+LOAD TRYOUT — VIA API ROUTE
+GET /api/tryout (mengambil dari view
+tryout_publik di Supabase). Field yang
+tersedia: id, nama, deskripsi, akses
+('gratis'|'premium'|'semua'), is_premium,
+banner_url, tanggal_mulai, tanggal_selesai,
+bebas_waktu, durasi, jumlah_soal,
+passing_twk/tiu/tkp, video_url, pdf_url,
+status, aktif, created_at
+========================= */
+
+let allTryout = [];
+
+async function loadTryout(){
+
+  const grid = document.getElementById("tryoutGrid");
+
+  try {
+
+    const res = await fetch(
+      "/api/tryout?status=publish&limit=100"
+    );
+
+    const json = await res.json();
+
+    if (!json.success) {
+      throw new Error(json.message || "Gagal memuat data tryout.");
+    }
+
+    allTryout = json.data || [];
+    applyFilter();
+
+  } catch (err) {
+
+    console.error(err);
+
+    grid.innerHTML =
+      '<div class="empty-state"><b>Gagal memuat tryout</b>' +
+      (err.message || "Silakan refresh halaman atau coba lagi nanti.") +
+      '</div>';
+
+  }
+
+}
+
+/* =========================
+RENDER CARD TRYOUT
+========================= */
+
+function renderTryoutCards(rows){
+
+  const grid = document.getElementById("tryoutGrid");
+
+  if (!rows.length) {
+    grid.innerHTML =
+      '<div class="empty-state"><b>Belum ada tryout tersedia</b>' +
+      'Tryout baru akan muncul di sini setelah admin mempublikasikannya.</div>';
+    return;
+  }
+
+  grid.innerHTML = rows.map(r => {
+
+    const aksesType = r.akses || (r.is_premium ? "premium" : "gratis");
+
+    let badgeHtml;
+    if (aksesType === "premium") {
+      badgeHtml = '<div class="badge badge-premium">PREMIUM</div>';
+    } else if (aksesType === "semua") {
+      badgeHtml = '<div class="badge badge-mixed">GRATIS + PREMIUM</div>';
+    } else {
+      badgeHtml = '<div class="badge badge-free">GRATIS</div>';
+    }
+
+    const bannerHtml = r.banner_url
+      ? '<img src="' + r.banner_url + '" alt="Banner ' + (r.nama || "") +
+        '" onerror="this.parentElement.innerHTML=\'<div class=&quot;card-banner-fallback&quot;>🖼️</div>\'">'
+      : '<div class="card-banner-fallback">🖼️</div>';
+
+    let jadwal = "Fleksibel — kapan saja";
+    if (!r.bebas_waktu && r.tanggal_mulai) {
+      const dm = new Date(r.tanggal_mulai);
+      jadwal = dm.getDate() + " " + BULAN[dm.getMonth()];
+      if (r.tanggal_selesai) {
+        const ds = new Date(r.tanggal_selesai);
+        jadwal += " – " + ds.getDate() + " " + BULAN[ds.getMonth()];
+      }
+    }
+
+    const btn = getButtonConfig(aksesType);
+
+    return (
+      '<div class="tryout-card">' +
+        '<div class="card-banner-wrap">' + bannerHtml + '</div>' +
+        badgeHtml +
+        '<div class="tryout-title">' + (r.nama || "Tanpa Nama") + '</div>' +
+        '<div class="tryout-desc">' + (r.deskripsi || "") + '</div>' +
+        '<div class="meta">' +
+          '<span>' + (r.jumlah_soal || "—") + ' Soal</span>' +
+          '<span>' + (r.durasi || "—") + ' Menit</span>' +
+        '</div>' +
+        '<div class="meta">' +
+          '<span>' + jadwal + '</span>' +
+          '<span>TWK/TIU/TKP</span>' +
+        '</div>' +
+        '<button class="btn-start' + (btn.variant ? ' ' + btn.variant : '') + '" onclick="handleStart(' + r.id + ')">' +
+          btn.label +
+        '</button>' +
+      '</div>'
+    );
+
+  }).join("");
+
+}
+
+/* =========================
+LOGIKA TOMBOL BERDASARKAN AKSES
+Akses Tryout × Status User:
+
+  Gratis            → Gratis: "Kerjakan Sekarang"   | Premium: "Kerjakan Sekarang"
+  Premium/Berbayar  → Gratis: "Upgrade Premium"      | Premium: "Kerjakan Sekarang" (biru)
+  Semua (gratis+berbayar) → keduanya: "Pilih Cara Akses" (modal)
+========================= */
+
+function getButtonConfig(aksesType){
+
+  if (aksesType === "premium") {
+    return isUserPremium
+      ? { label: "Kerjakan Sekarang", variant: "blue", action: "gate-premium" }
+      : { label: "Upgrade Premium", variant: "", action: "upgrade" };
+  }
+
+  if (aksesType === "semua") {
+    return { label: "Pilih Cara Akses", variant: "neutral", action: "modal" };
+  }
+
+  // default: gratis — bebas, tidak butuh gate apa pun
+  return { label: "Kerjakan Sekarang", variant: "", action: "go" };
+
+}
+
+/* =========================
+AKSI MULAI TRYOUT
+========================= */
+
+function handleStart(id){
+
+  const row = allTryout.find(r => r.id === id);
+  if (!row) return;
+
+  const aksesType = row.akses || (row.is_premium ? "premium" : "gratis");
+  const btn = getButtonConfig(aksesType);
+
+  if (btn.action === "go") {
+    window.location.href = "tryout-detail.html?id=" + id;
+    return;
+  }
+
+  if (btn.action === "gate-premium") {
+    window.location.href = "tryout-akses.html?id=" + id + "&mode=premium";
+    return;
+  }
+
+  if (btn.action === "upgrade") {
+    if (confirm("Tryout ini khusus member Premium. Upgrade sekarang?")) {
+      window.location.href = "premium.html";
+    }
+    return;
+  }
+
+  if (btn.action === "modal") {
+    openAccessModal(row);
+    return;
+  }
+
+}
+
+/* =========================
+MODAL "PILIH CARA AKSES"
+(khusus tryout akses = 'semua')
+========================= */
+
+function openAccessModal(row){
+
+  document.getElementById("accessModalTitle").textContent =
+    "Pilih Cara Akses";
+
+  document.getElementById("accessModalDesc").textContent =
+    '"' + (row.nama || "Tryout ini") + '" bisa dikerjakan gratis. ' +
+    "Member Premium mendapat fitur tambahan: pembahasan, PDF, dan analisis lengkap.";
+
+  const actionsEl = document.getElementById("accessModalActions");
+
+  if (isUserPremium) {
+
+    actionsEl.innerHTML =
+      '<button class="modal-btn modal-btn-premium" onclick="goToTryout(' + row.id + ',\'premium\')">' +
+        '⭐ Akses Premium' +
+      '</button>' +
+      '<button class="modal-btn modal-btn-gratis" onclick="goToTryout(' + row.id + ',\'gratis\')">' +
+        'Gratis' +
+      '</button>';
+
+  } else {
+
+    actionsEl.innerHTML =
+      '<button class="modal-btn modal-btn-gratis" onclick="goToTryout(' + row.id + ',\'gratis\')">' +
+        'Kerjakan Gratis' +
+      '</button>' +
+      '<div class="modal-note">' +
+        'Upgrade ke Premium untuk dapat pembahasan, PDF, dan analisis lengkap.' +
+      '</div>';
+
+  }
+
+  document.getElementById("accessModalBg").classList.add("show");
+
+}
+
+function goToTryout(id, mode){
+  window.location.href = "tryout-akses.html?id=" + id + "&mode=" + mode;
+}
+
+function closeAccessModal(){
+  document.getElementById("accessModalBg").classList.remove("show");
+}
+
+document.getElementById("accessModalBg").addEventListener("click", e => {
+  if (e.target === e.currentTarget) closeAccessModal();
+});
+
+/* =========================
+FILTER & SEARCH
+========================= */
+
+const searchInput = document.getElementById("searchTryout");
+const aksesFilter  = document.getElementById("filterAkses");
+
+searchInput.addEventListener("keyup", applyFilter);
+aksesFilter.addEventListener("change", applyFilter);
+
+function applyFilter(){
+
+  const q     = searchInput.value.toLowerCase();
+  const akses = aksesFilter.value;
+
+  const filtered = allTryout.filter(r => {
+
+    const nama = (r.nama || "").toLowerCase();
+    const desk = (r.deskripsi || "").toLowerCase();
+
+    const matchQ = !q || nama.includes(q) || desk.includes(q);
+
+    const aksesType = r.akses || (r.is_premium ? "premium" : "gratis");
+    const matchA = !akses || aksesType === akses;
+
+    return matchQ && matchA;
+
+  });
+
+  renderTryoutCards(filtered);
+
+}
+
+/* =========================
+LOGOUT
+========================= */
+
+function logout(){
+
+  if (confirm("Yakin ingin keluar?")) {
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+  }
+
+}
+
+/* =========================
+INIT
+========================= */
+
+loadTryout();
+
+</script>
+
+</body>
+</html>

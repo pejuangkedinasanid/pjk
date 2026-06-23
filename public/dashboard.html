@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | Pejuang Kedinasan</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+
+--navy:#0f172a;
+--navy2:#1e293b;
+
+--orange:#f97316;
+--orange2:#fb923c;
+
+--blue:#2563eb;
+
+--bg:#f5f7fb;
+
+--card:#ffffff;
+
+--text:#1e293b;
+
+--muted:#64748b;
+
+--border:#e2e8f0;
+
+--shadow:
+0 20px 50px rgba(15,23,42,.08);
+
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Open Sans',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+
+background:
+linear-gradient(
+180deg,
+#eef2ff 0%,
+#f8fafc 45%,
+#ffffff 100%
+);
+
+display:flex;
+
+min-height:100vh;
+
+overflow-x:hidden;
+
+position:relative;
+
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+top:-250px;
+right:-250px;
+
+width:550px;
+height:550px;
+
+border-radius:50%;
+
+background:
+rgba(249,115,22,.12);
+
+filter:blur(90px);
+
+pointer-events:none;
+
+}
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+bottom:-250px;
+left:-250px;
+
+width:500px;
+height:500px;
+
+border-radius:50%;
+
+background:
+rgba(37,99,235,.10);
+
+filter:blur(90px);
+
+pointer-events:none;
+
+}
+
+/* =========================
+SIDEBAR
+========================= */
+
+.sidebar{
+
+width:290px;
+
+background:
+linear-gradient(
+180deg,
+#0f172a,
+#1e293b
+);
+
+position:fixed;
+
+left:0;
+top:0;
+bottom:0;
+
+color:white;
+
+z-index:100;
+
+overflow-y:auto;
+
+display:flex;
+
+flex-direction:column;
+
+box-shadow:
+10px 0 40px rgba(0,0,0,.15);
+
+}
+
+.sidebar-header{
+
+padding:30px 25px;
+
+border-bottom:
+1px solid rgba(255,255,255,.08);
+
+}
+
+.brand-title{
+
+font-size:24px;
+
+font-weight:800;
+
+line-height:1.2;
+
+}
+
+.brand-subtitle{
+
+margin-top:6px;
+
+font-size:12px;
+
+opacity:.7;
+
+}
+
+.menu{
+
+padding:20px 12px;
+
+flex:1;
+
+}
+
+.menu-group{
+
+font-size:11px;
+
+font-weight:700;
+
+opacity:.45;
+
+letter-spacing:1px;
+
+text-transform:uppercase;
+
+margin:18px 12px 10px;
+
+}
+
+.menu a{
+
+display:flex;
+
+align-items:center;
+
+padding:14px 16px;
+
+border-radius:16px;
+
+color:white;
+
+text-decoration:none;
+
+font-size:14px;
+
+font-weight:600;
+
+margin-bottom:6px;
+
+transition:.25s;
+
+}
+
+.menu a:hover{
+
+background:
+rgba(255,255,255,.08);
+
+transform:translateX(4px);
+
+}
+
+.menu a.active{
+
+background:
+linear-gradient(
+135deg,
+rgba(249,115,22,.85),
+rgba(251,146,60,.85)
+);
+
+}
+
+.sidebar-footer{
+
+padding:20px;
+
+border-top:
+1px solid rgba(255,255,255,.08);
+
+}
+
+.logout-btn{
+
+width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:16px;
+
+background:
+rgba(255,255,255,.08);
+
+color:white;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.logout-btn:hover{
+
+background:
+rgba(255,255,255,.15);
+
+}
+
+/* =========================
+MAIN
+========================= */
+
+.main{
+
+margin-left:290px;
+
+width:100%;
+
+padding:30px;
+
+position:relative;
+
+z-index:2;
+
+}
+
+.hero-dashboard{
+
+background:
+linear-gradient(
+135deg,
+#0f172a,
+#1e293b
+);
+
+border-radius:30px;
+
+padding:40px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:30px;
+
+margin-bottom:25px;
+
+overflow:hidden;
+
+position:relative;
+
+color:white;
+
+box-shadow:
+0 25px 60px rgba(15,23,42,.2);
+
+}
+
+.hero-dashboard::before{
+
+content:"";
+
+position:absolute;
+
+top:-120px;
+right:-120px;
+
+width:350px;
+height:350px;
+
+border-radius:50%;
+
+background:
+rgba(249,115,22,.15);
+
+}
+
+.hero-left{
+
+flex:1;
+
+position:relative;
+
+z-index:2;
+
+}
+
+.welcome-badge{
+
+display:inline-block;
+
+padding:10px 18px;
+
+border-radius:999px;
+
+background:
+rgba(255,255,255,.1);
+
+font-size:12px;
+
+font-weight:700;
+
+margin-bottom:18px;
+
+}
+
+.hero-dashboard h1{
+
+font-size:48px;
+
+font-weight:800;
+
+margin-bottom:15px;
+
+}
+
+.hero-desc{
+
+max-width:650px;
+
+line-height:1.8;
+
+opacity:.85;
+
+margin-bottom:25px;
+
+}
+
+.hero-info{
+
+display:flex;
+
+gap:15px;
+
+flex-wrap:wrap;
+
+}
+
+.hero-info-card{
+
+background:
+rgba(255,255,255,.08);
+
+padding:18px;
+
+border-radius:18px;
+
+min-width:180px;
+
+}
+
+.hero-label{
+
+display:block;
+
+font-size:11px;
+
+opacity:.7;
+
+margin-bottom:8px;
+
+}
+
+.hero-info-card strong{
+
+font-size:18px;
+
+font-weight:800;
+
+}
+.hero-right{
+
+position:relative;
+
+z-index:2;
+
+}
+
+.account-card{
+
+width:280px;
+
+padding:25px;
+
+border-radius:24px;
+
+}
+
+.account-card.premium{
+
+background:
+linear-gradient(
+135deg,
+#f97316,
+#fb923c
+);
+
+color:white;
+
+box-shadow:
+0 15px 40px rgba(249,115,22,.35);
+
+}
+
+.account-card.reguler{
+
+background:
+linear-gradient(
+135deg,
+#475569,
+#64748b
+);
+
+color:white;
+
+}
+
+.account-badge{
+
+font-size:11px;
+
+font-weight:800;
+
+letter-spacing:1px;
+
+margin-bottom:15px;
+
+}
+
+.account-card h2{
+
+font-size:36px;
+
+font-weight:900;
+
+margin-bottom:10px;
+
+}
+
+.quota-box{
+
+margin-top:15px;
+
+padding:12px;
+
+border-radius:12px;
+
+background:
+rgba(255,255,255,.15);
+
+text-align:center;
+
+font-weight:700;
+
+}
+
+/* =========================
+TRYOUT TERBARU
+========================= */
+
+.section-title{
+
+font-size:22px;
+
+font-weight:800;
+
+color:var(--navy);
+
+margin-bottom:18px;
+
+}
+
+.latest-section{
+
+margin-bottom:25px;
+
+}
+
+.latest-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(280px,1fr));
+
+gap:20px;
+
+}
+
+.latest-card{
+
+background:white;
+
+border-radius:24px;
+
+padding:24px;
+
+box-shadow:var(--shadow);
+
+transition:.3s;
+
+border:1px solid #eef2f7;
+
+}
+
+.latest-card:hover{
+
+transform:translateY(-5px);
+
+}
+
+.latest-tag{
+
+display:inline-block;
+
+padding:8px 14px;
+
+border-radius:999px;
+
+background:#dcfce7;
+
+color:#166534;
+
+font-size:11px;
+
+font-weight:700;
+
+margin-bottom:15px;
+
+}
+
+.latest-card h3{
+
+font-size:20px;
+
+margin-bottom:10px;
+
+color:var(--navy);
+
+}
+
+.latest-card p{
+
+font-size:14px;
+
+color:var(--muted);
+
+line-height:1.7;
+
+margin-bottom:15px;
+
+}
+
+.latest-btn{
+
+padding:12px 18px;
+
+border:none;
+
+border-radius:14px;
+
+background:
+linear-gradient(
+135deg,
+#f97316,
+#fb923c
+);
+
+color:white;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+/* =========================
+STATISTIK
+========================= */
+
+.stats{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:20px;
+
+margin-bottom:25px;
+
+}
+
+.stat-card{
+
+background:white;
+
+padding:25px;
+
+border-radius:24px;
+
+box-shadow:var(--shadow);
+
+transition:.3s;
+
+}
+
+.stat-card:hover{
+
+transform:translateY(-5px);
+
+}
+
+.stat-title{
+
+font-size:12px;
+
+font-weight:700;
+
+color:var(--muted);
+
+text-transform:uppercase;
+
+margin-bottom:10px;
+
+}
+
+.stat-value{
+
+font-size:38px;
+
+font-weight:800;
+
+color:var(--navy);
+
+}
+
+.stat-desc{
+
+font-size:13px;
+
+margin-top:8px;
+
+color:var(--muted);
+
+}
+
+@media(max-width:1000px){
+
+.stats{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:700px){
+
+.stats{
+
+grid-template-columns:1fr;
+
+}
+
+.hero-dashboard{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.hero-dashboard h1{
+
+font-size:34px;
+
+}
+
+.account-card{
+
+width:100%;
+
+}
+
+}
+/* =========================
+CONTENT GRID
+========================= */
+
+.content-grid{
+
+display:grid;
+
+grid-template-columns:2fr 1fr;
+
+gap:20px;
+
+margin-top:25px;
+
+}
+
+.card{
+
+background:white;
+
+border-radius:24px;
+
+padding:25px;
+
+box-shadow:var(--shadow);
+
+}
+
+.card-title{
+
+font-size:20px;
+
+font-weight:800;
+
+color:var(--navy);
+
+margin-bottom:20px;
+
+}
+
+/* =========================
+RIWAYAT TRYOUT
+========================= */
+
+.riwayat-table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+.riwayat-table th{
+
+text-align:left;
+
+padding:14px;
+
+font-size:13px;
+
+color:var(--muted);
+
+border-bottom:1px solid #e2e8f0;
+
+}
+
+.riwayat-table td{
+
+padding:14px;
+
+border-bottom:1px solid #eef2f7;
+
+font-size:14px;
+
+}
+
+.nilai-badge{
+
+display:inline-block;
+
+padding:8px 12px;
+
+border-radius:999px;
+
+background:#ecfdf5;
+
+color:#166534;
+
+font-weight:700;
+
+}
+
+/* =========================
+NOTIFIKASI
+========================= */
+
+.notif-item{
+
+padding:14px;
+
+border-radius:16px;
+
+background:#f8fafc;
+
+margin-bottom:12px;
+
+transition:.25s;
+
+}
+
+.notif-item:hover{
+
+background:#f1f5f9;
+
+}
+
+.notif-date{
+
+font-size:12px;
+
+color:var(--muted);
+
+margin-top:8px;
+
+}
+
+/* =========================
+HAMBURGER
+========================= */
+
+.hamburger{
+
+display:flex;
+
+position:fixed;
+
+top:15px;
+
+left:15px;
+
+width:48px;
+
+height:48px;
+
+border:none;
+
+border-radius:14px;
+
+background:var(--navy);
+
+color:white;
+
+font-size:20px;
+
+cursor:pointer;
+
+z-index:200;
+
+align-items:center;
+
+justify-content:center;
+
+transition:.3s;
+
+}
+
+.hamburger.inside{
+
+left:227px;
+
+}
+
+.overlay{
+
+display:none;
+
+}
+
+.overlay.active{
+
+display:block;
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.45);
+
+z-index:90;
+
+}
+
+/* sidebar bisa di-toggle di semua ukuran layar */
+
+.sidebar{
+
+transform:translateX(0);
+
+transition:.3s;
+
+}
+
+.sidebar.closed{
+
+transform:translateX(-290px);
+
+}
+
+.main{
+
+transition:.3s;
+
+}
+
+.main.full{
+
+margin-left:0;
+
+}
+
+@media(max-width:1000px){
+
+  .main{
+    margin-left:0;
+  }
+
+  .content-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="overlay" id="overlay"></div>
+
+<button
+class="hamburger"
+id="hamburger">
+☰ </button>
+
+<!-- =========================
+SIDEBAR
+========================= -->
+
+<div
+class="sidebar"
+id="sidebar">
+
+<div class="sidebar-header">
+
+<div class="brand-title">
+PEJUANG KEDINASAN
+</div>
+
+<div class="brand-subtitle">
+Platform Tryout Kedinasan No.1 Indonesia
+</div>
+
+</div>
+
+<div class="menu">
+
+<div class="menu-group">
+UTAMA
+</div>
+
+<a
+href="dashboard.html"
+class="active">
+Dashboard </a>
+
+<a href="tryout-tersedia.html">
+Tryout Tersedia
+</a>
+
+<a href="tryout-saya.html">
+Tryout Saya
+</a>
+
+<div class="menu-group">
+BELAJAR
+</div>
+
+<a href="latihan.html">
+Bank Soal
+</a>
+
+<a href="materi.html">
+Materi
+</a>
+
+<a href="video.html">
+Video Pembahasan
+</a>
+
+<div class="menu-group">
+KOMPETISI
+</div>
+
+<a href="leaderboard.html">
+Ranking Nasional
+</a>
+
+<a href="target.html">
+Target Kedinasan
+</a>
+
+<div class="menu-group">
+AKUN
+</div>
+
+<a href="profil.html">
+Profil Saya
+</a>
+
+<a href="pengaturan.html">
+Pengaturan
+</a>
+
+</div>
+
+<div class="sidebar-footer">
+
+<button
+class="logout-btn"
+onclick="logout()">
+
+Logout
+
+</button>
+
+</div>
+
+</div>
+
+<!-- =========================
+MAIN
+========================= -->
+
+<div class="main">
+
+<!-- HERO -->
+
+<div class="hero-dashboard">
+
+<div class="hero-left">
+
+<div class="welcome-badge">
+🔥 PEJUANG KEDINASAN 2026
+</div>
+
+<h1 id="greetingName">
+Halo, Pejuang!
+</h1>
+
+<p class="hero-desc">
+Pantau progres belajar, ikuti tryout terbaru, dan tingkatkan ranking nasionalmu.
+</p>
+
+<div class="hero-info">
+
+<div class="hero-info-card">
+
+<span class="hero-label">
+TARGET SEKOLAH
+</span>
+
+<strong id="targetSekolah">
+PKN STAN
+</strong>
+
+</div>
+
+<div class="hero-info-card">
+
+<span class="hero-label">
+TAHUN SELEKSI
+</span>
+
+<strong id="tahunSeleksi">
+2026
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="hero-right">
+
+<div class="account-card premium">
+
+<div class="account-badge">
+⭐ STATUS AKUN
+</div>
+
+<h2 id="statusValue">
+PREMIUM
+</h2>
+
+<p>
+Akses semua tryout premium.
+</p>
+
+<div
+id="statusKuota"
+class="quota-box">
+
+Unlimited Access
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+<!-- =========================
+TRYOUT TERBARU
+========================= -->
+
+<div class="latest-section">
+
+<div class="section-title">
+🔥 Tryout Terbaru
+</div>
+
+<div class="latest-grid">
+
+<div class="latest-card">
+
+<div class="latest-tag">
+SEDANG BERLANGSUNG
+</div>
+
+<h3>
+Tryout Akbar STAN 2026
+</h3>
+
+<p>
+Simulasi seleksi nasional terbaru untuk persiapan masuk PKN STAN.
+</p>
+
+<button class="latest-btn">
+Ikuti Sekarang
+</button>
+
+</div>
+
+<div class="latest-card">
+
+<div class="latest-tag">
+BARU DITAMBAHKAN
+</div>
+
+<h3>
+Tryout IPDN Nasional
+</h3>
+
+<p>
+Latihan CAT terbaru dengan pembahasan lengkap dan ranking nasional.
+</p>
+
+<button class="latest-btn">
+Lihat Detail
+</button>
+
+</div>
+
+<div class="latest-card">
+
+<div class="latest-tag">
+PREMIUM
+</div>
+
+<h3>
+Tryout STMKG Premium
+</h3>
+
+<p>
+Paket latihan eksklusif khusus member premium.
+</p>
+
+<button class="latest-btn">
+Buka Tryout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+STATISTIK
+========================= -->
+
+<div class="stats">
+
+<div class="stat-card">
+
+<div class="stat-title">
+Total Tryout
+</div>
+
+<div
+class="stat-value"
+id="sDikerjakan">
+
+0
+
+</div>
+
+<div class="stat-desc">
+Tryout yang telah dikerjakan
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-title">
+Rata-rata Nilai
+</div>
+
+<div
+class="stat-value"
+id="sNilai">
+
+0
+
+</div>
+
+<div class="stat-desc">
+Nilai rata-rata seluruh tryout
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-title">
+Tryout Dimiliki
+</div>
+
+<div
+class="stat-value"
+id="sDimiliki">
+
+0
+
+</div>
+
+<div class="stat-desc">
+Akses tryout aktif
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-title">
+Waktu Belajar
+</div>
+
+<div
+class="stat-value"
+id="sOnline">
+
+0
+
+</div>
+
+<div class="stat-desc">
+Total aktivitas belajar
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+CONTENT GRID
+========================= -->
+
+<div class="content-grid">
+
+<div>
+
+<!-- RIWAYAT -->
+
+<div class="card">
+
+<div class="card-title">
+📚 Riwayat Tryout Terbaru
+</div>
+
+<div id="riwayatWrap">
+
+<div
+style="
+text-align:center;
+padding:50px;
+color:#64748b;
+">
+
+Belum ada riwayat tryout
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- SIDEBAR KANAN -->
+
+<div>
+
+<div class="card">
+
+<div class="card-title">
+🔔 Notifikasi
+</div>
+
+<div id="notifWrap">
+
+<div
+style="
+text-align:center;
+padding:40px;
+color:#64748b;
+">
+
+Belum ada notifikasi
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CARD TARGET -->
+
+<div
+class="card"
+style="margin-top:20px;">
+
+<div class="card-title">
+🎯 Target Kedinasan
+</div>
+
+<div
+style="
+background:#fff7ed;
+padding:18px;
+border-radius:16px;
+">
+
+<div
+style="
+font-size:12px;
+color:#9a3412;
+font-weight:700;
+margin-bottom:8px;
+">
+
+TARGET UTAMA
+
+</div>
+
+<div
+id="targetSekolahCard"
+style="
+font-size:22px;
+font-weight:800;
+color:#c2410c;
+">
+
+PKN STAN
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+</div>
+<!-- END CONTENT GRID -->
+
+</div>
+<!-- END MAIN -->
+
+<!-- 
+  GANTI HANYA BAGIAN <script> di dashboard.html Anda
+  Salin dari baris <script src="https://cdn..."  sampai </script> terakhir
+  Desain/HTML/CSS tidak berubah sama sekali
+-->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+/* =========================
+AUTH GUARD
+========================= */
+
+const rawUser = localStorage.getItem("user");
+if (!rawUser) { window.location.href = "login.html"; }
+const user = JSON.parse(rawUser);
+
+/* =========================
+LOAD USER INFO
+========================= */
+
+document.getElementById("greetingName").textContent =
+  "Halo, " + (user.username || user.nama || "Pejuang");
+
+document.getElementById("targetSekolah").textContent =
+  user.sekolah_kedinasan || "Belum Dipilih";
+
+document.getElementById("tahunSeleksi").textContent =
+  user.tahun_seleksi || "2026";
+
+const targetCard = document.getElementById("targetSekolahCard");
+if (targetCard) {
+  targetCard.textContent = user.sekolah_kedinasan || "Belum Dipilih";
+}
+
+/* =========================
+STATUS AKUN
+— field: user.plan ("premium" / "free")
+========================= */
+
+function renderStatusAkun() {
+  // Cek field plan (dari database kita) atau fallback ke status_akun / tipe_akun lama
+  const plan = (
+    user.plan ||
+    user.status_akun ||
+    user.tipe_akun ||
+    "free"
+  ).toLowerCase();
+
+  const statusCard  = document.querySelector(".account-card");
+  const statusValue = document.getElementById("statusValue");
+  const kuotaEl     = document.getElementById("statusKuota");
+
+  if (plan === "premium") {
+    statusCard.classList.remove("reguler");
+    statusCard.classList.add("premium");
+    statusValue.textContent = "PREMIUM";
+    const kuota = user.kuota_tryout !== undefined
+      ? "Sisa Kuota: " + user.kuota_tryout + " Tryout"
+      : "Akses Tidak Terbatas";
+    kuotaEl.textContent = kuota;
+  } else {
+    statusCard.classList.remove("premium");
+    statusCard.classList.add("reguler");
+    statusValue.textContent = "REGULER";
+    kuotaEl.textContent = "Akses Tryout Gratis";
+  }
+}
+
+/* =========================
+LOAD STATS dari Supabase
+========================= */
+
+async function loadStats() {
+  const email = user.email;
+
+  // Hasil tryout yang sudah dikerjakan
+  const { data: hasil } = await sb
+    .from("hasil_tryout")
+    .select("nilai, durasi_menit, nama_tryout, created_at")
+    .eq("email", email)
+    .order("created_at", { ascending: false });
+
+  const total = hasil ? hasil.length : 0;
+  document.getElementById("sDikerjakan").textContent = total;
+
+  if (total) {
+    const avgNilai = Math.round(
+      hasil.reduce((s, r) => s + (r.nilai || 0), 0) / total
+    );
+    document.getElementById("sNilai").textContent = avgNilai;
+
+    const avgDurasi = Math.round(
+      hasil.reduce((s, r) => s + (r.durasi_menit || 0), 0) / total
+    );
+    document.getElementById("sOnline").textContent = avgDurasi + "m";
+  } else {
+    document.getElementById("sNilai").textContent  = "—";
+    document.getElementById("sOnline").textContent = "—";
+  }
+
+  // Tryout yang dimiliki / akses aktif
+  const { data: akses } = await sb
+    .from("akses_tryout")
+    .select("id")
+    .eq("email", email);
+
+  document.getElementById("sDimiliki").textContent = akses ? akses.length : 0;
+
+  // Render riwayat
+  renderRiwayat(hasil || []);
+}
+
+/* =========================
+RIWAYAT TRYOUT
+========================= */
+
+function renderRiwayat(rows) {
+  const wrap = document.getElementById("riwayatWrap");
+  if (!rows.length) {
+    wrap.innerHTML = '<div style="text-align:center;padding:50px;color:#64748b;">Belum ada riwayat tryout</div>';
+    return;
+  }
+
+  let html = '<table class="riwayat-table"><thead><tr><th>Tryout</th><th>Nilai</th><th>Tanggal</th></tr></thead><tbody>';
+
+  rows.slice(0, 10).forEach(row => {
+    const d   = row.created_at ? new Date(row.created_at) : null;
+    const tgl = d ? d.getDate() + " " + BULAN[d.getMonth()] + " " + d.getFullYear() : "—";
+    html += "<tr>" +
+      "<td>" + (row.nama_tryout || "—") + "</td>" +
+      '<td><span class="nilai-badge">' + (row.nilai || 0) + "</span></td>" +
+      "<td>" + tgl + "</td>" +
+      "</tr>";
+  });
+
+  html += "</tbody></table>";
+  wrap.innerHTML = html;
+}
+
+/* =========================
+NOTIFIKASI
+========================= */
+
+async function loadNotif() {
+  const wrap = document.getElementById("notifWrap");
+
+  const { data } = await sb
+    .from("notifikasi")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(5);
+
+  if (!data || !data.length) {
+    wrap.innerHTML = '<div style="text-align:center;padding:40px;color:#64748b;">Belum ada notifikasi</div>';
+    return;
+  }
+
+  wrap.innerHTML = data.map(item => {
+    const d   = new Date(item.created_at);
+    const tgl = d.getDate() + " " + BULAN[d.getMonth()] + " " + d.getFullYear();
+    return '<div class="notif-item">' +
+      "<div>" + item.pesan + "</div>" +
+      '<div class="notif-date">' + tgl + "</div>" +
+      "</div>";
+  }).join("");
+}
+
+/* =========================
+SIDEBAR MOBILE — DIPERBAIKI
+Masalah asal: toggle tidak bekerja karena
+sidebar tidak punya initial state yang jelas
+========================= */
+
+/* =========================
+SIDEBAR MOBILE — FIX
+========================= */
+
+/* =========================
+SIDEBAR MOBILE — FIX FINAL
+========================= */
+
+const sidebar   = document.getElementById("sidebar");
+const hamburger = document.getElementById("hamburger");
+const overlay   = document.getElementById("overlay");
+const mainEl    = document.querySelector(".main");
+
+function openSidebar(){
+  sidebar.classList.remove("closed");
+  hamburger.innerHTML = "&#x2715;";
+  hamburger.classList.add("inside");
+
+  if (window.innerWidth <= 1000) {
+    overlay.classList.add("active");
+    mainEl.classList.remove("full");
+  } else {
+    overlay.classList.remove("active");
+    mainEl.classList.remove("full");
+  }
+}
+
+function closeSidebar(){
+  sidebar.classList.add("closed");
+  overlay.classList.remove("active");
+  mainEl.classList.add("full");
+  hamburger.innerHTML  = "&#9776;";
+  hamburger.classList.remove("inside");
+}
+
+hamburger.addEventListener("click", () => {
+  const isOpen = !sidebar.classList.contains("closed");
+
+  if (isOpen) {
+    closeSidebar();
+  } else {
+    openSidebar();
+  }
+});
+
+overlay.addEventListener("click", closeSidebar);
+
+function initSidebar(){
+  if (window.innerWidth <= 1000) {
+    closeSidebar();
+  } else {
+    openSidebar();
+  }
+}
+
+window.addEventListener("resize", initSidebar);
+
+/* =========================
+INIT
+========================= */
+
+initSidebar();
+renderStatusAkun();
+loadStats();
+loadNotif();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kelola Tryout | Admin Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#14274e;--primary2:#1f3f7a;--bg:#f5f7fb;--card:#fff;--border:#e2e8f0;--text:#334155;--muted:#64748b;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+body{background:var(--bg);display:flex;min-height:100vh;}
+.sidebar{width:280px;background:#14274e;position:fixed;left:0;top:0;bottom:0;color:white;overflow-y:auto;transition:transform .3s;z-index:100;}
+.sidebar-header{padding:24px 20px 20px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.brand{font-size:20px;font-weight:800;line-height:1.2;}
+.brand-sub{font-size:11px;opacity:.65;margin-top:4px;}
+.btn-close{flex-shrink:0;width:30px;height:30px;border-radius:8px;border:none;background:rgba(255,255,255,.1);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.btn-close:hover{background:rgba(255,255,255,.2);}
+.menu{padding:16px 12px;}
+.menu-title{font-size:11px;font-weight:700;opacity:.4;text-transform:uppercase;letter-spacing:1px;margin:16px 12px 8px;}
+.menu a{display:block;padding:13px 14px;border-radius:14px;color:white;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:3px;transition:.2s;}
+.menu a:hover{background:rgba(255,255,255,.08);}
+.menu a.active{background:rgba(255,255,255,.12);}
+.sidebar-footer{padding:16px 12px;border-top:1px solid rgba(255,255,255,.08);}
+.btn-logout{display:block;width:100%;padding:13px 14px;border-radius:14px;color:rgba(255,255,255,.6);font-size:14px;font-weight:600;cursor:pointer;border:none;background:none;text-align:left;transition:.2s;}
+.btn-logout:hover{background:rgba(239,68,68,.15);color:#fca5a5;}
+.hamburger{display:none;position:fixed;top:15px;left:15px;width:44px;height:44px;border:none;background:#14274e;border-radius:12px;color:white;font-size:20px;cursor:pointer;z-index:200;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(20,39,78,.3);}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90;}
+.overlay.active{display:block;}
+.main{margin-left:280px;width:100%;padding:30px;transition:margin .3s;}
+.hero{background:linear-gradient(135deg,#14274e,#1f3f7a);padding:32px 35px;border-radius:25px;color:white;margin-bottom:25px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.hero h1{font-size:30px;font-weight:800;margin-bottom:6px;}
+.hero p{opacity:.8;font-size:14px;}
+.btn-primary{padding:13px 24px;background:white;color:#14274e;border:none;border-radius:14px;font-weight:800;font-size:14px;cursor:pointer;transition:.2s;white-space:nowrap;}
+.btn-primary:hover{background:#f0f5ff;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:25px;}
+.stat-card{background:white;padding:22px 24px;border-radius:18px;box-shadow:0 5px 20px rgba(0,0,0,.05);}
+.stat-title{font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.stat-value{font-size:32px;font-weight:800;color:#14274e;}
+.stat-sub{font-size:12px;color:#64748b;margin-top:4px;}
+.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
+.search-wrap{position:relative;flex:1;min-width:200px;}
+.search-wrap input{width:100%;padding:12px 14px 12px 40px;border:1px solid var(--border);border-radius:12px;font-size:14px;outline:none;background:white;}
+.search-wrap input:focus{border-color:#14274e;box-shadow:0 0 0 3px rgba(20,39,78,.08);}
+.search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#94a3b8;}
+.filter-select{padding:12px 14px;border:1px solid var(--border);border-radius:12px;font-size:13px;font-weight:600;color:#334155;background:white;outline:none;cursor:pointer;}
+.card{background:white;border-radius:20px;box-shadow:0 5px 20px rgba(0,0,0,.05);overflow:hidden;}
+.card-header{padding:20px 25px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:18px;font-weight:800;color:#14274e;}
+.dtable{width:100%;border-collapse:collapse;}
+.dtable thead tr{background:#f8fafc;}
+.dtable th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;}
+.dtable td{padding:14px 16px;border-top:1px solid #f1f5f9;font-size:13px;color:#334155;vertical-align:middle;}
+.dtable tr:hover td{background:#fafbff;}
+.badge{padding:4px 12px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;}
+.badge-green{background:#dcfce7;color:#15803d;}
+.badge-gray{background:#f1f5f9;color:#64748b;}
+.badge-blue{background:#dbeafe;color:#1d4ed8;}
+.badge-orange{background:#fff7ed;color:#c2410c;}
+.badge-red{background:#fee2e2;color:#dc2626;}
+.act-btn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;border:none;cursor:pointer;transition:.15s;}
+.act-edit{background:#f0f5ff;color:#14274e;}
+.act-edit:hover{background:#dbeafe;}
+.act-del{background:#fee2e2;color:#dc2626;}
+.act-del:hover{background:#fecaca;}
+.act-toggle{background:#f0fdf4;color:#16a34a;}
+.act-toggle:hover{background:#dcfce7;}
+
+/* ── MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;}
+.modal-bg.show{display:flex;}
+.modal{background:white;border-radius:24px;padding:32px;width:100%;max-width:680px;position:relative;margin:auto;}
+.modal-title{font-size:20px;font-weight:800;color:#14274e;margin-bottom:24px;}
+.modal-close{position:absolute;top:20px;right:20px;width:32px;height:32px;border-radius:8px;border:none;background:#f1f5f9;color:#64748b;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:#e2e8f0;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:13px;font-weight:700;color:#14274e;margin-bottom:6px;}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:12px;font-size:14px;outline:none;font-family:inherit;transition:.2s;}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:#14274e;box-shadow:0 0 0 3px rgba(20,39,78,.08);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.form-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.section-divider{font-size:12px;font-weight:800;color:#14274e;text-transform:uppercase;letter-spacing:.5px;margin:20px 0 12px;padding-bottom:8px;border-bottom:2px solid #f1f5f9;}
+.btn-save{width:100%;padding:14px;background:#14274e;color:white;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;margin-top:10px;transition:.2s;}
+.btn-save:hover{background:#1f3f7a;}
+.btn-save:disabled{opacity:.6;cursor:not-allowed;}
+
+/* ── Banner upload ── */
+.banner-upload{border:2px dashed var(--border);border-radius:14px;padding:20px;text-align:center;cursor:pointer;transition:.2s;position:relative;}
+.banner-upload:hover{border-color:#14274e;background:#f8faff;}
+.banner-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+.banner-preview{width:100%;height:140px;object-fit:cover;border-radius:10px;margin-bottom:10px;display:none;}
+.banner-label{font-size:13px;color:#94a3b8;font-weight:600;}
+
+/* ── Password field conditional ── */
+.password-row{display:none;}
+.password-row.show{display:grid;}
+
+/* ── Empty ── */
+.empty{text-align:center;padding:50px 20px;color:#64748b;}
+.empty b{display:block;font-size:16px;color:#14274e;margin-bottom:8px;}
+
+@media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:1000px){.sidebar{transform:translateX(-280px);}.sidebar.active{transform:translateX(0);}.main{margin-left:0 !important;}.hamburger{display:flex;}}
+@media(max-width:700px){.main{padding:20px 16px;}.form-row{grid-template-columns:1fr;}.form-row3{grid-template-columns:1fr 1fr;}.stats{grid-template-columns:1fr 1fr;}}
+@media(max-width:480px){.stats{grid-template-columns:1fr;}.form-row3{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+<button class="hamburger" id="hamburger" onclick="openSidebar()">&#9776;</button>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div><div class="brand">ADMIN PANEL</div><div class="brand-sub">Pejuang Kedinasan</div></div>
+    <button class="btn-close" onclick="closeSidebar()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="menu">
+    <div class="menu-title">Utama</div>
+    <a href="admin-dashboard.html">Dashboard</a>
+    <a href="admin-tryout.html" class="active">Kelola Tryout</a>
+    <a href="admin-soal.html">Kelola Soal</a>
+    <div class="menu-title">Peserta</div>
+    <a href="admin-users.html">Daftar User</a>
+    <a href="admin-premium.html">Member Premium</a>
+    <div class="menu-title">Lainnya</div>
+    <a href="admin-payment.html">Pembayaran</a>
+    <a href="admin-leaderboard.html">Leaderboard</a>
+    <a href="admin-notifikasi.html">Notifikasi</a>
+    <a href="admin-setting.html">Pengaturan</a>
+  </div>
+  <div class="sidebar-footer">
+    <button class="btn-logout" onclick="logout()">Keluar</button>
+  </div>
+</div>
+
+<div class="main" id="main">
+  <div class="hero">
+    <div>
+      <h1>Kelola Tryout SKD</h1>
+      <p>Buat, edit, dan kelola seluruh tryout Seleksi Kompetensi Dasar.</p>
+    </div>
+    <button class="btn-primary" onclick="openModal()">+ Buat Tryout Baru</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card"><div class="stat-title">Total Tryout</div><div class="stat-value" id="statTotal">—</div><div class="stat-sub">semua tryout</div></div>
+    <div class="stat-card"><div class="stat-title">Aktif / Publish</div><div class="stat-value" id="statAktif">—</div><div class="stat-sub">sedang berjalan</div></div>
+    <div class="stat-card"><div class="stat-title">Premium</div><div class="stat-value" id="statPremium">—</div><div class="stat-sub">tryout berbayar</div></div>
+    <div class="stat-card"><div class="stat-title">Total Pengerjaan</div><div class="stat-value" id="statHasil">—</div><div class="stat-sub">dari semua tryout</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg class="search-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Cari nama tryout..." oninput="filterTable()">
+    </div>
+    <select class="filter-select" id="filterAkses" onchange="filterTable()">
+      <option value="">Semua Akses</option>
+      <option value="gratis">Gratis</option>
+      <option value="premium">Berbayar</option>
+      <option value="semua">Gratis + Berbayar</option>
+    </select>
+    <select class="filter-select" id="filterStatus" onchange="filterTable()">
+      <option value="">Semua Status</option>
+      <option value="publish">Publish</option>
+      <option value="draft">Draft</option>
+    </select>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Daftar Tryout</div>
+      <span id="jumlahLabel" style="font-size:13px;color:#64748b;"></span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="dtable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Tryout</th>
+            <th>Akses</th>
+            <th>Durasi</th>
+            <th>Passing Grade</th>
+            <th>Pelaksanaan</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr><td colspan="8" style="text-align:center;padding:40px;color:#64748b;">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL FORM ══ -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&#x2715;</button>
+    <div class="modal-title" id="modalTitle">Buat Tryout Baru</div>
+
+    <form id="tryoutForm" onsubmit="saveTryout(event)">
+      <input type="hidden" id="editId">
+      <input type="hidden" id="existingBanner">
+
+      <!-- Banner -->
+      <div class="section-divider">Banner Tryout</div>
+      <div class="banner-upload" id="bannerUploadArea">
+        <input type="file" id="f_banner" accept="image/*" onchange="previewBanner(this)">
+        <img id="bannerPreview" class="banner-preview" alt="Preview banner">
+        <div class="banner-label" id="bannerLabel">
+          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin:0 auto 8px;display:block;color:#94a3b8;"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+          Klik untuk upload banner (JPG/PNG, maks 2MB)
+        </div>
+      </div>
+
+      <!-- Info dasar -->
+      <div class="section-divider">Informasi Tryout</div>
+      <div class="form-group">
+        <label>Nama Tryout *</label>
+        <input type="text" id="f_nama" placeholder="Contoh: Tryout Nasional SKD #1" required>
+      </div>
+      <div class="form-group">
+        <label>Deskripsi</label>
+        <textarea id="f_deskripsi" rows="3" placeholder="Deskripsi singkat tryout..."></textarea>
+      </div>
+
+      <!-- Akses & Status -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Akses Peserta *</label>
+          <select id="f_akses" onchange="togglePasswordField()">
+            <option value="gratis">Gratis — semua user bisa kerjakan</option>
+            <option value="premium">Berbayar — hanya member premium</option>
+            <option value="semua">Gratis + Berbayar — semua bisa, premium dapat fitur lebih</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="f_status">
+            <option value="draft">Draft</option>
+            <option value="publish">Publish</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Info akses semua — muncul saat pilih Gratis + Berbayar -->
+      <div id="aksesInfoRow" style="display:none;margin-bottom:16px;">
+        <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:12px;padding:14px 16px;font-size:13px;color:#0369a1;line-height:1.7;">
+          <b>Gratis + Berbayar:</b> Semua user bisa mengerjakan tryout ini.
+          User <b>premium</b> akan mendapat akses ke pembahasan lengkap, PDF, dan analisis nilai.
+          User <b>gratis</b> hanya bisa melihat nilai akhir tanpa pembahasan.
+        </div>
+      </div>
+
+      <!-- Durasi & Jumlah Soal -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>Durasi (menit) *</label>
+          <input type="number" id="f_durasi" value="100" min="10">
+        </div>
+        <div class="form-group">
+          <label>Jumlah Soal</label>
+          <input type="number" id="f_jumlah_soal" value="110" min="1">
+        </div>
+      </div>
+
+      <!-- Tanggal Pelaksanaan -->
+      <div class="section-divider">Tanggal Pelaksanaan</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tanggal Mulai</label>
+          <input type="datetime-local" id="f_tanggal_mulai">
+        </div>
+        <div class="form-group">
+          <label>Tanggal Selesai</label>
+          <input type="datetime-local" id="f_tanggal_selesai">
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:-8px;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;color:#64748b;">
+          <input type="checkbox" id="f_bebas_waktu" style="width:auto;padding:0;" onchange="toggleBebasWaktu()">
+          Bisa dikerjakan di luar periode (akses fleksibel)
+        </label>
+      </div>
+
+      <!-- Passing Grade -->
+      <div class="section-divider">Passing Grade SKD</div>
+      <div class="form-row3">
+        <div class="form-group">
+          <label>TWK</label>
+          <input type="number" id="f_passing_twk" value="65">
+        </div>
+        <div class="form-group">
+          <label>TIU</label>
+          <input type="number" id="f_passing_tiu" value="80">
+        </div>
+        <div class="form-group">
+          <label>TKP</label>
+          <input type="number" id="f_passing_tkp" value="166">
+        </div>
+      </div>
+
+      <!-- Link Pembahasan -->
+      <div class="section-divider">Link Pembahasan</div>
+      <div class="form-group">
+        <label>Link Video Pembahasan (YouTube)</label>
+        <input type="url" id="f_video_url" placeholder="https://youtube.com/...">
+      </div>
+      <div class="form-group">
+        <label>Link Download PDF Pembahasan</label>
+        <input type="url" id="f_pdf_url" placeholder="https://drive.google.com/...">
+      </div>
+      <div class="form-group">
+        <label>Link Google Form (Opsional)</label>
+        <input type="url" id="f_gform_url" placeholder="https://forms.google.com/...">
+      </div>
+
+      <button type="submit" class="btn-save" id="saveBtn">Simpan Tryout</button>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+// Auth guard
+const rawUser = localStorage.getItem('user');
+if (!rawUser) window.location.href = 'login.html';
+const user = JSON.parse(rawUser);
+if (user.role !== 'admin' && user.role !== 'super_admin') window.location.href = 'dashboard.html';
+
+let allTryout = [];
+
+/* ── Load tryout ── */
+async function loadTryout() {
+  const { data, error } = await sb.from('tryout')
+    .select('*').order('created_at', { ascending: false });
+  if (error) { console.error(error); return; }
+  allTryout = data || [];
+  renderStats(allTryout);
+  renderTable(allTryout);
+}
+
+async function loadHasil() {
+  const { count } = await sb.from('hasil_tryout')
+    .select('*', { count: 'exact', head: true });
+  document.getElementById('statHasil').textContent = count ?? 0;
+}
+
+function renderStats(rows) {
+  document.getElementById('statTotal').textContent   = rows.length;
+  document.getElementById('statAktif').textContent   = rows.filter(r => r.status === 'publish' || r.aktif).length;
+  document.getElementById('statPremium').textContent = rows.filter(r => r.akses === 'premium' || r.akses === 'semua' || r.is_premium).length;
+}
+
+/* ── Render tabel ── */
+function renderTable(rows) {
+  const tbody = document.getElementById('tableBody');
+  document.getElementById('jumlahLabel').textContent = rows.length + ' tryout';
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><b>Belum ada tryout</b>Klik "+ Buat Tryout Baru" untuk menambahkan.</div></td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map((r, i) => {
+    // Badge akses
+    let aksesBadge;
+    if (r.akses === 'premium' || r.is_premium) {
+      aksesBadge = '<span class="badge badge-blue">Berbayar</span>';
+    } else if (r.akses === 'semua') {
+      aksesBadge = '<span class="badge badge-orange">Gratis + Berbayar</span>';
+    } else {
+      aksesBadge = '<span class="badge badge-green">Gratis</span>';
+    }
+
+    const statusBadge = (r.status === 'publish' || r.aktif)
+      ? '<span class="badge badge-green">Publish</span>'
+      : '<span class="badge badge-gray">Draft</span>';
+
+    const durasi = r.durasi ? r.durasi + ' mnt' : '—';
+
+    // Tanggal pelaksanaan
+    let tglPelaksanaan = '—';
+    if (r.tanggal_mulai) {
+      const dm = new Date(r.tanggal_mulai);
+      tglPelaksanaan = dm.getDate() + ' ' + BULAN[dm.getMonth()];
+      if (r.tanggal_selesai) {
+        const ds = new Date(r.tanggal_selesai);
+        tglPelaksanaan += ' – ' + ds.getDate() + ' ' + BULAN[ds.getMonth()];
+      }
+    }
+    if (r.bebas_waktu) tglPelaksanaan += '<br><span style="font-size:11px;color:#16a34a;">Fleksibel</span>';
+
+    // Banner thumbnail
+    const banner = r.banner_url
+      ? '<img src="' + r.banner_url + '" style="width:48px;height:32px;object-fit:cover;border-radius:6px;margin-right:8px;vertical-align:middle;" onerror="this.style.display=\'none\'">'
+      : '';
+
+    const safeR = encodeURIComponent(JSON.stringify(r));
+
+    return '<tr>' +
+      '<td style="color:#94a3b8;font-size:12px;">' + (i+1) + '</td>' +
+      '<td>' + banner +
+        '<div style="display:inline-block;vertical-align:middle;">' +
+        '<div style="font-weight:700;color:#14274e;">' + (r.nama||r.judul||'—') + '</div>' +
+        (r.deskripsi ? '<div style="font-size:11px;color:#94a3b8;margin-top:2px;">' + r.deskripsi.slice(0,50) + (r.deskripsi.length>50?'…':'') + '</div>' : '') +
+        '</div></td>' +
+      '<td>' + aksesBadge + '</td>' +
+      '<td style="font-weight:600;">' + durasi + '</td>' +
+      '<td style="font-size:12px;color:#64748b;font-weight:600;">TWK '+(r.passing_twk||65)+' / TIU '+(r.passing_tiu||80)+'<br>TKP '+(r.passing_tkp||166)+'</td>' +
+      '<td style="font-size:12px;color:#64748b;">' + tglPelaksanaan + '</td>' +
+      '<td>' + statusBadge + '</td>' +
+      '<td><div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+        '<button class="act-btn act-edit" onclick=\'editTryout(decodeURIComponent("' + safeR + '"))\'>Edit</button>' +
+        '<button class="act-btn act-toggle" onclick="toggleStatus(' + r.id + ',' + (!!(r.status==='publish'||r.aktif)) + ')">' +
+          ((r.status==='publish'||r.aktif) ? 'Draft' : 'Publish') +
+        '</button>' +
+        '<button class="act-btn act-del" onclick="deleteTryout(' + r.id + ')">Hapus</button>' +
+      '</div></td>' +
+    '</tr>';
+  }).join('');
+}
+
+/* ── Filter ── */
+function filterTable() {
+  const q      = document.getElementById('searchInput').value.toLowerCase();
+  const akses  = document.getElementById('filterAkses').value;
+  const status = document.getElementById('filterStatus').value;
+  const filtered = allTryout.filter(r => {
+    const nama   = (r.nama||r.judul||'').toLowerCase();
+    const matchQ = !q || nama.includes(q);
+    const matchA = !akses || r.akses === akses || (akses==='premium' && r.is_premium);
+    const matchS = !status || r.status === status || (status==='publish' && r.aktif);
+    return matchQ && matchA && matchS;
+  });
+  renderTable(filtered);
+}
+
+/* ── Toggle conditional fields ── */
+function togglePasswordField() {
+  const val = document.getElementById('f_akses').value;
+  document.getElementById('aksesInfoRow').style.display = val === 'semua' ? 'block' : 'none';
+}
+
+function toggleBebasWaktu() {
+  const cb = document.getElementById('f_bebas_waktu').checked;
+  document.getElementById('f_tanggal_mulai').disabled  = cb;
+  document.getElementById('f_tanggal_selesai').disabled = cb;
+  if (cb) {
+    document.getElementById('f_tanggal_mulai').value  = '';
+    document.getElementById('f_tanggal_selesai').value = '';
+  }
+}
+
+/* ── Banner preview ── */
+function previewBanner(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { alert('Ukuran file maksimal 2MB.'); input.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = document.getElementById('bannerPreview');
+    img.src = e.target.result;
+    img.style.display = 'block';
+    document.getElementById('bannerLabel').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ── Modal open ── */
+function openModal() {
+  document.getElementById('modalTitle').textContent = 'Buat Tryout Baru';
+  document.getElementById('tryoutForm').reset();
+  document.getElementById('editId').value = '';
+  document.getElementById('existingBanner').value = '';
+  document.getElementById('f_durasi').value = '100';
+  document.getElementById('f_jumlah_soal').value = '110';
+  document.getElementById('f_passing_twk').value = '65';
+  document.getElementById('f_passing_tiu').value = '80';
+  document.getElementById('f_passing_tkp').value = '166';
+  document.getElementById('bannerPreview').style.display = 'none';
+  document.getElementById('bannerLabel').style.display = 'block';
+  document.getElementById('passwordRow').classList.remove('show');
+  document.getElementById('f_tanggal_mulai').disabled  = false;
+  document.getElementById('f_tanggal_selesai').disabled = false;
+  document.getElementById('modalBg').classList.add('show');
+}
+
+/* ── Modal edit ── */
+function editTryout(encoded) {
+  const r = JSON.parse(encoded);
+  document.getElementById('modalTitle').textContent = 'Edit Tryout';
+  document.getElementById('editId').value           = r.id;
+  document.getElementById('existingBanner').value   = r.banner_url || '';
+  document.getElementById('f_nama').value           = r.nama || r.judul || '';
+  document.getElementById('f_deskripsi').value      = r.deskripsi || '';
+  document.getElementById('f_akses').value          = r.akses || (r.is_premium ? 'premium' : 'gratis');
+  document.getElementById('f_status').value         = r.status || (r.aktif ? 'publish' : 'draft');
+  document.getElementById('f_durasi').value         = r.durasi || 100;
+  document.getElementById('f_jumlah_soal').value    = r.jumlah_soal || 110;
+  document.getElementById('f_passing_twk').value    = r.passing_twk || 65;
+  document.getElementById('f_passing_tiu').value    = r.passing_tiu || 80;
+  document.getElementById('f_passing_tkp').value    = r.passing_tkp || 166;
+  document.getElementById('f_video_url').value      = r.video_url || '';
+  document.getElementById('f_pdf_url').value        = r.pdf_url || '';
+  document.getElementById('f_gform_url').value      = r.gform_url || '';
+  document.getElementById('f_password_akses').value = r.password_akses || '';
+  document.getElementById('f_bebas_waktu').checked  = r.bebas_waktu || false;
+
+  // Tanggal
+  if (r.tanggal_mulai)  document.getElementById('f_tanggal_mulai').value  = r.tanggal_mulai.slice(0,16);
+  if (r.tanggal_selesai) document.getElementById('f_tanggal_selesai').value = r.tanggal_selesai.slice(0,16);
+
+  // Banner preview
+  if (r.banner_url) {
+    const img = document.getElementById('bannerPreview');
+    img.src = r.banner_url;
+    img.style.display = 'block';
+    document.getElementById('bannerLabel').style.display = 'none';
+  } else {
+    document.getElementById('bannerPreview').style.display = 'none';
+    document.getElementById('bannerLabel').style.display = 'block';
+  }
+
+  togglePasswordField();
+  toggleBebasWaktu();
+  document.getElementById('modalBg').classList.add('show');
+}
+
+function closeModal() { document.getElementById('modalBg').classList.remove('show'); }
+document.getElementById('modalBg').addEventListener('click', e => { if (e.target===e.currentTarget) closeModal(); });
+
+/* ── Upload banner ke Supabase Storage ── */
+async function uploadBanner(file) {
+  const ext      = file.name.split('.').pop();
+  const fileName = 'banner_' + Date.now() + '.' + ext;
+  const { data, error } = await sb.storage
+    .from('tryout-banners')
+    .upload(fileName, file, { cacheControl: '3600', upsert: false });
+  if (error) throw new Error('Upload gagal: ' + error.message);
+  const { data: urlData } = sb.storage.from('tryout-banners').getPublicUrl(fileName);
+  return urlData.publicUrl;
+}
+
+/* ── Simpan tryout ── */
+async function saveTryout(e) {
+  e.preventDefault();
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true; btn.textContent = 'Menyimpan...';
+
+  try {
+    const id      = document.getElementById('editId').value;
+    const aksesVal = document.getElementById('f_akses').value;
+
+    // Upload banner jika ada file baru
+    let bannerUrl = document.getElementById('existingBanner').value || null;
+    const bannerFile = document.getElementById('f_banner').files[0];
+    if (bannerFile) {
+      btn.textContent = 'Upload banner...';
+      bannerUrl = await uploadBanner(bannerFile);
+    }
+
+    const bebasWaktu = document.getElementById('f_bebas_waktu').checked;
+
+    const payload = {
+      nama:           document.getElementById('f_nama').value,
+      deskripsi:      document.getElementById('f_deskripsi').value || null,
+      akses:          aksesVal,
+      is_premium:     aksesVal === 'premium' || aksesVal === 'semua',
+      status:         document.getElementById('f_status').value,
+      aktif:          document.getElementById('f_status').value === 'publish',
+      durasi:         parseInt(document.getElementById('f_durasi').value) || 100,
+      jumlah_soal:    parseInt(document.getElementById('f_jumlah_soal').value) || 110,
+      passing_twk:    parseInt(document.getElementById('f_passing_twk').value) || 65,
+      passing_tiu:    parseInt(document.getElementById('f_passing_tiu').value) || 80,
+      passing_tkp:    parseInt(document.getElementById('f_passing_tkp').value) || 166,
+      tanggal_mulai:  bebasWaktu ? null : (document.getElementById('f_tanggal_mulai').value || null),
+      tanggal_selesai:bebasWaktu ? null : (document.getElementById('f_tanggal_selesai').value || null),
+      bebas_waktu:    bebasWaktu,
+      video_url:      document.getElementById('f_video_url').value || null,
+      pdf_url:        document.getElementById('f_pdf_url').value || null,
+      gform_url:      document.getElementById('f_gform_url').value || null,
+      banner_url:     bannerUrl,
+    };
+
+    btn.textContent = 'Menyimpan...';
+    let error;
+    if (id) {
+      ({ error } = await sb.from('tryout').update(payload).eq('id', id));
+    } else {
+      ({ error } = await sb.from('tryout').insert(payload));
+    }
+
+    if (error) throw new Error(error.message);
+
+    alert(id ? 'Tryout berhasil diperbarui!' : 'Tryout berhasil dibuat!');
+    closeModal();
+    loadTryout();
+
+  } catch (err) {
+    alert('Gagal: ' + err.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Simpan Tryout';
+  }
+}
+
+/* ── Toggle publish/draft ── */
+async function toggleStatus(id, isPublish) {
+  const { error } = await sb.from('tryout')
+    .update({ status: isPublish ? 'draft' : 'publish', aktif: !isPublish }).eq('id', id);
+  if (error) { alert('Gagal: ' + error.message); return; }
+  loadTryout();
+}
+
+/* ── Hapus ── */
+async function deleteTryout(id) {
+  if (!confirm('Yakin hapus tryout ini?')) return;
+  const { error } = await sb.from('tryout').delete().eq('id', id);
+  if (error) { alert('Gagal: ' + error.message); return; }
+  loadTryout();
+}
+
+/* ── Sidebar ── */
+const sidebar   = document.getElementById('sidebar');
+const overlay   = document.getElementById('overlay');
+const hamburger = document.getElementById('hamburger');
+function openSidebar()  { sidebar.classList.add('active'); overlay.classList.add('active'); hamburger.style.display='none'; }
+function closeSidebar() { sidebar.classList.remove('active'); overlay.classList.remove('active'); if(window.innerWidth<=1000) hamburger.style.display='flex'; }
+overlay.addEventListener('click', closeSidebar);
+window.addEventListener('resize', () => {
+  if (window.innerWidth>1000) { sidebar.classList.remove('active'); overlay.classList.remove('active'); hamburger.style.display='none'; document.getElementById('main').style.marginLeft='280px'; }
+  else document.getElementById('main').style.marginLeft='0';
+});
+
+function logout() { if(confirm('Yakin keluar?')) { localStorage.removeItem('user'); window.location.href='login.html'; } }
+
+loadTryout();
+loadHasil();
+</script>
+</body>
+</html>
