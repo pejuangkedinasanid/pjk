@@ -45,23 +45,41 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
 .search-box input:focus{border-color:var(--orange);}
 .filter-select{padding:14px;border:1px solid var(--border);border-radius:14px;min-width:180px;font-size:14px;cursor:pointer;font-family:inherit;}
 .filter-select:focus{border-color:var(--orange);}
-.tryout-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:20px;}
-.tryout-card{background:white;border-radius:24px;padding:24px;box-shadow:var(--shadow);transition:.3s;border:1px solid #eef2f7;}
+
+/* ===== GRID: 3 kartu per baris di desktop ===== */
+.tryout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;}
+@media(max-width:1200px){.tryout-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:700px){.tryout-grid{grid-template-columns:1fr;}}
+
+.tryout-card{background:white;border-radius:24px;padding:20px;box-shadow:var(--shadow);transition:.3s;border:1px solid #eef2f7;display:flex;flex-direction:column;}
 .tryout-card:hover{transform:translateY(-5px);}
-.card-banner-wrap{width:100%;height:140px;border-radius:16px;overflow:hidden;margin-bottom:15px;background:linear-gradient(135deg,#0f172a,#1e293b);}
+
+/* ===== Banner: rasio tetap 16:9, kosong kalau tidak ada gambar ===== */
+.card-banner-wrap{width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;margin-bottom:16px;background:linear-gradient(135deg,#eef2f7,#e2e8f0);position:relative;flex-shrink:0;}
 .card-banner-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
-.card-banner-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;background:linear-gradient(135deg,rgba(249,115,22,.85),rgba(251,146,60,.85));color:white;}
-.badge{display:inline-block;padding:8px 14px;border-radius:999px;font-size:11px;font-weight:700;margin-right:6px;margin-bottom:15px;}
+
+.badge{display:inline-block;padding:7px 14px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;}
 .badge-free{background:#dcfce7;color:#166534;}
 .badge-premium{background:#fff7ed;color:#c2410c;}
 .badge-mixed{background:#dbeafe;color:#1d4ed8;}
-.tryout-title{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:10px;}
-.tryout-desc{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:15px;min-height:24px;}
-.meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:10px;gap:10px;}
-.btn-start{display:block;width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:.2s;font-size:14px;font-family:inherit;}
+
+.tryout-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:10px;line-height:1.3;}
+
+.meta-row{display:flex;align-items:center;gap:16px;font-size:13px;color:var(--muted);margin-bottom:12px;flex-wrap:wrap;}
+.meta-row span{display:flex;align-items:center;gap:5px;}
+
+.akses-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.periode-text{font-size:12.5px;color:var(--muted);font-weight:600;}
+
+.periode-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:8px 12px;font-size:11.5px;color:#9a3412;margin-bottom:14px;line-height:1.5;}
+
+.tryout-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px;flex:1;}
+
+.btn-start{display:block;width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;transition:.2s;font-size:14px;font-family:inherit;margin-top:auto;}
 .btn-start:hover{opacity:.92;}
 .btn-start.blue{background:linear-gradient(135deg,#2563eb,#3b82f6);}
 .btn-start.neutral{background:linear-gradient(135deg,#0f172a,#1e293b);}
+
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:2000;align-items:center;justify-content:center;padding:20px;}
 .modal-bg.show{display:flex;}
 .modal{background:white;border-radius:24px;padding:32px;width:100%;max-width:440px;position:relative;box-shadow:0 25px 60px rgba(15,23,42,.25);}
@@ -102,7 +120,7 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
 .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);}
 .empty-state b{display:block;font-size:18px;color:var(--navy);margin-bottom:8px;}
 @media(max-width:1000px){.main{margin-left:0;padding:20px;}}
-@media(max-width:700px){.hero h1{font-size:30px;}.tryout-grid{grid-template-columns:1fr;}.otp-inputs{gap:6px;}.otp-box{width:44px;height:54px;font-size:20px;}}
+@media(max-width:700px){.hero h1{font-size:30px;}.otp-inputs{gap:6px;}.otp-box{width:44px;height:54px;font-size:20px;}}
 </style>
 </head>
 <body>
@@ -192,15 +210,15 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
     <div class="modal-title" id="modalPremiumTitle">Akses Premium</div>
     <div class="konfirm-box">
       <div class="konfirm-kuota" id="konfirmKuota">5</div>
-      <div class="konfirm-label">Sisa Kuota Tryout</div>
-      <div class="konfirm-note">
+      <div class="konfirm-label" id="konfirmLabel">Sisa Kuota Tryout</div>
+      <div class="konfirm-note" id="konfirmNote">
         Mengakses tryout ini akan <b>mengurangi 1 kuota</b> premium kamu.<br>
         Tryout dapat dikerjakan <b>berkali-kali</b> tanpa kuota tambahan.<br>
         <span style="color:#f59e0b;font-size:12px;">&#9888; Nilai pertama yang masuk ke leaderboard.</span>
       </div>
     </div>
     <div class="modal-actions">
-      <button class="modal-btn modal-btn-premium" onclick="konfirmasiPakaKuota()">
+      <button class="modal-btn modal-btn-premium" onclick="konfirmasiPakaKuota()" id="btnPakaiKuota">
         &#11088; Pakai 1 Kuota &amp; Mulai
       </button>
       <button class="modal-btn modal-btn-gratis" onclick="closeModal('modalPremium')">Batal</button>
@@ -263,7 +281,7 @@ async function loadKuota() {
 async function loadTryout() {
   const grid = document.getElementById("tryoutGrid");
   try {
-    const res  = await fetch("/api/tryout?status=publish&limit=100");
+    const res  = await fetch("/api/tryout?status=publish&limit=100&email=" + encodeURIComponent(user.email));
     const json = await res.json();
     if (!json.success) throw new Error(json.message);
     allTryout = json.data || [];
@@ -277,6 +295,14 @@ function isPeriodeBerakhir(r) {
   if (r.bebas_waktu) return false;
   if (!r.tanggal_selesai) return false;
   return new Date(r.tanggal_selesai) < new Date();
+}
+
+/* Dipanggil saat <img> banner gagal dimuat. Tidak pakai string ber-quote
+   bersarang di atribut onerror supaya HTML tidak rusak/“bocor”. */
+function bannerError(imgEl) {
+  imgEl.style.display = 'none';
+  const wrap = imgEl.parentElement;
+  if (wrap) wrap.classList.add('is-empty');
 }
 
 function renderCards(rows) {
@@ -300,12 +326,15 @@ function renderCards(rows) {
     else                           badgeHtml = '<span class="badge badge-free">GRATIS</span>';
 
     const periodeNote = (periodeHabis && aksesAsli !== "premium")
-      ? '<div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:8px 12px;font-size:11.5px;color:#9a3412;margin-bottom:12px;line-height:1.5;">⏰ Periode gratis sudah berakhir. Sekarang hanya bisa diakses dengan <b>Premium</b>.</div>'
+      ? '<div class="periode-note">&#9201; Periode gratis sudah berakhir. Sekarang hanya bisa diakses dengan <b>Premium</b>.</div>'
       : '';
 
-    const banner = r.banner_url
-      ? '<img src="' + r.banner_url + '" alt="' + (r.nama||"") + '" onerror="this.parentElement.innerHTML=\'<div class=\\\"card-banner-fallback\\\">&#128196;</div>\'">'
-      : '<div class="card-banner-fallback">&#128196;</div>';
+    // Banner: rasio tetap 16:9. Kalau tidak ada gambar -> kosong saja (tanpa ikon).
+    const namaAman = (r.nama || "").replace(/"/g, '&quot;');
+    const bannerInner = r.banner_url
+      ? '<img src="' + r.banner_url + '" alt="' + namaAman + '" onerror="bannerError(this)">'
+      : '';
+    const bannerWrapClass = r.banner_url ? 'card-banner-wrap' : 'card-banner-wrap is-empty';
 
     let jadwal = "Fleksibel — kapan saja";
     if (!r.bebas_waktu && r.tanggal_mulai) {
@@ -318,13 +347,25 @@ function renderCards(rows) {
     }
 
     let btnLabel, btnCls, btnAction;
+    const sudahGratis  = !!r.sudah_gratis;
+    const sudahPremium = !!r.sudah_premium;
 
     if (akses === "gratis") {
-      btnLabel  = "Kerjakan Sekarang";
-      btnCls    = "";
-      btnAction = "modal-password";
+      if (sudahGratis) {
+        btnLabel  = "Upgrade ke Premium untuk Mengerjakan Berkali-kali";
+        btnCls    = "neutral";
+        btnAction = "upgrade";
+      } else {
+        btnLabel  = "Kerjakan Sekarang";
+        btnCls    = "";
+        btnAction = "modal-password";
+      }
     } else if (akses === "premium") {
-      if (isUserPremium) {
+      if (sudahPremium) {
+        btnLabel  = "&#11088; Kerjakan Lagi (Tanpa Kuota)";
+        btnCls    = "blue";
+        btnAction = "modal-premium";
+      } else if (isUserPremium) {
         btnLabel  = "&#11088; Kerjakan Sekarang";
         btnCls    = "blue";
         btnAction = "modal-premium";
@@ -334,9 +375,16 @@ function renderCards(rows) {
         btnAction = "upgrade";
       }
     } else if (akses === "semua") {
-      btnLabel  = "Pilih Cara Akses";
-      btnCls    = "neutral";
-      btnAction = "modal-semua";
+      if (sudahGratis && !sudahPremium && !isUserPremium) {
+        // Sudah habis kesempatan gratis, dan belum premium -> langsung upgrade
+        btnLabel  = "Upgrade ke Premium untuk Mengerjakan Berkali-kali";
+        btnCls    = "neutral";
+        btnAction = "upgrade";
+      } else {
+        btnLabel  = "Pilih Cara Akses";
+        btnCls    = "neutral";
+        btnAction = "modal-semua";
+      }
     } else {
       btnLabel  = "Kerjakan Sekarang";
       btnCls    = "";
@@ -344,16 +392,18 @@ function renderCards(rows) {
     }
 
     return '<div class="tryout-card">' +
-      '<div class="card-banner-wrap">' + banner + '</div>' +
-      badgeHtml +
-      periodeNote +
+      '<div class="' + bannerWrapClass + '">' + bannerInner + '</div>' +
       '<div class="tryout-title">' + (r.nama||"Tanpa Nama") + '</div>' +
-      '<div class="tryout-desc">' + (r.deskripsi||"") + '</div>' +
-      '<div class="meta">' +
+      '<div class="meta-row">' +
         '<span>&#128337; ' + (r.durasi||"—") + ' menit</span>' +
         '<span>&#128221; ' + (r.jumlah_soal||"—") + ' soal</span>' +
       '</div>' +
-      '<div class="meta"><span>' + jadwal + '</span><span>TWK / TIU / TKP</span></div>' +
+      '<div class="akses-row">' +
+        badgeHtml +
+        '<span class="periode-text">' + jadwal + '</span>' +
+      '</div>' +
+      periodeNote +
+      '<div class="tryout-desc">' + (r.deskripsi||"") + '</div>' +
       '<button class="btn-start ' + btnCls + '" onclick="handleStart(' + r.id + ',\'' + btnAction + '\')">' +
         btnLabel +
       '</button>' +
@@ -376,6 +426,14 @@ function handleStart(id, action) {
 }
 
 function bukaModalPassword(row) {
+  // Lapis pertahanan tambahan: kalau row ini ternyata sudah pernah
+  // diselesaikan secara gratis (misal data sempat usang di klien),
+  // jangan tampilkan modal password sama sekali.
+  if (row.sudah_gratis) {
+    window.location.href = "premium.html";
+    return;
+  }
+
   // Kalau admin tidak set password untuk tryout ini, langsung
   // buka akses tanpa perlu modal password sama sekali.
   if (row.has_password_akses === false) {
@@ -438,6 +496,10 @@ async function cekPassword() {
       closeModal("modalPassword");
       activeMulaiMode = "gratis";
       tampilModalMulai(activeTryout, "gratis");
+    } else if (json.sudah_pernah) {
+      closeModal("modalPassword");
+      alert(json.message || "Kamu sudah pernah mengerjakan tryout ini secara gratis. Upgrade ke Premium untuk mengerjakan berkali-kali.");
+      window.location.href = "premium.html";
     } else {
       showPasswordError(json.message || "Password salah. Silakan coba lagi.");
       btn.disabled = false;
@@ -490,7 +552,24 @@ document.querySelectorAll(".otp-box").forEach((inp, i, arr) => {
 
 function bukaModalPremium(row) {
   document.getElementById("modalPremiumTitle").textContent = row.nama || "Akses Premium";
-  document.getElementById("konfirmKuota").textContent = kuotaUser;
+
+  if (row.sudah_premium) {
+    document.getElementById("konfirmKuota").textContent = "0";
+    document.getElementById("konfirmLabel").textContent = "Kuota Tidak Dipotong";
+    document.getElementById("konfirmNote").innerHTML =
+      'Kamu sudah pernah membuka tryout ini sebelumnya. Mengerjakan lagi <b>tidak akan mengurangi kuota</b>.<br>' +
+      'Nilai percobaan pertama tetap yang dipakai di leaderboard, percobaan ini akan tersimpan sebagai riwayat di Dashboard.';
+    document.getElementById("btnPakaiKuota").innerHTML = "&#11088; Mulai Lagi";
+  } else {
+    document.getElementById("konfirmKuota").textContent = kuotaUser;
+    document.getElementById("konfirmLabel").textContent = "Sisa Kuota Tryout";
+    document.getElementById("konfirmNote").innerHTML =
+      'Mengakses tryout ini akan <b>mengurangi 1 kuota</b> premium kamu.<br>' +
+      'Tryout dapat dikerjakan <b>berkali-kali</b> tanpa kuota tambahan.<br>' +
+      '<span style="color:#f59e0b;font-size:12px;">&#9888; Nilai pertama yang masuk ke leaderboard.</span>';
+    document.getElementById("btnPakaiKuota").innerHTML = "&#11088; Pakai 1 Kuota &amp; Mulai";
+  }
+
   document.getElementById("modalPremium").classList.add("show");
 }
 
@@ -521,6 +600,12 @@ async function konfirmasiPakaKuota() {
     user.kuota_tryout = kuotaUser;
     user.plan         = planUser;
     localStorage.setItem("user", JSON.stringify(user));
+
+    // Tandai di data lokal supaya kalau user kembali ke daftar tanpa reload,
+    // tryout ini langsung tampil sebagai "sudah di-unlock".
+    activeTryout.sudah_premium = true;
+    const idx = allTryout.findIndex(r => r.id === activeTryout.id);
+    if (idx > -1) allTryout[idx].sudah_premium = true;
   } catch(e) { console.error("pakai kuota:", e); }
 
   activeMulaiMode = "premium";
@@ -531,25 +616,35 @@ function bukaModalSemua(row) {
   document.getElementById("modalSemuaTitle").textContent = row.nama || "Pilih Cara Akses";
 
   const el = document.getElementById("modalSemuaActions");
-  if (isUserPremium) {
-    el.innerHTML =
-      '<button class="modal-btn modal-btn-premium" onclick="closeModal(\'modalSemua\');bukaModalPremium(activeTryout)">' +
-        '&#11088; Akses Premium (sisa ' + kuotaUser + ' kuota)' +
-      '</button>' +
-      '<button class="modal-btn modal-btn-gratis" onclick="closeModal(\'modalSemua\');bukaModalPassword(activeTryout)">' +
-        'Kerjakan Gratis (butuh password)' +
-      '</button>' +
-      '<div class="modal-note">Mode premium: pembahasan + PDF + analisis nilai mendalam</div>';
-  } else {
-    el.innerHTML =
-      '<button class="modal-btn modal-btn-gratis" onclick="closeModal(\'modalSemua\');bukaModalPassword(activeTryout)">' +
-        'Kerjakan Gratis (butuh password)' +
-      '</button>' +
-      '<button class="modal-btn modal-btn-premium" onclick="window.location.href=\'premium.html\'">' +
-        '&#11088; Silakan Upgrade' +
-      '</button>' +
-      '<div class="modal-note">Premium: pembahasan lengkap + PDF + analisis + nilai detail</div>';
+  const labelPremium = row.sudah_premium
+    ? "&#11088; Kerjakan Lagi (Tanpa Kuota)"
+    : "&#11088; Akses Premium (sisa " + kuotaUser + " kuota)";
+
+  let html = "";
+
+  if (isUserPremium || row.sudah_premium) {
+    html += '<button class="modal-btn modal-btn-premium" onclick="closeModal(\'modalSemua\');bukaModalPremium(activeTryout)">' +
+      labelPremium +
+    '</button>';
   }
+
+  if (row.sudah_gratis) {
+    html += '<div class="modal-note">Kamu sudah pernah mengerjakan tryout ini secara gratis. Upgrade ke Premium untuk mengerjakan berkali-kali.</div>';
+    if (!isUserPremium && !row.sudah_premium) {
+      html += '<button class="modal-btn modal-btn-gratis" onclick="window.location.href=\'premium.html\'">Upgrade ke Premium</button>';
+    }
+  } else {
+    html += '<button class="modal-btn modal-btn-gratis" onclick="closeModal(\'modalSemua\');bukaModalPassword(activeTryout)">' +
+      'Kerjakan Gratis (butuh password)' +
+    '</button>';
+    if (!isUserPremium && !row.sudah_premium) {
+      html += '<button class="modal-btn modal-btn-premium" onclick="window.location.href=\'premium.html\'">&#11088; Silakan Upgrade</button>';
+    }
+  }
+
+  html += '<div class="modal-note">Mode premium: pembahasan + PDF + analisis nilai mendalam</div>';
+
+  el.innerHTML = html;
   document.getElementById("modalSemua").classList.add("show");
 }
 

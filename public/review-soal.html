@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Review Jawaban | Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['$','$'],['\\(','\\)']], displayMath: [['$$','$$'],['\\[','\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" id="MathJax-script" async></script>
+
+<style>
+:root{--navy:#0f172a;--navy2:#1e293b;--orange:#f97316;--orange2:#fb923c;--blue:#2563eb;--bg:#f5f7fb;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--green:#16a34a;--greenbg:#dcfce7;--greentext:#166534;--red:#dc2626;--redbg:#fee2e2;--redtext:#991b1b;--shadow:0 20px 50px rgba(15,23,42,.08);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+html,body{height:100%;}
+body{background:var(--bg);display:flex;flex-direction:column;min-height:100vh;}
+
+/* TOPBAR */
+.topbar{
+  background:linear-gradient(135deg,#0f172a,#1e293b);color:white;padding:14px 22px;
+  display:grid;grid-template-columns:1fr auto 1fr;grid-template-areas:"brand mid tryout";
+  align-items:center;gap:14px;position:sticky;top:0;z-index:100;box-shadow:0 8px 20px rgba(15,23,42,.15);
+}
+.brand-area{grid-area:brand;justify-self:start;}
+.brand-title{font-weight:800;font-size:16px;letter-spacing:.3px;white-space:nowrap;}
+.mid-area{grid-area:mid;justify-self:center;}
+.link-kembali{color:white;background:rgba(255,255,255,.1);padding:9px 16px;border-radius:12px;font-size:12.5px;font-weight:700;text-decoration:none;white-space:nowrap;}
+.link-kembali:hover{background:rgba(255,255,255,.18);}
+.tryout-area{grid-area:tryout;justify-self:end;}
+.tryout-title{font-size:13px;font-weight:700;background:rgba(255,255,255,.1);padding:9px 16px;border-radius:12px;max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;}
+
+@media(max-width:700px){
+  .topbar{grid-template-areas:"brand tryout" "mid mid";grid-template-columns:1fr 1fr;}
+  .mid-area{margin-top:6px;}
+}
+
+/* LAYOUT */
+.exam-wrap{flex:1;display:flex;gap:18px;padding:18px;max-width:1400px;margin:0 auto;width:100%;}
+.exam-main{flex:1;min-width:0;}
+.exam-side{width:300px;flex-shrink:0;}
+@media(max-width:900px){
+  .exam-wrap{flex-direction:column;padding:12px;}
+  .exam-side{width:100%;order:2;}
+  .exam-main{order:1;}
+}
+
+/* SOAL CARD */
+.soal-card{background:white;border-radius:22px;padding:28px;box-shadow:var(--shadow);margin-bottom:16px;}
+.soal-meta{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;justify-content:space-between;}
+.badge-seksi{padding:6px 14px;border-radius:999px;font-size:11px;font-weight:800;}
+.badge-twk{background:#dbeafe;color:#1d4ed8;}
+.badge-tiu{background:#dcfce7;color:#15803d;}
+.badge-tkp{background:#fff7ed;color:#c2410c;}
+.soal-nomor{font-size:13px;font-weight:700;color:var(--muted);}
+.badge-benar{padding:6px 14px;border-radius:999px;font-size:11px;font-weight:800;background:var(--greenbg);color:var(--greentext);}
+.badge-salah{padding:6px 14px;border-radius:999px;font-size:11px;font-weight:800;background:var(--redbg);color:var(--redtext);}
+.badge-kosong{padding:6px 14px;border-radius:999px;font-size:11px;font-weight:800;background:#f1f5f9;color:var(--muted);}
+.badge-poin{padding:6px 14px;border-radius:999px;font-size:11px;font-weight:800;background:#e0e7ff;color:#3730a3;}
+
+.soal-teks{font-size:16px;line-height:1.8;color:var(--text);margin-bottom:18px;}
+.soal-gambar{max-width:100%;border-radius:14px;margin-bottom:18px;display:block;}
+
+.opsi-list{display:flex;flex-direction:column;gap:12px;margin-bottom:20px;}
+.opsi-item{display:flex;align-items:flex-start;gap:14px;padding:16px;border:2px solid var(--border);border-radius:16px;}
+.opsi-huruf{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:#f1f5f9;color:var(--navy);font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.opsi-teks{flex:1;font-size:14.5px;line-height:1.6;padding-top:4px;}
+.opsi-tag{flex-shrink:0;font-size:10.5px;font-weight:800;padding:4px 10px;border-radius:999px;align-self:center;}
+
+.opsi-item.user-benar{border-color:var(--green);background:#f0fdf4;}
+.opsi-item.user-benar .opsi-huruf{background:var(--green);color:white;}
+.opsi-item.user-benar .opsi-tag{background:var(--greenbg);color:var(--greentext);}
+
+.opsi-item.user-salah{border-color:var(--red);background:#fef2f2;}
+.opsi-item.user-salah .opsi-huruf{background:var(--red);color:white;}
+.opsi-item.user-salah .opsi-tag{background:var(--redbg);color:var(--redtext);}
+
+.opsi-item.jawaban-benar:not(.user-benar){border-color:var(--green);background:#f0fdf4;}
+.opsi-item.jawaban-benar:not(.user-benar) .opsi-huruf{background:var(--greenbg);color:var(--greentext);}
+.opsi-item.jawaban-benar:not(.user-benar) .opsi-tag{background:var(--greenbg);color:var(--greentext);}
+
+.opsi-item.user-pilih{border-color:var(--blue);background:#eff6ff;}
+.opsi-item.user-pilih .opsi-huruf{background:var(--blue);color:white;}
+.opsi-tag-netral{background:#dbeafe;color:#1d4ed8;}
+
+/* PEMBAHASAN */
+.pembahasan-box{border-radius:16px;padding:18px 20px;background:#f8fafc;border:1px solid var(--border);}
+.pembahasan-label{font-size:12px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.pembahasan-teks{font-size:14px;line-height:1.8;color:var(--text);}
+
+.pembahasan-locked{border-radius:16px;padding:22px 20px;background:#fff7ed;border:1px solid #fed7aa;text-align:center;}
+.pembahasan-locked-title{font-size:13.5px;font-weight:800;color:#9a3412;margin-bottom:6px;}
+.pembahasan-locked-desc{font-size:12.5px;color:#9a3412;line-height:1.6;margin-bottom:14px;}
+.btn-upgrade-kecil{display:inline-block;padding:11px 22px;border-radius:12px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:700;font-size:13px;text-decoration:none;}
+.btn-upgrade-kecil:hover{opacity:.92;}
+
+.nav-buttons{display:flex;gap:10px;margin-top:18px;}
+.btn-nav{flex:1;padding:14px;border:none;border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;transition:.2s;font-family:inherit;}
+.btn-nav.prev{background:#f1f5f9;color:var(--navy);}
+.btn-nav.prev:hover{background:#e2e8f0;}
+.btn-nav.next{background:linear-gradient(135deg,#f97316,#fb923c);color:white;}
+.btn-nav.next:hover{opacity:.92;}
+.btn-nav:disabled{opacity:.4;cursor:not-allowed;}
+
+/* SIDEBAR */
+.side-card{background:white;border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px;}
+.side-title{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px;}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-bottom:14px;}
+.legend span{display:inline-flex;align-items:center;gap:5px;}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;}
+.dot.green{background:var(--green);}
+.dot.red{background:var(--red);}
+.dot.blue{background:var(--blue);}
+.dot.gray{background:#e2e8f0;}
+
+.seksi-group{margin-bottom:14px;}
+.seksi-label{font-size:11px;font-weight:800;color:var(--muted);margin-bottom:8px;}
+.nomor-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.nomor-btn{aspect-ratio:1;border-radius:8px;border:1px solid var(--border);background:#f8fafc;color:var(--text);font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.nomor-btn.benar{background:var(--green);color:white;border-color:var(--green);}
+.nomor-btn.salah{background:var(--red);color:white;border-color:var(--red);}
+.nomor-btn.terjawab{background:var(--blue);color:white;border-color:var(--blue);}
+.nomor-btn.current{outline:2px solid var(--navy);outline-offset:2px;}
+
+.btn-hasil{width:100%;padding:16px;border:none;border-radius:14px;background:var(--navy);color:white;font-weight:800;font-size:14px;cursor:pointer;text-align:center;text-decoration:none;display:block;}
+.btn-hasil:hover{opacity:.9;}
+
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;color:var(--muted);gap:14px;}
+.spinner{width:40px;height:40px;border-radius:50%;border:3px solid #e2e8f0;border-top-color:var(--orange);animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<div class="loading-wrap" id="loadingWrap">
+  <div class="spinner"></div>
+  <div>Memuat review jawaban...</div>
+</div>
+
+<div id="reviewWrap" style="display:none;">
+
+  <div class="topbar">
+    <div class="brand-area"><div class="brand-title">PEJUANG KEDINASAN</div></div>
+    <div class="mid-area"><a class="link-kembali" id="linkKembali" href="#">&#8592; Kembali ke Hasil</a></div>
+    <div class="tryout-area"><div class="tryout-title" id="topbarTitle">Memuat...</div></div>
+  </div>
+
+  <div class="exam-wrap">
+
+    <div class="exam-main">
+      <div class="soal-card" id="soalCard"><!-- diisi JS --></div>
+    </div>
+
+    <div class="exam-side">
+      <div class="side-card">
+        <div class="side-title">Navigasi Soal</div>
+        <div class="legend">
+          <span><i class="dot green"></i>Benar</span>
+          <span><i class="dot red"></i>Salah</span>
+          <span><i class="dot blue"></i>TKP Terjawab</span>
+          <span><i class="dot gray"></i>Kosong</span>
+        </div>
+        <div id="navigasiWrap"><!-- diisi JS --></div>
+      </div>
+      <a class="btn-hasil" id="btnHasil" href="#">Kembali ke Halaman Hasil</a>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const rawUser = localStorage.getItem("user");
+if (!rawUser) window.location.href = "login.html";
+const user = JSON.parse(rawUser);
+
+const params   = new URLSearchParams(window.location.search);
+const tryoutId = params.get("id");
+const hasilId  = params.get("hasil_id") || "";
+if (!tryoutId) window.location.href = "tryout-tersedia.html";
+
+let soalList     = [];
+let currentIndex = 0;
+let aksesPembahasan = false; // ditentukan oleh API (status premium akun), bukan oleh klien
+let namaTryout = "";
+
+const SEKSI_ORDER = ["TWK","TIU","TKP"];
+
+async function init() {
+  try {
+    const url = "/api/tryout/review?email=" + encodeURIComponent(user.email) + "&tryout_id=" + tryoutId +
+      (hasilId ? "&hasil_id=" + encodeURIComponent(hasilId) : "");
+    const res  = await fetch(url);
+    const json = await res.json();
+
+    if (!json.success || !json.data) {
+      alert("Gagal memuat data review.");
+      window.location.href = "hasil-tryout.html?id=" + tryoutId + (hasilId ? "&hasil_id=" + hasilId : "");
+      return;
+    }
+
+    namaTryout       = json.data.nama || "Tryout";
+    aksesPembahasan  = !!json.data.akses_pembahasan;
+    soalList         = sortSoal(json.data.soal || []);
+
+    document.getElementById("topbarTitle").textContent = namaTryout;
+    const hasilUrl = "hasil-tryout.html?id=" + tryoutId + (hasilId ? "&hasil_id=" + hasilId : "");
+    document.getElementById("linkKembali").href = hasilUrl;
+    document.getElementById("btnHasil").href     = hasilUrl;
+
+    document.getElementById("loadingWrap").style.display = "none";
+    document.getElementById("reviewWrap").style.display = "block";
+
+    renderNavigasi();
+    renderSoal();
+
+  } catch (err) {
+    console.error(err);
+    alert("Terjadi kesalahan saat memuat review jawaban.");
+  }
+}
+
+function sortSoal(rows) {
+  return [...rows].sort((a, b) => {
+    const ia = SEKSI_ORDER.indexOf(a.seksi), ib = SEKSI_ORDER.indexOf(b.seksi);
+    if (ia !== ib) return ia - ib;
+    return (a.nomor || 0) - (b.nomor || 0);
+  });
+}
+
+function renderSoal() {
+  const soal = soalList[currentIndex];
+  const card = document.getElementById("soalCard");
+
+  const badgeClass = soal.seksi === "TWK" ? "badge-twk" : soal.seksi === "TIU" ? "badge-tiu" : "badge-tkp";
+  const jawabanUser  = soal.jawaban_user || null;
+  const isTkp = soal.seksi === "TKP";
+  const isKosong = !jawabanUser;
+
+  let statusBadge;
+  if (isTkp) {
+    statusBadge = isKosong
+      ? '<span class="badge-kosong">Tidak Dijawab</span>'
+      : '<span class="badge-poin">Poin: ' + (soal.poin ?? 0) + '</span>';
+  } else {
+    const isBenar = jawabanUser && jawabanUser === soal.jawaban_benar;
+    if (isKosong)      statusBadge = '<span class="badge-kosong">Tidak Dijawab</span>';
+    else if (isBenar)  statusBadge = '<span class="badge-benar">Jawaban Benar</span>';
+    else               statusBadge = '<span class="badge-salah">Jawaban Salah</span>';
+  }
+
+  const opsiHtml = (soal.opsi || []).map(o => {
+    const isUserPick = jawabanUser === o.huruf;
+    let cls = "opsi-item";
+    let tag = "";
+
+    if (isTkp) {
+      if (isUserPick) { cls += " user-pilih"; tag = '<span class="opsi-tag opsi-tag-netral">Pilihanmu &middot; ' + (o.bobot ?? 0) + ' poin</span>'; }
+    } else {
+      const isCorrect = soal.jawaban_benar === o.huruf;
+      if (isUserPick && isCorrect)      { cls += " user-benar"; tag = '<span class="opsi-tag">Jawabanmu &middot; Benar</span>'; }
+      else if (isUserPick && !isCorrect){ cls += " user-salah"; tag = '<span class="opsi-tag">Jawabanmu &middot; Salah</span>'; }
+      else if (isCorrect)               { cls += " jawaban-benar"; tag = '<span class="opsi-tag">Kunci Jawaban</span>'; }
+    }
+
+    return '<div class="' + cls + '">' +
+      '<div class="opsi-huruf">' + o.huruf + '</div>' +
+      '<div class="opsi-teks">' + o.teks + '</div>' +
+      tag +
+    '</div>';
+  }).join('');
+
+  let pembahasanHtml;
+  if (aksesPembahasan) {
+    pembahasanHtml =
+      '<div class="pembahasan-box">' +
+        '<div class="pembahasan-label">Pembahasan</div>' +
+        '<div class="pembahasan-teks">' + (soal.pembahasan || "Pembahasan untuk soal ini belum tersedia.") + '</div>' +
+      '</div>';
+  } else {
+    pembahasanHtml =
+      '<div class="pembahasan-locked">' +
+        '<div class="pembahasan-locked-title">Pembahasan Terkunci</div>' +
+        '<div class="pembahasan-locked-desc">Akun gratis hanya bisa melihat jawaban benar/salah dan kunci jawaban. Upgrade ke Premium untuk membaca pembahasan lengkap setiap soal.</div>' +
+        '<a class="btn-upgrade-kecil" href="premium.html">Upgrade ke Premium</a>' +
+      '</div>';
+  }
+
+  card.innerHTML =
+    '<div class="soal-meta">' +
+      '<span class="badge-seksi ' + badgeClass + '">' + soal.seksi + '</span>' +
+      '<span class="soal-nomor">Soal ' + (currentIndex + 1) + ' dari ' + soalList.length + '</span>' +
+      statusBadge +
+    '</div>' +
+    '<div class="soal-teks">' + (soal.teks || "") + '</div>' +
+    (soal.gambar_url ? '<img class="soal-gambar" src="' + soal.gambar_url + '" alt="Gambar soal">' : '') +
+    '<div class="opsi-list">' + opsiHtml + '</div>' +
+    pembahasanHtml +
+    '<div class="nav-buttons">' +
+      '<button class="btn-nav prev" onclick="goPrev()" ' + (currentIndex === 0 ? 'disabled' : '') + '>&#8592; Sebelumnya</button>' +
+      '<button class="btn-nav next" onclick="goNext()" ' + (currentIndex === soalList.length - 1 ? 'disabled' : '') + '>Selanjutnya &#8594;</button>' +
+    '</div>';
+
+  if (window.MathJax && window.MathJax.typesetPromise) {
+    window.MathJax.typesetPromise([card]).catch(() => {});
+  }
+
+  highlightNavigasi();
+}
+
+function renderNavigasi() {
+  const wrap = document.getElementById("navigasiWrap");
+  let html = "";
+
+  SEKSI_ORDER.forEach(seksi => {
+    const items = soalList.map((s, idx) => ({ ...s, idx })).filter(s => s.seksi === seksi);
+    if (!items.length) return;
+
+    html += '<div class="seksi-group"><div class="seksi-label">' + seksi + '</div><div class="nomor-grid">' +
+      items.map(s => {
+        const jawabanUser = s.jawaban_user || null;
+        let cls = "nomor-btn";
+        if (s.seksi === "TKP") {
+          if (jawabanUser) cls += " terjawab";
+        } else {
+          const isBenar = jawabanUser && jawabanUser === s.jawaban_benar;
+          if (jawabanUser) cls += isBenar ? " benar" : " salah";
+        }
+        if (s.idx === currentIndex) cls += " current";
+        return '<button class="' + cls + '" onclick="gotoSoal(' + s.idx + ')">' + (s.idx + 1) + '</button>';
+      }).join('') +
+    '</div></div>';
+  });
+
+  wrap.innerHTML = html;
+}
+
+function highlightNavigasi() {
+  document.querySelectorAll(".nomor-btn").forEach(btn => btn.classList.remove("current"));
+  const btns = document.querySelectorAll(".nomor-btn");
+  if (btns[currentIndex]) btns[currentIndex].classList.add("current");
+}
+
+function goPrev() { if (currentIndex > 0) { currentIndex--; renderSoal(); renderNavigasi(); } }
+function goNext() { if (currentIndex < soalList.length - 1) { currentIndex++; renderSoal(); renderNavigasi(); } }
+function gotoSoal(idx) { currentIndex = idx; renderSoal(); renderNavigasi(); }
+
+init();
+</script>
+</body>
+</html>

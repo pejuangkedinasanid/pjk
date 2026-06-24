@@ -2,16 +2,20 @@
 // POST /api/akses-gratis/verify
 // Body: { tryout_id, email, password }
 //
-// PERBAIKAN: sekarang mendukung 2 mekanisme password sekaligus:
-//   1. Password BERSAMA — admin set langsung di kolom
-//      tryout.password_akses lewat admin-tryout.html (satu
-//      password berlaku untuk SEMUA user yang gratis).
-//   2. Password PER-USER — admin keluarkan lewat tabel
-//      akses_gratis setelah user mengisi formulir (gform_url),
-//      seperti yang sudah dibangun sebelumnya.
+// PERBAIKAN (revisi ini): sebelum cek password sama sekali, tolak dulu
+// kalau user ini SUDAH PERNAH menyelesaikan tryout ini dengan mode
+// gratis (hasil_tryout.selesai=true). Akun gratis hanya boleh
+// mengerjakan satu tryout satu kali; untuk mengulang harus upgrade ke
+// Premium. Ini lapisan keamanan tambahan di server — frontend
+// (tryout-tersedia.html) seharusnya sudah menyembunyikan tombol
+// "Kerjakan Sekarang" dan menggantinya dengan "Upgrade ke Premium"
+// memakai flag sudah_gratis dari /api/tryout, tapi endpoint ini tetap
+// menolak kalau diakses langsung / dimanipulasi dari klien.
 //
-// Verifikasi mencoba opsi 1 dulu, kalau tidak cocok baru cek opsi 2.
-// Password ASLI tidak pernah dikirim ke frontend di kedua jalur ini.
+// Kalau belum pernah selesai (termasuk yang baru mengisi password tapi
+// belum menyelesaikan ujian -> masih boleh resume), lanjut seperti biasa:
+//   1. Password BERSAMA di kolom tryout.password_akses.
+//   2. Password PER-USER di tabel akses_gratis.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -29,6 +33,31 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { success: false, message: "Data tidak lengkap." },
         { status: 400 }
+      );
+    }
+
+    // ── 0. Sudah pernah MENYELESAIKAN tryout ini secara gratis? Tolak. ──
+    const { data: sudahSelesai, error: errCekSelesai } = await supabase
+      .from("hasil_tryout")
+      .select("id")
+      .eq("email", email)
+      .eq("tryout_id", tryout_id)
+      .eq("mode", "gratis")
+      .eq("selesai", true)
+      .maybeSingle();
+
+    if (errCekSelesai) {
+      return NextResponse.json({ success: false, message: errCekSelesai.message }, { status: 500 });
+    }
+
+    if (sudahSelesai) {
+      return NextResponse.json(
+        {
+          success: false,
+          sudah_pernah: true,
+          message: "Kamu sudah pernah mengerjakan tryout ini secara gratis. Upgrade ke Premium untuk mengerjakan berkali-kali.",
+        },
+        { status: 403 }
       );
     }
 

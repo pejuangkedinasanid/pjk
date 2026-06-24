@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hasil Tryout | Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f172a;--navy2:#1e293b;--orange:#f97316;--orange2:#fb923c;--blue:#2563eb;--bg:#f5f7fb;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--green:#16a34a;--greenbg:#dcfce7;--greentext:#166534;--red:#dc2626;--redbg:#fee2e2;--redtext:#991b1b;--shadow:0 20px 50px rgba(15,23,42,.08);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+html,body{height:100%;}
+body{background:var(--bg);min-height:100vh;}
+
+/* TOPBAR */
+.topbar{background:linear-gradient(135deg,#0f172a,#1e293b);color:white;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;box-shadow:0 8px 20px rgba(15,23,42,.15);}
+.brand-title{font-weight:800;font-size:16px;letter-spacing:.3px;}
+.topbar-tryout{font-size:13px;font-weight:700;background:rgba(255,255,255,.1);padding:9px 16px;border-radius:12px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.wrap{max-width:760px;margin:0 auto;padding:36px 20px 60px;}
+
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;color:var(--muted);gap:14px;}
+.spinner{width:40px;height:40px;border-radius:50%;border:3px solid #e2e8f0;border-top-color:var(--orange);animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* CARD UTAMA */
+.summary-card{background:white;border-radius:28px;padding:36px;box-shadow:var(--shadow);text-align:center;margin-bottom:20px;}
+.summary-eyebrow{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.summary-nama{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:22px;}
+
+.total-score{font-size:54px;font-weight:800;color:var(--orange);line-height:1;}
+.total-label{font-size:13px;color:var(--muted);margin-top:4px;margin-bottom:16px;}
+
+.status-pill{display:inline-block;padding:9px 20px;border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.3px;}
+.status-pill.lulus{background:var(--greenbg);color:var(--greentext);}
+.status-pill.tidak{background:var(--redbg);color:var(--redtext);}
+
+/* GRID SUBTES */
+.subtes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:28px 0 8px;}
+@media(max-width:600px){.subtes-grid{grid-template-columns:1fr;}}
+.subtes-box{background:#f8fafc;border:1px solid var(--border);border-radius:18px;padding:18px;text-align:center;}
+.subtes-nama{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.5px;margin-bottom:8px;}
+.subtes-nilai{font-size:30px;font-weight:800;color:var(--navy);line-height:1;}
+.subtes-pg{font-size:11.5px;color:var(--muted);margin:6px 0 10px;}
+.subtes-status{display:inline-block;padding:5px 14px;border-radius:999px;font-size:11px;font-weight:800;}
+.subtes-status.lulus{background:var(--greenbg);color:var(--greentext);}
+.subtes-status.tidak{background:var(--redbg);color:var(--redtext);}
+
+/* AKSI */
+.action-card{background:white;border-radius:24px;padding:24px;box-shadow:var(--shadow);margin-bottom:20px;}
+.action-title{font-size:13px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;}
+
+.action-row{display:flex;gap:12px;margin-bottom:12px;}
+@media(max-width:560px){.action-row{flex-direction:column;}}
+
+.btn-aksi{flex:1;padding:16px;border:none;border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;transition:.2s;text-align:center;text-decoration:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:inherit;}
+.btn-aksi-sub{font-size:11px;font-weight:600;opacity:.85;}
+
+.btn-review{background:linear-gradient(135deg,#f97316,#fb923c);color:white;}
+.btn-review:hover{opacity:.92;}
+
+.btn-pdf{background:linear-gradient(135deg,#2563eb,#3b82f6);color:white;}
+.btn-pdf:hover{opacity:.92;}
+.btn-pdf.locked{background:#f1f5f9;color:var(--muted);border:1px solid var(--border);}
+.btn-pdf.locked:hover{background:#e2e8f0;}
+
+.btn-leaderboard{width:100%;padding:16px;border:none;border-radius:14px;background:var(--navy);color:white;font-weight:700;font-size:14px;cursor:pointer;text-align:center;text-decoration:none;display:block;transition:.2s;}
+.btn-leaderboard:hover{opacity:.9;}
+
+.note-gratis{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:12px 14px;font-size:12.5px;color:#9a3412;line-height:1.6;margin-top:4px;}
+.note-gratis b{color:#c2410c;}
+
+.secondary-links{display:flex;flex-direction:column;gap:10px;}
+.link-secondary{display:block;width:100%;padding:14px;border-radius:14px;background:#f1f5f9;color:var(--navy);font-weight:700;font-size:14px;text-align:center;text-decoration:none;transition:.2s;}
+.link-secondary:hover{background:#e2e8f0;}
+
+/* MODAL UPGRADE */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:3000;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.show{display:flex;}
+.modal{background:white;border-radius:22px;padding:30px;width:100%;max-width:400px;text-align:center;box-shadow:0 25px 60px rgba(15,23,42,.3);}
+.modal-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:10px;}
+.modal-desc{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:20px;}
+.modal-actions{display:flex;flex-direction:column;gap:10px;}
+.modal-btn{padding:14px;border:none;border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;}
+.modal-btn-primary{background:linear-gradient(135deg,#f97316,#fb923c);color:white;}
+.modal-btn-secondary{background:#f1f5f9;color:var(--navy);}
+</style>
+</head>
+<body>
+
+<div class="loading-wrap" id="loadingWrap">
+  <div class="spinner"></div>
+  <div>Memuat hasil tryout...</div>
+</div>
+
+<div id="hasilWrap" style="display:none;">
+
+  <div class="topbar">
+    <div class="brand-title">PEJUANG KEDINASAN</div>
+    <div class="topbar-tryout" id="topbarTryout">Tryout</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="summary-card">
+      <div class="summary-eyebrow">Hasil Tryout</div>
+      <div class="summary-nama" id="namaTryout">Memuat...</div>
+
+      <div class="total-score" id="totalScore">0</div>
+      <div class="total-label">Total Nilai</div>
+
+      <span class="status-pill" id="statusTotal">-</span>
+
+      <div class="subtes-grid">
+        <div class="subtes-box">
+          <div class="subtes-nama">TWK</div>
+          <div class="subtes-nilai" id="nilaiTwk">0</div>
+          <div class="subtes-pg" id="pgTwk">Passing grade: -</div>
+          <span class="subtes-status" id="statusTwk">-</span>
+        </div>
+        <div class="subtes-box">
+          <div class="subtes-nama">TIU</div>
+          <div class="subtes-nilai" id="nilaiTiu">0</div>
+          <div class="subtes-pg" id="pgTiu">Passing grade: -</div>
+          <span class="subtes-status" id="statusTiu">-</span>
+        </div>
+        <div class="subtes-box">
+          <div class="subtes-nama">TKP</div>
+          <div class="subtes-nilai" id="nilaiTkp">0</div>
+          <div class="subtes-pg" id="pgTkp">Passing grade: -</div>
+          <span class="subtes-status" id="statusTkp">-</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-title">Tinjau Hasil</div>
+      <div class="action-row">
+        <a class="btn-aksi btn-review" id="btnReview" href="#">
+          <span>Review Jawaban</span>
+        </a>
+        <button class="btn-aksi btn-pdf" id="btnPdf" onclick="handleDownloadPdf()">
+          <span id="btnPdfLabel">Download Pembahasan PDF</span>
+        </button>
+      </div>
+      <div class="note-gratis" id="noteGratis" style="display:none;">
+        Akun <b>Gratis</b> hanya bisa melihat jawaban benar/salah saat review. Pembahasan lengkap dan PDF pembahasan hanya tersedia untuk akun <b>Premium</b>.
+      </div>
+    </div>
+
+    <div class="action-card">
+      <div class="action-title">Lainnya</div>
+      <div class="secondary-links">
+        <a class="btn-leaderboard" href="leaderboard.html">Lihat Ranking Leaderboard</a>
+        <a class="link-secondary" href="tryout-tersedia.html">Kembali ke Tryout Tersedia</a>
+        <a class="link-secondary" href="dashboard.html">Ke Dashboard</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL UPGRADE (untuk akun gratis) -->
+<div class="modal-bg" id="modalUpgrade">
+  <div class="modal">
+    <div class="modal-title">Pembahasan PDF Terkunci</div>
+    <div class="modal-desc">Fitur download pembahasan PDF hanya tersedia untuk pengguna Premium. Upgrade sekarang untuk mendapatkan pembahasan lengkap setiap soal.</div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-primary" onclick="window.location.href='premium.html'">Upgrade ke Premium</button>
+      <button class="modal-btn modal-btn-secondary" onclick="closeModal('modalUpgrade')">Nanti Saja</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const rawUser = localStorage.getItem("user");
+if (!rawUser) window.location.href = "login.html";
+const user = JSON.parse(rawUser);
+
+const params   = new URLSearchParams(window.location.search);
+const tryoutId = params.get("id");
+const modeParam = params.get("mode") || "gratis";
+const hasilId  = params.get("hasil_id") || "";
+
+if (!tryoutId) window.location.href = "tryout-tersedia.html";
+
+let hasilData     = null;
+let aksesPremium   = false; // sumber kebenaran akhir datang dari API, bukan dari query string
+
+function closeModal(id) { document.getElementById(id).classList.remove("show"); }
+
+function statusLulus(nilai, pg) {
+  if (pg === null || pg === undefined) return null;
+  return Number(nilai) >= Number(pg);
+}
+
+function setStatusPill(el, lulus) {
+  if (lulus === null) { el.textContent = "-"; el.className = "status-pill"; return; }
+  el.textContent = lulus ? "Lulus Passing Grade" : "Tidak Lulus Passing Grade";
+  el.className = "status-pill " + (lulus ? "lulus" : "tidak");
+}
+
+function setSubtesStatus(el, lulus) {
+  if (lulus === null) { el.textContent = "-"; el.className = "subtes-status"; return; }
+  el.textContent = lulus ? "Lulus" : "Tidak Lulus";
+  el.className = "subtes-status " + (lulus ? "lulus" : "tidak");
+}
+
+async function init() {
+  try {
+    const url = "/api/tryout/hasil?email=" + encodeURIComponent(user.email) + "&tryout_id=" + tryoutId +
+      (hasilId ? "&hasil_id=" + encodeURIComponent(hasilId) : "");
+    const res  = await fetch(url);
+    const json = await res.json();
+
+    if (!json.success || !json.data) {
+      alert("Gagal memuat hasil tryout.");
+      window.location.href = "tryout-tersedia.html";
+      return;
+    }
+
+    hasilData = json.data;
+    // Akses pembahasan ditentukan oleh backend (status premium akun saat ini),
+    // bukan dari parameter mode di URL, agar tidak bisa dimanipulasi dari sisi klien.
+    aksesPremium = !!hasilData.akses_pembahasan;
+
+    render();
+
+  } catch (err) {
+    console.error(err);
+    alert("Terjadi kesalahan saat memuat hasil tryout.");
+  } finally {
+    document.getElementById("loadingWrap").style.display = "none";
+    document.getElementById("hasilWrap").style.display = "block";
+  }
+}
+
+function render() {
+  const d = hasilData;
+
+  document.getElementById("namaTryout").textContent  = d.nama || "Tryout";
+  document.getElementById("topbarTryout").textContent = d.nama || "Tryout";
+  document.getElementById("totalScore").textContent  = d.nilai_total ?? 0;
+
+  document.getElementById("nilaiTwk").textContent = d.nilai_twk ?? 0;
+  document.getElementById("nilaiTiu").textContent = d.nilai_tiu ?? 0;
+  document.getElementById("nilaiTkp").textContent = d.nilai_tkp ?? 0;
+
+  document.getElementById("pgTwk").textContent = "Passing grade: " + (d.pg_twk ?? "-");
+  document.getElementById("pgTiu").textContent = "Passing grade: " + (d.pg_tiu ?? "-");
+  document.getElementById("pgTkp").textContent = "Passing grade: " + (d.pg_tkp ?? "-");
+
+  const lulusTwk = statusLulus(d.nilai_twk, d.pg_twk);
+  const lulusTiu = statusLulus(d.nilai_tiu, d.pg_tiu);
+  const lulusTkp = statusLulus(d.nilai_tkp, d.pg_tkp);
+
+  setSubtesStatus(document.getElementById("statusTwk"), lulusTwk);
+  setSubtesStatus(document.getElementById("statusTiu"), lulusTiu);
+  setSubtesStatus(document.getElementById("statusTkp"), lulusTkp);
+
+  let lulusTotal = null;
+  if (lulusTwk !== null && lulusTiu !== null && lulusTkp !== null) {
+    lulusTotal = lulusTwk && lulusTiu && lulusTkp;
+  }
+  setStatusPill(document.getElementById("statusTotal"), lulusTotal);
+
+  // Tombol Review Jawaban -> selalu bisa diakses, isi halamannya sendiri
+  // yang membedakan tampilan gratis vs premium.
+  document.getElementById("btnReview").href = "review-soal.html?id=" + tryoutId +
+    (d.hasil_id ? "&hasil_id=" + d.hasil_id : "");
+
+  // Tombol Download Pembahasan PDF
+  const btnPdf = document.getElementById("btnPdf");
+  const btnPdfLabel = document.getElementById("btnPdfLabel");
+  const noteGratis = document.getElementById("noteGratis");
+
+  if (aksesPremium && d.pembahasan_pdf_url) {
+    btnPdf.classList.remove("locked");
+    btnPdfLabel.textContent = "Download Pembahasan PDF";
+  } else if (aksesPremium && !d.pembahasan_pdf_url) {
+    btnPdf.classList.add("locked");
+    btnPdfLabel.textContent = "PDF Belum Tersedia";
+  } else {
+    btnPdf.classList.add("locked");
+    btnPdfLabel.textContent = "Download Pembahasan PDF (Premium)";
+    noteGratis.style.display = "block";
+  }
+}
+
+function handleDownloadPdf() {
+  if (aksesPremium && hasilData && hasilData.pembahasan_pdf_url) {
+    window.open(hasilData.pembahasan_pdf_url, "_blank");
+    return;
+  }
+  if (aksesPremium && hasilData && !hasilData.pembahasan_pdf_url) {
+    alert("PDF pembahasan untuk tryout ini belum diunggah oleh admin.");
+    return;
+  }
+  document.getElementById("modalUpgrade").classList.add("show");
+}
+
+document.getElementById("modalUpgrade").addEventListener("click", e => {
+  if (e.target === e.currentTarget) closeModal("modalUpgrade");
+});
+
+init();
+</script>
+</body>
+</html>
