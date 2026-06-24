@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
 
     const { data, error } = await supabase
       .from("hasil_tryout")
-      .select("id, tryout_id, nilai, nilai_twk, nilai_tiu, nilai_tkp, mode, selesai, is_first_attempt, created_at")
+      .select("id, tryout_id, nama_tryout, nilai, nilai_twk, nilai_tiu, nilai_tkp, durasi_menit, mode, selesai, is_first_attempt, created_at")
       .eq("email", email)
       .order("created_at", { ascending: false });
 

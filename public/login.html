@@ -23,7 +23,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#14274e,#1f3f7a);display
 .logo img{height:80px;margin-bottom:15px;}
 .logo-title{font-size:32px;font-weight:800;color:#14274e;}
 .logo-tagline{font-size:13px;color:#64748b;margin-top:5px;}
-.title{font-size:32px;font-weight:800;color:#14274e;text-align:center;margin-bottom:10px;}
+.title{font-size:28px;font-weight:800;color:#14274e;text-align:center;margin-bottom:10px;}
 .subtitle{text-align:center;color:#64748b;margin-bottom:35px;}
 .form-group{margin-bottom:22px;}
 .form-group label{display:block;margin-bottom:8px;font-weight:700;color:#14274e;}
@@ -62,7 +62,6 @@ body{min-height:100vh;background:linear-gradient(135deg,#14274e,#1f3f7a);display
   <div class="login-right">
     <div class="login-box">
       <div class="logo">
-        <img src="assets/logo.png" alt="Pejuang Kedinasan">
         <div class="logo-title">PEJUANG KEDINASAN</div>
         <div class="logo-tagline">Platform Tryout Kedinasan No.1 Indonesia</div>
       </div>
@@ -124,7 +123,7 @@ async function login(event) {
       .single();
 
     if (error || !data) {
-      showMsg("❌ Email atau password salah.", "error");
+      showMsg(" Email atau password salah.", "error");
       btn.disabled = false;
       btn.textContent = "Masuk Sekarang";
       return;
@@ -133,7 +132,7 @@ async function login(event) {
     // Cek apakah sudah verifikasi OTP
     if (!data.is_verified) {
       // Kirim ulang OTP dan arahkan ke halaman verifikasi
-      showMsg("⏳ Akun belum diverifikasi. Mengirim OTP ke email Anda...", "success");
+      showMsg(" Akun belum diverifikasi. Mengirim OTP ke email Anda...", "success");
       await fetch("/api/otp/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -148,7 +147,7 @@ async function login(event) {
     // Simpan data user ke localStorage
     localStorage.setItem("user", JSON.stringify(data));
 
-    showMsg("✅ Login berhasil! Mengalihkan...", "success");
+    showMsg(" Login berhasil! Mengalihkan...", "success");
 
     setTimeout(() => {
       if (data.role === "admin" || data.role === "super_admin") {
