@@ -258,7 +258,8 @@ color:#2d5bba;
 
 .hero-desc{
 font-size:18px;
-line-height:1.9;
+font-weight:400;
+line-height:1.8;
 color:var(--muted);
 margin-bottom:35px;
 max-width:650px;
@@ -378,7 +379,7 @@ margin-top:10px;
 PEJUANG KEDINASAN
 </div>
 
-<a href="#">Home</a> <a href="#">Tryout</a> <a href="#">Paket</a> <a href="#">Materi</a> <a href="#">Testimoni</a> <a href="#">FAQ</a>
+<a href="#home">Home</a> <a href="#tryout">Tryout</a> <a href="#paket">Paket</a> <a href="#paket">Materi</a> <a href="#testimoni">Testimoni</a> <a href="#faq">FAQ</a>
 
 <div class="sidebar-buttons">
 
@@ -416,7 +417,7 @@ Platform Tryout Kedinasan No.1 Indonesia
 
 <div class="nav-links">
 
-<a href="#">Home</a> <a href="#">Tryout</a> <a href="#">Paket</a> <a href="#">Materi</a> <a href="#">Testimoni</a> <a href="#">FAQ</a>
+<a href="#home">Home</a> <a href="#tryout">Tryout</a> <a href="#paket">Paket</a> <a href="#paket">Materi</a> <a href="#testimoni">Testimoni</a> <a href="#faq">FAQ</a>
 
 </div>
 
@@ -442,7 +443,7 @@ Daftar Gratis
 
 </nav>
 
-<section class="hero">
+<section class="hero" id="home">
 
 <div class="container hero-content">
 
@@ -516,7 +517,7 @@ Ikuti Sekarang
 STATISTIK NASIONAL
 ====================================== -->
 
-<section style="
+<section id="tryout" style="
 padding:30px 0 90px;
 ">
 
@@ -634,6 +635,7 @@ Pejuang Kedinasan?
 
 <p style="
 font-size:18px;
+font-weight:400;
 color:#64748b;
 max-width:700px;
 margin:auto;
@@ -751,6 +753,8 @@ color:#14274e;
 }
 
 .feature-card p{
+font-size:18px;
+font-weight:400;
 line-height:1.8;
 color:#64748b;
 }
@@ -785,8 +789,10 @@ Belajar Dalam 3 Langkah
 </h2>
 
 <p style="
-color:#64748b;
 font-size:18px;
+font-weight:400;
+color:#64748b;
+line-height:1.8;
 ">
 
 Proses sederhana yang terbukti efektif
@@ -892,6 +898,8 @@ color:#14274e;
 }
 
 .step-card p{
+font-size:18px;
+font-weight:400;
 line-height:1.8;
 color:#64748b;
 }
@@ -905,10 +913,232 @@ color:#14274e;
 </style>
 
 <!-- =====================================
+ANALISIS PERKEMBANGAN (PREMIUM)
+====================================== -->
+
+<section style="padding:100px 0;background:white;">
+
+<div class="container">
+
+<div style="text-align:center;margin-bottom:60px;">
+
+<div class="premium-eyebrow">⭐ Khusus User Premium</div>
+
+<h2 style="font-size:52px;font-weight:800;color:#14274e;margin-bottom:15px;">
+Analisis Perkembangan
+</h2>
+
+<p style="font-size:18px;font-weight:400;color:#64748b;line-height:1.8;max-width:700px;margin:auto;">
+Pantau progres belajarmu secara detail — berapa tryout yang sudah dikerjakan, grafik perkembangan nilai, hingga rekap materi mana yang sudah kuat dan mana yang masih perlu ditingkatkan.
+</p>
+
+</div>
+
+<div class="analisis-preview">
+
+<div class="analisis-left">
+
+<div class="analisis-stat-box">
+<h4>Tryout Dikerjakan</h4>
+<h2>12</h2>
+</div>
+
+<div class="analisis-stat-box">
+<h4>Rata-rata Nilai</h4>
+<h2>412</h2>
+</div>
+
+</div>
+
+<div class="analisis-right">
+
+<div class="analisis-chart-box">
+<h3>Grafik Perkembangan Nilai</h3>
+<div class="mini-chart">
+  <div class="bar" style="height:40%;"><span>320</span></div>
+  <div class="bar" style="height:55%;"><span>365</span></div>
+  <div class="bar" style="height:62%;"><span>390</span></div>
+  <div class="bar" style="height:70%;"><span>405</span></div>
+  <div class="bar" style="height:80%;"><span>430</span></div>
+  <div class="bar" style="height:88%;"><span>460</span></div>
+</div>
+</div>
+
+<div class="analisis-rekap-box">
+<h3>Rekap Kekuatan &amp; Kelemahan</h3>
+
+<div class="rekap-item">
+  <div class="rekap-label"><span>✅ TIU — Logika Matematika</span><span>88%</span></div>
+  <div class="rekap-bar"><div class="rekap-fill kuat" style="width:88%;"></div></div>
+</div>
+
+<div class="rekap-item">
+  <div class="rekap-label"><span>✅ TWK — Pancasila</span><span>82%</span></div>
+  <div class="rekap-bar"><div class="rekap-fill kuat" style="width:82%;"></div></div>
+</div>
+
+<div class="rekap-item">
+  <div class="rekap-label"><span>⚠️ TKP — Pelayanan Publik</span><span>54%</span></div>
+  <div class="rekap-bar"><div class="rekap-fill lemah" style="width:54%;"></div></div>
+</div>
+
+<div class="rekap-item">
+  <div class="rekap-label"><span>⚠️ TIU — Analisis Verbal</span><span>48%</span></div>
+  <div class="rekap-bar"><div class="rekap-fill lemah" style="width:48%;"></div></div>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.premium-eyebrow{
+display:inline-block;
+padding:10px 18px;
+background:#fff7ed;
+color:#c2410c;
+font-weight:700;
+border-radius:999px;
+margin-bottom:20px;
+}
+
+.analisis-preview{
+background:#14274e;
+padding:50px;
+border-radius:30px;
+display:grid;
+grid-template-columns:1fr 2fr;
+gap:30px;
+}
+
+.analisis-left{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.analisis-stat-box{
+background:white;
+padding:30px;
+border-radius:20px;
+}
+
+.analisis-stat-box h4{
+color:#64748b;
+margin-bottom:15px;
+font-size:18px;
+font-weight:400;
+}
+
+.analisis-stat-box h2{
+font-size:42px;
+color:#14274e;
+font-weight:800;
+}
+
+.analisis-right{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.analisis-chart-box, .analisis-rekap-box{
+background:white;
+padding:30px;
+border-radius:20px;
+border:1px solid #eef2f7;
+}
+
+.analisis-chart-box h3, .analisis-rekap-box h3{
+color:#14274e;
+margin-bottom:25px;
+font-size:20px;
+font-weight:800;
+}
+
+.mini-chart{
+display:flex;
+align-items:flex-end;
+gap:12px;
+height:140px;
+padding-top:24px;
+}
+
+.mini-chart .bar{
+flex:1;
+background:linear-gradient(180deg,#2d5bba,#14274e);
+border-radius:8px 8px 0 0;
+position:relative;
+display:flex;
+align-items:flex-start;
+justify-content:center;
+}
+
+.mini-chart .bar span{
+position:absolute;
+top:-22px;
+font-size:12px;
+font-weight:700;
+color:#14274e;
+}
+
+.rekap-item{
+margin-bottom:18px;
+}
+
+.rekap-item:last-child{
+margin-bottom:0;
+}
+
+.rekap-label{
+display:flex;
+justify-content:space-between;
+font-size:14px;
+font-weight:700;
+color:#14274e;
+margin-bottom:8px;
+}
+
+.rekap-bar{
+height:10px;
+background:#e5e7eb;
+border-radius:999px;
+overflow:hidden;
+}
+
+.rekap-fill{
+height:100%;
+border-radius:999px;
+}
+
+.rekap-fill.kuat{
+background:#16a34a;
+}
+
+.rekap-fill.lemah{
+background:#f59e0b;
+}
+
+@media(max-width:900px){
+.analisis-preview{
+grid-template-columns:1fr;
+}
+}
+
+</style>
+
+<!-- =====================================
 PAKET BELAJAR
 ====================================== -->
 
-<section style="
+<section id="paket" style="
 padding:110px 0;
 background:#f8fafc;
 ">
@@ -933,7 +1163,9 @@ Pilih Akses Tryout & Modul
 
 <p style="
 font-size:18px;
+font-weight:400;
 color:#64748b;
+line-height:1.8;
 ">
 
 Mulai gratis, upgrade ke Premium, atau akses Modul belajar kapan saja
@@ -950,7 +1182,7 @@ Mulai gratis, upgrade ke Premium, atau akses Modul belajar kapan saja
 
 <h3>Gratis</h3>
 
-<p style="color:#64748b;margin-bottom:25px;line-height:1.7;">
+<p style="font-size:18px;font-weight:400;color:#64748b;margin-bottom:25px;line-height:1.8;">
 Coba tryout tanpa biaya — cocok untuk kenalan dulu dengan sistem CAT kami.
 </p>
 
@@ -984,7 +1216,7 @@ PALING POPULER
 
 <h3>Premium</h3>
 
-<p style="color:#64748b;margin-bottom:25px;line-height:1.7;">
+<p style="font-size:18px;font-weight:400;color:#64748b;margin-bottom:25px;line-height:1.8;">
 Kerjakan tryout premium berkali-kali, lengkap dengan pembahasan tiap soal.
 </p>
 
@@ -1012,7 +1244,7 @@ Login untuk Lihat Paket
 
 <h3>Modul Belajar</h3>
 
-<p style="color:#64748b;margin-bottom:25px;line-height:1.7;">
+<p style="font-size:18px;font-weight:400;color:#64748b;margin-bottom:25px;line-height:1.8;">
 Materi & ringkasan belajar dalam format PDF, gratis maupun berbayar.
 </p>
 
@@ -1045,8 +1277,18 @@ CTA CPNSLAB
 
 <div class="container">
 
-<div class="cpnslab-banner">
-  <p>Mau tes CPNS? Yuk latihan di <a href="https://cpnslab.id" target="_blank" rel="noopener">cpnslab.id</a></p>
+<div class="cpnslab-card">
+
+  <div class="cpnslab-eyebrow">Belajar dan Tryout di</div>
+
+  <div class="cpnslab-logo">
+    <span class="cpnslab-logo-dark">CPNS</span><span class="cpnslab-logo-orange">Lab</span>
+  </div>
+
+  <a class="cpnslab-btn" href="https://cpnslab.id" target="_blank" rel="noopener">
+    Kunjungi Website cpnslab.id Sekarang
+  </a>
+
 </div>
 
 </div>
@@ -1055,24 +1297,64 @@ CTA CPNSLAB
 
 <style>
 
-.cpnslab-banner{
-background:#fff7ed;
-border:1px solid #fed7aa;
-border-radius:18px;
-padding:18px 26px;
+.cpnslab-card{
+background:white;
+border-radius:28px;
+padding:50px 30px;
 text-align:center;
-font-size:15px;
-font-weight:600;
-color:#9a3412;
+box-shadow:0 15px 40px rgba(0,0,0,.06);
+border:1px solid #eef2f7;
 }
 
-.cpnslab-banner a{
-color:#c2410c;
+.cpnslab-eyebrow{
+font-size:18px;
+font-weight:400;
+color:#64748b;
+margin-bottom:14px;
+}
+
+.cpnslab-logo{
+font-size:56px;
 font-weight:800;
-text-decoration:underline;
+letter-spacing:-1px;
+margin-bottom:26px;
+}
+
+.cpnslab-logo-dark{
+color:#14274e;
+}
+
+.cpnslab-logo-orange{
+color:#f59e0b;
+}
+
+.cpnslab-btn{
+display:inline-block;
+background:#14274e;
+color:white;
+padding:16px 32px;
+border-radius:14px;
+text-decoration:none;
+font-weight:700;
+font-size:15px;
+transition:.2s;
+}
+
+.cpnslab-btn:hover{
+opacity:.9;
+}
+
+@media(max-width:600px){
+.cpnslab-card{
+padding:36px 22px;
+}
+.cpnslab-logo{
+font-size:40px;
+}
 }
 
 </style>
+
 
 <style>
 
@@ -1180,7 +1462,9 @@ Leaderboard Nasional
 
 <p style="
 font-size:18px;
+font-weight:400;
 color:#64748b;
+line-height:1.8;
 margin-top:15px;
 " id="leaderboardSub">
 
@@ -1256,7 +1540,7 @@ border-bottom:1px solid #eef2f7;
 TESTIMONI
 ====================================== -->
 
-<section style="
+<section id="testimoni" style="
 padding:110px 0;
 background:#f8fafc;
 ">
@@ -1280,7 +1564,9 @@ Cerita Mereka Yang Lolos
 
 <p style="
 font-size:18px;
+font-weight:400;
 color:#64748b;
+line-height:1.8;
 margin-top:15px;
 ">
 
@@ -1400,7 +1686,9 @@ margin-bottom:20px;
 }
 
 .testimonial-card p{
-line-height:1.9;
+font-size:18px;
+font-weight:400;
+line-height:1.8;
 margin-bottom:25px;
 color:#64748b;
 }
@@ -1433,7 +1721,7 @@ color:#64748b;
 FAQ PREMIUM
 ====================================== -->
 
-<section style="
+<section id="faq" style="
 padding:120px 0;
 background:white;
 ">
@@ -1457,7 +1745,9 @@ Pertanyaan Umum
 
 <p style="
 font-size:18px;
+font-weight:400;
 color:#64748b;
+line-height:1.8;
 margin-top:15px;
 ">
 
@@ -1721,7 +2011,7 @@ opacity:.85;
 max-width:400px;
 ">
 
-Platform Tryout Kedinasan No.1 Indonesia yang membantu ribuan peserta mempersiapkan diri menghadapi seleksi sekolah kedinasan.
+Platform Tryout Kedinasan No.1 Indonesia yang membantu ribuan peserta mempersiapkan diri menghadapi seleksi sekolah kedinasan sejak tahun 2019.
 
 </p>
 
@@ -1887,6 +2177,13 @@ overlay.style.display='none';
 });
 
 }
+
+sidebar.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.style.display = 'none';
+  });
+});
 
 /* =========================
 DATA REAL — Tryout Terbaru, Statistik, Leaderboard
@@ -2103,9 +2400,12 @@ text-align:center;
 justify-content:center;
 }
 
-.cpnslab-banner{
-font-size:13.5px;
-padding:16px 18px;
+.cpnslab-card{
+padding:32px 18px;
+}
+
+.cpnslab-logo{
+font-size:36px;
 }
 
 .hero-card{
