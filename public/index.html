@@ -313,6 +313,22 @@ border-radius:28px;
 box-shadow:0 20px 50px rgba(0,0,0,.08);
 }
 
+.tryout-banner-wrap{
+width:100%;
+aspect-ratio:16/9;
+border-radius:18px;
+overflow:hidden;
+margin-bottom:18px;
+background:linear-gradient(135deg,#14274e,#1f3f7a);
+}
+
+.tryout-banner-wrap img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
 .tryout-badge{
 display:inline-block;
 padding:8px 16px;
@@ -366,11 +382,11 @@ PEJUANG KEDINASAN
 
 <div class="sidebar-buttons">
 
-<a href="#" class="btn-login">
+<a href="login.html" class="btn-login">
 Masuk
 </a>
 
-<a href="#" class="btn-register">
+<a href="register.html" class="btn-register">
 Daftar
 </a>
 
@@ -383,10 +399,6 @@ Daftar
 <div class="container nav-content">
 
 <div class="brand">
-
-<div class="brand-logo">
-PK
-</div>
 
 <div class="brand-info">
 
@@ -410,11 +422,11 @@ Platform Tryout Kedinasan No.1 Indonesia
 
 <div class="nav-buttons">
 
-<a href="#" class="btn-login">
+<a href="login.html" class="btn-login">
 Masuk
 </a>
 
-<a href="#" class="btn-register">
+<a href="register.html" class="btn-register">
 Daftar Gratis
 </a>
 
@@ -457,7 +469,7 @@ serta ribuan soal HOTS yang selalu diperbarui.
 
 <div class="hero-buttons">
 
-<a href="#" class="btn-primary">
+<a href="register.html" class="btn-primary">
 Mulai Tryout Gratis
 </a>
 
@@ -467,44 +479,29 @@ Lihat Paket
 
 </div>
 
-<div class="hero-stats">
-
-<div class="hero-stat">
-<h3>12.500+</h3>
-<p>Peserta Aktif</p>
-</div>
-
-<div class="hero-stat">
-<h3>250+</h3>
-<p>Tryout</p>
-</div>
-
-<div class="hero-stat">
-<h3>98%</h3>
-<p>Kepuasan</p>
-</div>
-
-</div>
-
 </div>
 
 <div>
 
 <div class="hero-card">
 
-<div class="tryout-badge">
-TRYOUT AKTIF
+<div class="tryout-banner-wrap" id="tryoutTerbaruBannerWrap" style="display:none;">
+  <img id="tryoutTerbaruBanner" src="" alt="Banner tryout terbaru">
 </div>
 
-<h2>
-TRYOUT KEDINASAN NASIONAL #12
+<div class="tryout-badge">
+TRYOUT TERBARU
+</div>
+
+<h2 id="tryoutTerbaruNama">
+Memuat...
 </h2>
 
-<p>Periode: 1 - 7 Agustus 2026</p>
+<p id="tryoutTerbaruAkses">&nbsp;</p>
 
-<p>Peserta: 4.582 Orang</p>
+<p id="tryoutTerbaruPeriode">&nbsp;</p>
 
-<button class="tryout-button">
+<button class="tryout-button" onclick="window.location.href='register.html'">
 Ikuti Sekarang
 </button>
 
@@ -525,15 +522,11 @@ padding:30px 0 90px;
 
 <div class="container">
 
-<div style="
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:25px;
-">
+<div class="stat-grid">
 
 <div class="stat-card">
 
-<h2>25.000+</h2>
+<h2>18.456</h2>
 
 <p>Peserta Terdaftar</p>
 
@@ -541,17 +534,17 @@ gap:25px;
 
 <div class="stat-card">
 
-<h2>500.000+</h2>
+<h2 id="statTryoutTersedia">—</h2>
 
-<p>Soal Dikerjakan</p>
+<p>Tryout Tersedia</p>
 
 </div>
 
 <div class="stat-card">
 
-<h2>150+</h2>
+<h2 id="statJumlahModul">—</h2>
 
-<p>Tryout Tersedia</p>
+<p>Modul Belajar</p>
 
 </div>
 
@@ -570,6 +563,24 @@ gap:25px;
 </section>
 
 <style>
+
+.stat-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:25px;
+}
+
+@media(max-width:900px){
+.stat-grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media(max-width:480px){
+.stat-grid{
+grid-template-columns:1fr;
+}
+}
 
 .stat-card{
 background:white;
@@ -894,151 +905,6 @@ color:#14274e;
 </style>
 
 <!-- =====================================
-DASHBOARD PREVIEW
-====================================== -->
-
-<section style="
-padding:100px 0;
-background:white;
-">
-
-<div class="container">
-
-<div style="
-text-align:center;
-margin-bottom:60px;
-">
-
-<h2 style="
-font-size:52px;
-font-weight:800;
-color:#14274e;
-margin-bottom:20px;
-">
-
-Dashboard Modern
-
-</h2>
-
-<p style="
-font-size:18px;
-color:#64748b;
-">
-
-Pantau perkembangan belajar secara real-time
-
-</p>
-
-</div>
-
-<div class="dashboard-preview">
-
-<div class="dashboard-left">
-
-<div class="dashboard-box">
-
-<h4>Nilai Rata-rata</h4>
-
-<h2>486</h2>
-
-</div>
-
-<div class="dashboard-box">
-
-<h4>Peringkat Nasional</h4>
-
-<h2>#124</h2>
-
-</div>
-
-</div>
-
-<div class="dashboard-right">
-
-<div class="dashboard-large">
-
-<h3>Progress Belajar</h3>
-
-<div class="progress-bar">
-
-<div class="progress-fill"></div>
-
-</div>
-
-<p>78% Target Mingguan Tercapai</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<style>
-
-.dashboard-preview{
-background:#14274e;
-padding:50px;
-border-radius:30px;
-display:grid;
-grid-template-columns:1fr 2fr;
-gap:30px;
-}
-
-.dashboard-left{
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-.dashboard-box{
-background:white;
-padding:30px;
-border-radius:20px;
-}
-
-.dashboard-box h4{
-color:#64748b;
-margin-bottom:15px;
-}
-
-.dashboard-box h2{
-font-size:42px;
-color:#14274e;
-}
-
-.dashboard-large{
-background:white;
-padding:35px;
-border-radius:20px;
-height:100%;
-}
-
-.dashboard-large h3{
-color:#14274e;
-margin-bottom:25px;
-}
-
-.progress-bar{
-height:18px;
-background:#e5e7eb;
-border-radius:999px;
-overflow:hidden;
-margin-bottom:20px;
-}
-
-.progress-fill{
-height:100%;
-width:78%;
-background:#14274e;
-border-radius:999px;
-}
-
-</style>
-<!-- =====================================
 PAKET BELAJAR
 ====================================== -->
 
@@ -1061,7 +927,7 @@ color:#14274e;
 margin-bottom:15px;
 ">
 
-Pilih Paket Belajar
+Pilih Akses Tryout & Modul
 
 </h2>
 
@@ -1070,7 +936,7 @@ font-size:18px;
 color:#64748b;
 ">
 
-Mulai gratis dan upgrade kapan saja
+Mulai gratis, upgrade ke Premium, atau akses Modul belajar kapan saja
 
 </p>
 
@@ -1084,19 +950,26 @@ Mulai gratis dan upgrade kapan saja
 
 <h3>Gratis</h3>
 
-<h1>Rp 0</h1>
+<p style="color:#64748b;margin-bottom:25px;line-height:1.7;">
+Coba tryout tanpa biaya — cocok untuk kenalan dulu dengan sistem CAT kami.
+</p>
 
 <ul>
 
-<li>✓ 1 Tryout Gratis</li>
-<li>✓ Ranking Nasional</li>
-<li>✓ Analisis Dasar</li>
-<li>✓ Leaderboard</li>
+<li>✅ 1x kesempatan tiap tryout gratis</li>
+<li>✅ Password akses dari admin</li>
+<li>✅ Lihat ranking di leaderboard</li>
+<li>✅ Jawaban benar/salah & kunci jawaban</li>
+<li style="color:#94a3b8;">❌ Tanpa pembahasan lengkap</li>
+<li style="color:#94a3b8;">❌ Tidak bisa download PDF pembahasan</li>
+<li style="color:#94a3b8;">❌ Tidak bisa akses video pembahasan</li>
+<li style="color:#94a3b8;">❌ Hanya bisa dikerjakan dalam periode waktu tryout</li>
+<li style="color:#94a3b8;">❌ Tanpa analisis perkembangan</li>
 
 </ul>
 
-<button class="pricing-btn-outline">
-Mulai Gratis
+<button class="pricing-btn-outline" onclick="window.location.href='register.html'">
+Daftar &amp; Mulai Gratis
 </button>
 
 </div>
@@ -1111,45 +984,49 @@ PALING POPULER
 
 <h3>Premium</h3>
 
-<h1>Rp 99K</h1>
+<p style="color:#64748b;margin-bottom:25px;line-height:1.7;">
+Kerjakan tryout premium berkali-kali, lengkap dengan pembahasan tiap soal.
+</p>
 
 <ul>
 
-<li>✓ 50+ Tryout</li>
-<li>✓ Video Pembahasan</li>
-<li>✓ PDF Pembahasan</li>
-<li>✓ Analisis Lengkap</li>
-<li>✓ Ranking Nasional</li>
-<li>✓ Bank Soal HOTS</li>
+<li>✅ Akses tryout premium sesuai kuota</li>
+<li>✅ Bisa dikerjakan berkali-kali, kuota tidak terpotong lagi</li>
+<li>✅ Pembahasan lengkap & bisa download PDF</li>
+<li>✅ Video pembahasan untuk soal-soal tertentu</li>
+<li>✅ Bisa dikerjakan kapan saja, walau di luar periode tryout</li>
+<li>✅ Analisis perkembangan belajar</li>
+<li>✅ Nilai pertama otomatis masuk leaderboard</li>
 
 </ul>
 
-<button class="pricing-btn">
-Pilih Premium
+<button class="pricing-btn" onclick="window.location.href='login.html'">
+Login untuk Lihat Paket
 </button>
 
 </div>
 
-<!-- PLATINUM -->
+<!-- MODUL -->
 
 <div class="pricing-card">
 
-<h3>Platinum</h3>
+<h3>Modul Belajar</h3>
 
-<h1>Rp 199K</h1>
+<p style="color:#64748b;margin-bottom:25px;line-height:1.7;">
+Materi & ringkasan belajar dalam format PDF, gratis maupun berbayar.
+</p>
 
 <ul>
 
-<li>✓ Semua Fitur Premium</li>
-<li>✓ Kelas Intensif</li>
-<li>✓ Mentor Eksklusif</li>
-<li>✓ Konsultasi Belajar</li>
-<li>✓ Tryout Unlimited</li>
+<li>✅ Modul gratis bisa diunduh langsung</li>
+<li>✅ Modul berbayar sesuai kebutuhanmu</li>
+<li>✅ Update mengikuti kisi-kisi terbaru</li>
+<li>✅ Unduh PDF kapan saja</li>
 
 </ul>
 
-<button class="pricing-btn-outline">
-Pilih Platinum
+<button class="pricing-btn-outline" onclick="window.location.href='login.html'">
+Login untuk Lihat Modul
 </button>
 
 </div>
@@ -1159,6 +1036,43 @@ Pilih Platinum
 </div>
 
 </section>
+
+<!-- =====================================
+CTA CPNSLAB
+====================================== -->
+
+<section style="padding:0 0 60px;">
+
+<div class="container">
+
+<div class="cpnslab-banner">
+  <p>Mau tes CPNS? Yuk latihan di <a href="https://cpnslab.id" target="_blank" rel="noopener">cpnslab.id</a></p>
+</div>
+
+</div>
+
+</section>
+
+<style>
+
+.cpnslab-banner{
+background:#fff7ed;
+border:1px solid #fed7aa;
+border-radius:18px;
+padding:18px 26px;
+text-align:center;
+font-size:15px;
+font-weight:600;
+color:#9a3412;
+}
+
+.cpnslab-banner a{
+color:#c2410c;
+font-weight:800;
+text-decoration:underline;
+}
+
+</style>
 
 <style>
 
@@ -1268,7 +1182,7 @@ Leaderboard Nasional
 font-size:18px;
 color:#64748b;
 margin-top:15px;
-">
+" id="leaderboardSub">
 
 Lihat siapa yang berada di peringkat teratas
 
@@ -1293,42 +1207,9 @@ Lihat siapa yang berada di peringkat teratas
 
 </thead>
 
-<tbody>
+<tbody id="leaderboardBody">
 
-<tr>
-<td>🥇 1</td>
-<td>Ahmad Fauzi</td>
-<td>498</td>
-<td>Premium</td>
-</tr>
-
-<tr>
-<td>🥈 2</td>
-<td>Nabila Putri</td>
-<td>496</td>
-<td>Premium</td>
-</tr>
-
-<tr>
-<td>🥉 3</td>
-<td>Rizky Pratama</td>
-<td>495</td>
-<td>Premium</td>
-</tr>
-
-<tr>
-<td>4</td>
-<td>Dewi Lestari</td>
-<td>492</td>
-<td>Premium</td>
-</tr>
-
-<tr>
-<td>5</td>
-<td>Rahmat Hidayat</td>
-<td>490</td>
-<td>Gratis</td>
-</tr>
+<tr><td colspan="4" style="text-align:center;color:#94a3b8;">Memuat leaderboard...</td></tr>
 
 </tbody>
 
@@ -1735,7 +1616,7 @@ Mulai latihan sekarang dan tingkatkan peluangmu lolos sekolah kedinasan favorit.
 
 <div class="cta-buttons">
 
-<a href="#" class="cta-primary">
+<a href="register.html" class="cta-primary">
 Daftar Gratis Sekarang
 </a>
 
@@ -1879,10 +1760,16 @@ Platform Tryout Kedinasan No.1 Indonesia yang membantu ribuan peserta mempersiap
 <h4>Kontak</h4>
 
 <ul>
-<li>support@pejuangkedinasan.id</li>
-<li>+62 812 3456 7890</li>
+<li>pejuangkedinasan.id</li>
+<li>info@pejuangkedinasan.id</li>
 <li>Jakarta, Indonesia</li>
 </ul>
+
+<div class="footer-social">
+  <a href="https://pejuangkedinasan.id" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">📷</a>
+  <a href="https://pejuangkedinasan.id" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">▶️</a>
+  <a href="https://pejuangkedinasan.id" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">🎵</a>
+</div>
 
 </div>
 
@@ -1926,6 +1813,29 @@ list-style:none;
 .footer-grid-new li{
 margin-bottom:12px;
 opacity:.85;
+}
+
+.footer-social{
+display:flex;
+gap:12px;
+margin-top:18px;
+}
+
+.footer-social a{
+width:42px;
+height:42px;
+border-radius:12px;
+background:rgba(255,255,255,.1);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:18px;
+text-decoration:none;
+transition:.2s;
+}
+
+.footer-social a:hover{
+background:rgba(255,255,255,.2);
 }
 
 </style>
@@ -1977,6 +1887,112 @@ overlay.style.display='none';
 });
 
 }
+
+/* =========================
+DATA REAL — Tryout Terbaru, Statistik, Leaderboard
+========================= */
+const BULAN_LANDING = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+function formatPeriodeLanding(row) {
+  if (row.bebas_waktu) return 'Fleksibel — kapan saja';
+  if (!row.tanggal_mulai) return 'Fleksibel — kapan saja';
+  const dm = new Date(row.tanggal_mulai);
+  let teks = dm.getDate() + ' ' + BULAN_LANDING[dm.getMonth()] + ' ' + dm.getFullYear();
+  if (row.tanggal_selesai) {
+    const ds = new Date(row.tanggal_selesai);
+    teks += ' – ' + ds.getDate() + ' ' + BULAN_LANDING[ds.getMonth()] + ' ' + ds.getFullYear();
+  }
+  return 'Periode: ' + teks;
+}
+
+function labelAksesLanding(akses) {
+  if (akses === 'premium') return 'Akses: Premium';
+  if (akses === 'semua') return 'Akses: Gratis & Premium';
+  return 'Akses: Gratis';
+}
+
+async function loadTryoutLanding() {
+  try {
+    const res  = await fetch('/api/tryout?status=publish&limit=500');
+    const json = await res.json();
+    const rows = json.data || [];
+
+    // Statistik: jumlah tryout tersedia (real)
+    document.getElementById('statTryoutTersedia').textContent = rows.length + (rows.length ? '+' : '');
+
+    // Tryout terbaru = item pertama (API sudah urut created_at terbaru duluan)
+    const terbaru = rows[0];
+    if (terbaru) {
+      document.getElementById('tryoutTerbaruNama').textContent = terbaru.nama || 'Tryout';
+      document.getElementById('tryoutTerbaruAkses').textContent = labelAksesLanding(terbaru.akses);
+      document.getElementById('tryoutTerbaruPeriode').textContent = formatPeriodeLanding(terbaru);
+
+      if (terbaru.banner_url) {
+        const bannerImg  = document.getElementById('tryoutTerbaruBanner');
+        const bannerWrap = document.getElementById('tryoutTerbaruBannerWrap');
+        bannerImg.src = terbaru.banner_url;
+        bannerImg.onerror = () => { bannerWrap.style.display = 'none'; };
+        bannerWrap.style.display = 'block';
+      }
+    } else {
+      document.getElementById('tryoutTerbaruNama').textContent = 'Belum ada tryout';
+      document.getElementById('tryoutTerbaruAkses').textContent = '';
+      document.getElementById('tryoutTerbaruPeriode').textContent = '';
+    }
+  } catch (e) {
+    console.error('loadTryoutLanding error:', e);
+    document.getElementById('tryoutTerbaruNama').textContent = 'Tryout belum tersedia';
+  }
+}
+
+async function loadModulLanding() {
+  try {
+    const res  = await fetch('/api/modul');
+    const json = await res.json();
+    const rows = json.data || [];
+    document.getElementById('statJumlahModul').textContent = rows.length + (rows.length ? '+' : '');
+  } catch (e) {
+    console.error('loadModulLanding error:', e);
+    document.getElementById('statJumlahModul').textContent = '0';
+  }
+}
+
+async function loadLeaderboardLanding() {
+  const tbody = document.getElementById('leaderboardBody');
+  try {
+    const res  = await fetch('/api/leaderboard/terbaru');
+    const json = await res.json();
+
+    if (json.nama_tryout) {
+      document.getElementById('leaderboardSub').textContent = 'Peringkat teratas — ' + json.nama_tryout;
+    }
+
+    const data = json.data || [];
+    if (!data.length) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">Belum ada peserta yang mengerjakan tryout terbaru.</td></tr>';
+      return;
+    }
+
+    const MEDALI = ['🥇','🥈','🥉'];
+    tbody.innerHTML = data.map((row, idx) => {
+      const rankLabel = MEDALI[idx] ? MEDALI[idx] + ' ' + (idx+1) : String(idx+1);
+      const statusLabel = row.plan === 'premium' ? 'Premium' : 'Gratis';
+      return '<tr>' +
+        '<td>' + rankLabel + '</td>' +
+        '<td>' + (row.nama || 'Peserta') + '</td>' +
+        '<td>' + row.nilai + '</td>' +
+        '<td>' + statusLabel + '</td>' +
+      '</tr>';
+    }).join('');
+  } catch (e) {
+    console.error('loadLeaderboardLanding error:', e);
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">Leaderboard belum tersedia.</td></tr>';
+  }
+}
+
+loadTryoutLanding();
+loadModulLanding();
+loadLeaderboardLanding();
 
 </script>
 
@@ -2081,6 +2097,19 @@ font-size:15px;
 .footer-grid-new{
 grid-template-columns:1fr;
 text-align:center;
+}
+
+.footer-social{
+justify-content:center;
+}
+
+.cpnslab-banner{
+font-size:13.5px;
+padding:16px 18px;
+}
+
+.hero-card{
+padding:24px;
 }
 
 .steps-grid{
