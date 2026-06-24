@@ -52,37 +52,49 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
 .tabs{display:flex;gap:8px;margin-bottom:20px;background:white;padding:6px;border-radius:16px;box-shadow:var(--shadow);width:fit-content;}
 .tab-btn{padding:11px 22px;border-radius:12px;border:none;font-size:14px;font-weight:700;cursor:pointer;background:none;color:var(--muted);transition:.2s;}
 .tab-btn.active{background:var(--navy);color:white;}
-.tryout-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px;}
-.tryout-card{background:white;border-radius:24px;padding:0;box-shadow:var(--shadow);overflow:hidden;transition:.3s;border:1px solid #eef2f7;}
-.tryout-card:hover{transform:translateY(-4px);box-shadow:0 30px 60px rgba(15,23,42,.12);}
-.card-banner-wrap{width:100%;height:130px;overflow:hidden;background:linear-gradient(135deg,#0f172a,#1e293b);}
-.card-banner-wrap img{width:100%;height:100%;object-fit:cover;}
-.card-banner-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:40px;background:linear-gradient(135deg,rgba(249,115,22,.8),rgba(251,146,60,.8));}
-.card-body{padding:20px;}
+
+/* ===== GRID & CARD -- konsisten dengan tryout-tersedia.html ===== */
+.tryout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch;}
+@media(max-width:1200px){.tryout-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:700px){.tryout-grid{grid-template-columns:1fr;}}
+
+.tryout-card{background:white;border-radius:24px;padding:20px;box-shadow:var(--shadow);transition:.3s;border:1px solid #eef2f7;display:flex;flex-direction:column;}
+.tryout-card:hover{transform:translateY(-5px);}
+
+.card-banner-wrap{width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;margin-bottom:16px;background:linear-gradient(135deg,#eef2f7,#e2e8f0);position:relative;flex-shrink:0;}
+.card-banner-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+
 .card-badges{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
-.badge{display:inline-block;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:700;}
+.badge{display:inline-block;padding:7px 14px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;}
 .badge-gratis{background:#dcfce7;color:#166534;}
-.badge-premium{background:#dbeafe;color:#1d4ed8;}
-.badge-kuota{background:#fff7ed;color:#c2410c;}
-.badge-selesai{background:#f1f5f9;color:#64748b;}
+.badge-premium{background:#fff7ed;color:#c2410c;}
+.badge-selesai{background:#dbeafe;color:#1d4ed8;}
 .badge-belum{background:#fef9c3;color:#92400e;}
-.card-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:8px;}
-.card-meta{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-bottom:14px;flex-wrap:wrap;}
-.card-nilai{background:#f8fafc;border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+
+.card-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:10px;line-height:1.3;}
+
+.card-meta{display:flex;align-items:center;gap:16px;font-size:13px;color:var(--muted);margin-bottom:14px;flex-wrap:wrap;}
+.card-meta span{display:flex;align-items:center;gap:5px;}
+
+.card-nilai{background:#f8fafc;border-radius:14px;padding:14px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
 .card-nilai-label{font-size:12px;color:var(--muted);font-weight:600;}
-.card-nilai-val{font-size:22px;font-weight:800;color:var(--navy);}
 .card-nilai-sub{font-size:11px;color:var(--muted);margin-top:2px;}
-.card-actions{display:flex;gap:8px;}
-.btn-action{flex:1;padding:12px;border:none;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;transition:.2s;text-align:center;text-decoration:none;display:block;}
+.card-nilai-val{font-size:24px;font-weight:800;color:var(--navy);}
+
+.card-actions{display:flex;gap:8px;margin-top:auto;}
+.btn-action{flex:1;padding:13px;border:none;border-radius:14px;font-weight:700;font-size:13.5px;cursor:pointer;transition:.2s;text-align:center;text-decoration:none;display:block;font-family:inherit;}
 .btn-orange{background:linear-gradient(135deg,#f97316,#fb923c);color:white;}
-.btn-orange:hover{opacity:.9;}
+.btn-orange:hover{opacity:.92;}
 .btn-blue{background:linear-gradient(135deg,#2563eb,#3b82f6);color:white;}
+.btn-blue:hover{opacity:.92;}
 .btn-outline{background:white;border:2px solid var(--border);color:var(--navy);}
 .btn-outline:hover{border-color:var(--navy);background:#f0f5ff;}
+
 .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);}
 .empty-state b{display:block;font-size:18px;color:var(--navy);margin-bottom:8px;}
+
 @media(max-width:1000px){.main{margin-left:0;padding:20px;}.kuota-bar{grid-template-columns:1fr 1fr;}}
-@media(max-width:700px){.hero h1{font-size:28px;}.kuota-bar{grid-template-columns:1fr;}.tryout-grid{grid-template-columns:1fr;}}
+@media(max-width:700px){.hero h1{font-size:28px;}.kuota-bar{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -150,25 +162,30 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
   </div>
 
   <div class="tryout-grid" id="tryoutGrid">
-    <div style="grid-column:1/-1;text-align:center;padding:60px;color:#64748b;">Memuat tryout...</div>
+    <div class="empty-state">Memuat tryout...</div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
 <script>
 const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // Auth guard
 const rawUser = localStorage.getItem('user');
 if (!rawUser) window.location.href = 'login.html';
 const user = JSON.parse(rawUser);
 
-let kuotaRealtime = 0; // selalu diambil dari DB, bukan localStorage
-let allTryoutSaya = [];
-let allHasil      = [];
-let activeTab     = 'semua';
+let kuotaRealtime  = 0; // selalu diambil dari DB, bukan localStorage
+let allTryoutSaya  = [];
+let allHasil       = [];
+let activeTab      = 'semua';
+
+/* Dipanggil saat <img> banner gagal dimuat -- aman, tanpa kutip
+   bersarang di atribut onerror (lihat catatan di tryout-tersedia.html). */
+function bannerError(imgEl) {
+  imgEl.style.display = 'none';
+  const wrap = imgEl.parentElement;
+  if (wrap) wrap.classList.add('is-empty');
+}
 
 // ── LOAD KUOTA DARI DATABASE (bukan localStorage) ──────────
 async function loadKuota() {
@@ -179,16 +196,12 @@ async function loadKuota() {
 
     kuotaRealtime = json.kuota ?? 0;
 
-    // Tampilkan kuota real dari DB
     document.getElementById('kuotaValue').textContent = kuotaRealtime;
     document.getElementById('kuotaSub').textContent =
       json.plan === 'premium'
-        ? 'akun premium aktif'
-        : kuotaRealtime > 0
-          ? 'sisa tryout premium'
-          : 'tidak ada kuota — beli sekarang';
+        ? (kuotaRealtime > 0 ? 'sisa tryout premium' : 'akun premium · kuota habis')
+        : 'belum upgrade premium';
 
-    // Sync ke localStorage agar halaman lain up-to-date
     user.plan         = json.plan;
     user.kuota_tryout = json.kuota;
     localStorage.setItem('user', JSON.stringify(user));
@@ -198,7 +211,7 @@ async function loadKuota() {
   }
 }
 
-// ── LOAD TRYOUT SAYA ───────────────────────────────────────
+// ── LOAD TRYOUT SAYA (real, dari tabel akses_tryout) ───────
 async function loadTryoutSaya() {
   try {
     const res  = await fetch('/api/tryout/akses?email=' + encodeURIComponent(user.email));
@@ -211,15 +224,15 @@ async function loadTryoutSaya() {
   }
 }
 
-// ── LOAD HASIL TRYOUT ──────────────────────────────────────
+// ── LOAD HASIL TRYOUT (real, dari hasil_tryout) ────────────
 async function loadHasil() {
   try {
-    const { data } = await sb.from('hasil_tryout')
-      .select('tryout_id, nilai, selesai, created_at')
-      .eq('email', user.email)
-      .order('created_at', { ascending: false });
-    allHasil = data || [];
-    document.getElementById('sudahDikerjakan').textContent = allHasil.length;
+    const res  = await fetch('/api/tryout/riwayat?email=' + encodeURIComponent(user.email));
+    const json = await res.json();
+    allHasil = json.data || [];
+    // Hitung sesi yang BENAR-BENAR selesai untuk statistik kartu atas
+    document.getElementById('sudahDikerjakan').textContent =
+      allHasil.filter(h => h.selesai).length;
     renderGrid();
   } catch (err) {
     console.error('loadHasil error:', err);
@@ -238,12 +251,14 @@ function renderGrid() {
   const grid = document.getElementById('tryoutGrid');
   let rows = [...allTryoutSaya];
 
+  // hasil_tryout per tryout_id yang SUDAH selesai (attempt terbaru duluan,
+  // karena /api/tryout/riwayat mengurutkan created_at descending)
+  const idsSelesai = new Set(allHasil.filter(h => h.selesai).map(h => h.tryout_id));
+
   if (activeTab === 'selesai') {
-    const ids = new Set(allHasil.filter(h => h.selesai).map(h => h.tryout_id));
-    rows = rows.filter(r => ids.has(r.tryout_id));
+    rows = rows.filter(r => idsSelesai.has(r.tryout_id));
   } else if (activeTab === 'belum') {
-    const ids = new Set(allHasil.filter(h => h.selesai).map(h => h.tryout_id));
-    rows = rows.filter(r => !ids.has(r.tryout_id));
+    rows = rows.filter(r => !idsSelesai.has(r.tryout_id));
   }
 
   if (!rows.length) {
@@ -257,58 +272,59 @@ function renderGrid() {
   }
 
   grid.innerHTML = rows.map(r => {
-    const hasil       = allHasil.find(h => h.tryout_id === r.tryout_id);
-    const sudahSelesai = hasil?.selesai;
-    const nilai        = hasil?.nilai;
+    const sudahSelesai = idsSelesai.has(r.tryout_id);
+    // hasil terbaru untuk tryout ini (allHasil sudah urut terbaru -> lama)
+    const hasil = allHasil.find(h => h.tryout_id === r.tryout_id && h.selesai);
+    const nilai = hasil?.nilai;
 
-    let badgeMode;
-    if (r.mode === 'premium' && r.sumber === 'kuota') badgeMode = '<span class="badge badge-kuota">Kuota Premium</span>';
-    else if (r.mode === 'premium') badgeMode = '<span class="badge badge-premium">Premium</span>';
-    else badgeMode = '<span class="badge badge-gratis">Gratis</span>';
+    const badgeMode = r.mode === 'premium'
+      ? '<span class="badge badge-premium">Premium &middot; Kuota</span>'
+      : '<span class="badge badge-gratis">Gratis</span>';
 
     const statusBadge = sudahSelesai
       ? '<span class="badge badge-selesai">Selesai</span>'
       : '<span class="badge badge-belum">Belum Dikerjakan</span>';
 
-    const banner = r.banner_url
-      ? '<img src="' + r.banner_url + '" alt="banner" onerror="this.parentNode.innerHTML=\'<div class=card-banner-fallback>&#128196;</div>\'">'
-      : '<div class="card-banner-fallback">&#128196;</div>';
+    const bannerInner = r.banner_url
+      ? '<img src="' + r.banner_url + '" alt="" onerror="bannerError(this)">'
+      : '';
+    const bannerWrapClass = r.banner_url ? 'card-banner-wrap' : 'card-banner-wrap is-empty';
 
-    const nilaiSection = hasil
+    const nilaiSection = sudahSelesai
       ? '<div class="card-nilai"><div>' +
           '<div class="card-nilai-label">Nilai Terakhir</div>' +
-          '<div class="card-nilai-sub">' + (sudahSelesai ? 'Selesai' : 'Belum selesai') + '</div>' +
+          '<div class="card-nilai-sub">Percobaan terbaru</div>' +
         '</div><div class="card-nilai-val">' + (nilai ?? '—') + '</div></div>'
       : '';
 
     let actions = '';
     if (sudahSelesai) {
-      actions = '<a class="btn-action btn-outline" href="tryout-detail.html?id=' + r.tryout_id + '">Lihat Hasil</a>';
-      if (r.mode === 'premium' && r.video_url) {
-        actions += '<a class="btn-action btn-blue" href="' + r.video_url + '" target="_blank">Pembahasan</a>';
-      }
+      const hasilUrl = 'hasil-tryout.html?id=' + r.tryout_id + (hasil?.id ? '&hasil_id=' + hasil.id : '');
+      actions = '<a class="btn-action btn-outline" href="' + hasilUrl + '">Lihat Hasil</a>';
     } else {
       const btnLabel = r.mode === 'premium' ? 'Lanjutkan (Premium)' : 'Lanjutkan';
       const btnClass = r.mode === 'premium' ? 'btn-blue' : 'btn-orange';
-      actions = '<a class="btn-action ' + btnClass + '" href="tryout-detail.html?id=' + r.tryout_id + '&mode=' + r.mode + '">' + btnLabel + '</a>';
+      actions = '<a class="btn-action ' + btnClass + '" href="kerjakan-tryout.html?id=' + r.tryout_id + '&mode=' + r.mode + '">' + btnLabel + '</a>';
     }
 
-    const diBuka = new Date(r.dibuka_at);
-    const tglBuka = diBuka.getDate() + ' ' + BULAN[diBuka.getMonth()] + ' ' + diBuka.getFullYear();
+    let tglBuka = '-';
+    if (r.dibuka_at) {
+      const d = new Date(r.dibuka_at);
+      tglBuka = d.getDate() + ' ' + BULAN[d.getMonth()] + ' ' + d.getFullYear();
+    }
 
     return '<div class="tryout-card">' +
-      '<div class="card-banner-wrap">' + banner + '</div>' +
-      '<div class="card-body">' +
-        '<div class="card-badges">' + badgeMode + statusBadge + '</div>' +
-        '<div class="card-title">' + (r.nama || 'Tryout') + '</div>' +
-        '<div class="card-meta">' +
-          (r.durasi ? '<span>&#128337; ' + r.durasi + ' mnt</span>' : '') +
-          (r.jumlah_soal ? '<span>&#128221; ' + r.jumlah_soal + ' soal</span>' : '') +
-          '<span>Dibuka ' + tglBuka + '</span>' +
-        '</div>' +
-        nilaiSection +
-        '<div class="card-actions">' + actions + '</div>' +
-      '</div></div>';
+      '<div class="' + bannerWrapClass + '">' + bannerInner + '</div>' +
+      '<div class="card-badges">' + badgeMode + statusBadge + '</div>' +
+      '<div class="card-title">' + (r.nama || 'Tryout') + '</div>' +
+      '<div class="card-meta">' +
+        (r.durasi ? '<span>&#128337; ' + r.durasi + ' menit</span>' : '') +
+        (r.jumlah_soal ? '<span>&#128221; ' + r.jumlah_soal + ' soal</span>' : '') +
+      '</div>' +
+      '<div class="card-meta" style="margin-top:-6px;"><span>Dibuka ' + tglBuka + '</span></div>' +
+      nilaiSection +
+      '<div class="card-actions">' + actions + '</div>' +
+    '</div>';
   }).join('');
 }
 
@@ -327,9 +343,9 @@ window.innerWidth<=1000 ? closeSidebar() : openSidebar();
 
 function logout() { if(confirm('Yakin ingin keluar?')) { localStorage.removeItem('user'); window.location.href='login.html'; } }
 
-// ── INIT — kuota selalu dari DB, bukan localStorage ────────
+// ── INIT — kuota & hasil selalu dari DB, bukan localStorage ────────
 async function init() {
-  await loadKuota();                          // ambil kuota real dari DB dulu
+  await loadKuota();
   await Promise.all([loadTryoutSaya(), loadHasil()]);
 }
 

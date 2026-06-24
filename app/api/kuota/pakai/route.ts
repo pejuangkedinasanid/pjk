@@ -101,13 +101,19 @@ export async function POST(req: NextRequest) {
     });
 
     // ── 3. Catat tryout ini sebagai sudah di-unlock, supaya ke depannya gratis ──
+    // Pakai insert biasa (bukan upsert+onConflict) supaya tidak bergantung
+    // pada nama constraint unique yang harus cocok persis -- dan errornya
+    // WAJIB dicek, karena kalau baris ini gagal tersimpan tanpa ketahuan,
+    // sistem akan selalu mengira "belum pernah unlock" dan memotong kuota
+    // lagi di setiap percobaan berikutnya (inilah penyebab dobel potong).
     if (tryout_id) {
-      await supabase
+      const { error: errCatat } = await supabase
         .from("akses_tryout")
-        .upsert(
-          { email, tryout_id, mode: "premium" },
-          { onConflict: "email,tryout_id,mode", ignoreDuplicates: true }
-        );
+        .insert({ email, tryout_id, mode: "premium" });
+
+      if (errCatat) {
+        console.error("GAGAL mencatat akses_tryout (unlock tidak tersimpan):", errCatat);
+      }
     }
 
     return NextResponse.json({

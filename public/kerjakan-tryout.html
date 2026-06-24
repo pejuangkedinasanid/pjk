@@ -175,7 +175,7 @@ body{background:var(--bg);display:flex;flex-direction:column;min-height:100vh;}
 <!-- LOADING -->
 <div class="loading-wrap" id="loadingWrap">
   <div class="spinner"></div>
-  <div>Memuat soal tryout...</div>
+  <div id="loadingText">Memuat soal tryout...</div>
 </div>
 
 <!-- HALAMAN UJIAN (disembunyikan sampai data siap) -->
@@ -275,10 +275,67 @@ let autosaveInterval = null;
 const SEKSI_ORDER = ["TWK","TIU","TKP"];
 
 /* =========================
+PASTIKAN AKSES PREMIUM (kuota)
+=========================
+Dipanggil di awal kalau mode === "premium", SEBELUM soal dimuat.
+Endpoint /api/kuota/pakai bersifat idempotent: kalau tryout ini
+SUDAH PERNAH di-unlock sebelumnya oleh user ini (tercatat di tabel
+akses_tryout), endpoint akan mengembalikan success TANPA memotong
+kuota lagi -> sehingga tryout yang sama bisa dikerjakan berkali-kali
+tanpa mengurangi kuota. Kalau ini tryout PREMIUM lain yang belum
+pernah dibuka, kuota baru dipotong 1 kali di sini.
+
+Ini juga menutup celah keamanan: sebelumnya halaman ini cuma percaya
+parameter ?mode=premium di URL tanpa verifikasi apa pun ke server.
+========================= */
+async function pastikanAksesPremium() {
+  document.getElementById("loadingText").textContent = "Memverifikasi akses premium...";
+  try {
+    const res = await fetch("/api/kuota/pakai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email, tryout_id: tryoutId })
+    });
+    const json = await res.json();
+
+    if (!json.success) {
+      if (json.kuota_habis) {
+        alert("Kuota tryout premium kamu sudah habis. Silakan upgrade / tambah kuota di halaman Premium.");
+      } else {
+        alert(json.message || "Gagal memverifikasi akses premium untuk tryout ini.");
+      }
+      window.location.href = "premium.html";
+      return false;
+    }
+
+    // Sinkronkan kuota terbaru (kalau memang baru saja dipotong) ke localStorage
+    user.kuota_tryout = json.kuota;
+    user.plan         = json.plan;
+    localStorage.setItem("user", JSON.stringify(user));
+
+    document.getElementById("loadingText").textContent = "Memuat soal tryout...";
+    return true;
+  } catch (err) {
+    console.error("Gagal memverifikasi akses premium:", err);
+    alert("Terjadi kesalahan saat memverifikasi akses. Silakan coba lagi.");
+    window.location.href = "tryout-tersedia.html";
+    return false;
+  }
+}
+
+/* =========================
 INIT
 ========================= */
 async function init() {
   try {
+    // Untuk mode premium, pastikan akses & kuota terverifikasi DULU
+    // sebelum soal dimuat. Untuk mode gratis tidak perlu (akses gratis
+    // sudah diverifikasi lewat password di tryout-tersedia.html).
+    if (mode === "premium") {
+      const aksesOk = await pastikanAksesPremium();
+      if (!aksesOk) return; // sudah di-redirect di dalam fungsi
+    }
+
     const [resTryout, resSoal] = await Promise.all([
       fetch("/api/tryout/" + tryoutId),
       fetch("/api/tryout/" + tryoutId + "/soal")

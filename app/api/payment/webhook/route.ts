@@ -2,8 +2,19 @@
 // POST /api/payment/webhook
 //
 // Dipanggil OTOMATIS oleh Midtrans (server-to-server notification).
-// Daftarkan URL ini di Midtrans Dashboard → Settings → Configuration
-// → Payment Notification URL, contoh: https://domainmu.com/api/payment/webhook
+// Daftarkan URL ini di Midtrans Dashboard -> Settings -> Configuration
+// -> Payment Notification URL.
+//
+// PERBAIKAN (revisi ini):
+// 1. BUG LAMA: setelah sukses, kode lama menulis ke kolom
+//    "status_akun" -- padahal kolom yang BENAR dipakai di seluruh
+//    sistem (kuota/cek, kuota/pakai) adalah "plan". Akibatnya, status
+//    premium tidak pernah benar-benar ke-set lewat jalur ini. Sudah
+//    diganti jadi "plan".
+// 2. Sekarang menangani transaksi tipe 'modul' juga, bukan cuma
+//    'kuota' -- begitu sukses, modul_unduhan baris terkait di-set
+//    status='lunas' (insert kalau belum ada, update kalau sudah ada
+//    dari percobaan 'beli' sebelumnya).
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -80,30 +91,63 @@ export async function POST(req: NextRequest) {
       })
       .eq("order_id", order_id);
 
-    // 6. Jika sukses → tambah kuota & upgrade status akun
-    if (statusBaru === "success") {
-      const { data: userRow } = await supabase
-        .from("users")
-        .select("kuota_tryout")
-        .eq("email", trx.email)
-        .single();
-
-      const kuotaBaru = (userRow?.kuota_tryout || 0) + trx.paket_jumlah;
-
-      await supabase
-        .from("users")
-        .update({
-          status_akun: "premium",
-          kuota_tryout: kuotaBaru,
-        })
-        .eq("email", trx.email);
-
-      await supabase.from("riwayat_kuota").insert({
-        email: trx.email,
-        jenis: "tambah",
-        jumlah: trx.paket_jumlah,
-      });
+    if (statusBaru !== "success") {
+      return NextResponse.json({ success: true });
     }
+
+    // 6. Sukses -> proses sesuai TIPE transaksi
+    const tipe = trx.tipe || "kuota"; // baris lama sebelum migrasi -> anggap 'kuota'
+
+    if (tipe === "modul") {
+      // ── Tandai modul ini sudah lunas untuk email tersebut ──
+      const { data: existing } = await supabase
+        .from("modul_unduhan")
+        .select("id")
+        .eq("email", trx.email)
+        .eq("modul_id", trx.modul_id)
+        .maybeSingle();
+
+      if (existing) {
+        await supabase
+          .from("modul_unduhan")
+          .update({ status: "lunas", harga_dibayar: trx.harga, metode_pembayaran: "midtrans" })
+          .eq("id", existing.id);
+      } else {
+        await supabase.from("modul_unduhan").insert({
+          email: trx.email,
+          modul_id: trx.modul_id,
+          jenis: "berbayar",
+          harga_dibayar: trx.harga,
+          status: "lunas",
+          metode_pembayaran: "midtrans",
+        });
+      }
+
+      return NextResponse.json({ success: true });
+    }
+
+    // ── tipe === "kuota": tambah kuota & set plan jadi premium ──
+    const { data: userRow } = await supabase
+      .from("users")
+      .select("kuota_tryout")
+      .eq("email", trx.email)
+      .single();
+
+    const kuotaBaru = (userRow?.kuota_tryout || 0) + (trx.paket_jumlah || 0);
+
+    await supabase
+      .from("users")
+      .update({
+        plan: "premium", // BUG LAMA: sebelumnya "status_akun" (kolom yang tidak dipakai sistem)
+        kuota_tryout: kuotaBaru,
+      })
+      .eq("email", trx.email);
+
+    await supabase.from("riwayat_kuota").insert({
+      email: trx.email,
+      jenis: "tambah",
+      jumlah: trx.paket_jumlah || 0,
+    });
 
     return NextResponse.json({ success: true });
   } catch (err) {

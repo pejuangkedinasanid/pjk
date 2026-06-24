@@ -1,11 +1,14 @@
 // FILE: app/api/payment/create-transaction/route.ts
 // POST /api/payment/create-transaction
-// Body: { email, paket_jumlah }
 //
-// 1. Validasi paket_jumlah & harga dari daftar resmi di server
-//    (JANGAN percaya harga yang dikirim dari client/browser).
-// 2. Simpan baris baru di tabel "transaksi" (status: pending).
-// 3. Minta Snap token ke Midtrans, kembalikan ke frontend.
+// Mendukung 2 tipe transaksi:
+//   1. Kuota tryout premium  -> Body: { email, paket_jumlah }
+//      (atau eksplisit: { email, tipe: 'kuota', paket_jumlah })
+//   2. Modul/materi berbayar -> Body: { email, tipe: 'modul', modul_id }
+//
+// Untuk KEDUA tipe, harga SELALU diambil ulang dari server (daftar
+// paket resmi untuk kuota, atau tabel "modul" untuk modul) -- harga
+// dari client TIDAK PERNAH dipercaya.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -26,40 +29,111 @@ const MIDTRANS_BASE_URL = process.env.MIDTRANS_IS_PRODUCTION === "true"
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, paket_jumlah } = await req.json();
+    const body = await req.json();
+    const { email, paket_jumlah, modul_id } = body;
+    // Default 'kuota' supaya premium.html yang lama (tidak kirim field
+    // 'tipe' sama sekali) tetap jalan tanpa perlu diubah.
+    const tipe: "kuota" | "modul" = body.tipe === "modul" ? "modul" : "kuota";
 
-    if (!email || !paket_jumlah) {
+    if (!email) {
       return NextResponse.json(
-        { success: false, message: "Email dan paket_jumlah wajib diisi." },
+        { success: false, message: "Email wajib diisi." },
         { status: 400 }
       );
     }
 
-    const hargaResmi = PAKET_TRYOUT[paket_jumlah];
+    let orderId: string;
+    let hargaResmi: number;
+    let itemId: string;
+    let itemName: string;
+    let insertRow: Record<string, any>;
 
-    if (!hargaResmi) {
-      return NextResponse.json(
-        { success: false, message: "Paket tidak valid." },
-        { status: 400 }
-      );
+    if (tipe === "kuota") {
+      if (!paket_jumlah) {
+        return NextResponse.json(
+          { success: false, message: "paket_jumlah wajib diisi." },
+          { status: 400 }
+        );
+      }
+
+      hargaResmi = PAKET_TRYOUT[paket_jumlah];
+      if (!hargaResmi) {
+        return NextResponse.json({ success: false, message: "Paket tidak valid." }, { status: 400 });
+      }
+
+      orderId = "KUOTA-" + paket_jumlah + "X-" + Date.now();
+      itemId = "kuota-" + paket_jumlah;
+      itemName = paket_jumlah + "x Tryout Premium";
+      insertRow = {
+        order_id: orderId,
+        email,
+        tipe: "kuota",
+        paket_jumlah,
+        harga: hargaResmi,
+        status: "pending",
+      };
+    } else {
+      // tipe === "modul"
+      if (!modul_id) {
+        return NextResponse.json(
+          { success: false, message: "modul_id wajib diisi." },
+          { status: 400 }
+        );
+      }
+
+      const { data: modulRow, error: errModul } = await supabase
+        .from("modul")
+        .select("id, judul, akses, harga, status")
+        .eq("id", modul_id)
+        .maybeSingle();
+
+      if (errModul || !modulRow) {
+        return NextResponse.json({ success: false, message: "Modul tidak ditemukan." }, { status: 404 });
+      }
+
+      if (modulRow.akses !== "berbayar") {
+        return NextResponse.json(
+          { success: false, message: "Modul ini gratis, tidak perlu dibayar." },
+          { status: 400 }
+        );
+      }
+
+      // Sudah lunas sebelumnya? Jangan buat transaksi baru lagi.
+      const { data: sudahLunas } = await supabase
+        .from("modul_unduhan")
+        .select("id")
+        .eq("email", email)
+        .eq("modul_id", modul_id)
+        .eq("status", "lunas")
+        .maybeSingle();
+
+      if (sudahLunas) {
+        return NextResponse.json({ success: false, sudah_lunas: true, message: "Modul ini sudah pernah kamu beli." }, { status: 400 });
+      }
+
+      hargaResmi = modulRow.harga;
+      if (!hargaResmi || hargaResmi <= 0) {
+        return NextResponse.json({ success: false, message: "Harga modul tidak valid." }, { status: 400 });
+      }
+
+      orderId = "MODUL-" + modul_id + "-" + Date.now();
+      itemId = "modul-" + modul_id;
+      itemName = modulRow.judul;
+      insertRow = {
+        order_id: orderId,
+        email,
+        tipe: "modul",
+        modul_id,
+        harga: hargaResmi,
+        status: "pending",
+      };
     }
 
-    const orderId = "KUOTA-" + paket_jumlah + "X-" + Date.now();
-
-    const { error: errInsert } = await supabase.from("transaksi").insert({
-      order_id: orderId,
-      email,
-      paket_jumlah,
-      harga: hargaResmi,
-      status: "pending",
-    });
+    const { error: errInsert } = await supabase.from("transaksi").insert(insertRow);
 
     if (errInsert) {
       console.error("Insert transaksi error:", errInsert);
-      return NextResponse.json(
-        { success: false, message: errInsert.message },
-        { status: 500 }
-      );
+      return NextResponse.json({ success: false, message: errInsert.message }, { status: 500 });
     }
 
     const authHeader =
@@ -76,16 +150,9 @@ export async function POST(req: NextRequest) {
           order_id: orderId,
           gross_amount: hargaResmi,
         },
-        customer_details: {
-          email,
-        },
+        customer_details: { email },
         item_details: [
-          {
-            id: "kuota-" + paket_jumlah,
-            price: hargaResmi,
-            quantity: 1,
-            name: paket_jumlah + "x Tryout Premium",
-          },
+          { id: itemId, price: hargaResmi, quantity: 1, name: itemName },
         ],
       }),
     });

@@ -16,6 +16,14 @@
 // belum menyelesaikan ujian -> masih boleh resume), lanjut seperti biasa:
 //   1. Password BERSAMA di kolom tryout.password_akses.
 //   2. Password PER-USER di tabel akses_gratis.
+//
+// TAMBAHAN (revisi ini): setiap kali password berhasil diverifikasi,
+// dicatat ke tabel akses_tryout (mode='gratis') -- supaya
+// tryout-saya.html bisa menampilkan TO ini di tab "Belum Dikerjakan"
+// walau usernya belum pernah menyelesaikan ujiannya. Dicek dulu
+// (select) sebelum insert supaya tidak dobel kalau password yang sama
+// diverifikasi ulang sebelum tryout-nya selesai dikerjakan (misal user
+// resume sesi).
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -24,6 +32,29 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+async function catatAksesGratis(email: string, tryout_id: number | string) {
+  try {
+    const { data: existing } = await supabase
+      .from("akses_tryout")
+      .select("id")
+      .eq("email", email)
+      .eq("tryout_id", tryout_id)
+      .eq("mode", "gratis")
+      .maybeSingle();
+
+    if (!existing) {
+      const { error } = await supabase
+        .from("akses_tryout")
+        .insert({ email, tryout_id, mode: "gratis" });
+      if (error) {
+        console.error("GAGAL mencatat akses_tryout (gratis):", error);
+      }
+    }
+  } catch (err) {
+    console.error("catatAksesGratis error:", err);
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -73,6 +104,7 @@ export async function POST(req: NextRequest) {
       tryoutRow.password_akses &&
       tryoutRow.password_akses.trim() === password.trim()
     ) {
+      await catatAksesGratis(email, tryout_id);
       return NextResponse.json({ success: true, message: "Akses diberikan (password bersama)." });
     }
 
@@ -105,6 +137,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    await catatAksesGratis(email, tryout_id);
     return NextResponse.json({ success: true, message: "Akses diberikan (password per-user)." });
   } catch (err) {
     console.error("akses-gratis/verify error:", err);

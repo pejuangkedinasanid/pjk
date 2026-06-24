@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Materi Belajar | Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f172a;--navy2:#1e293b;--orange:#f97316;--orange2:#fb923c;--blue:#2563eb;--bg:#f5f7fb;--card:#ffffff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--shadow:0 20px 50px rgba(15,23,42,.08);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:linear-gradient(180deg,#eef2ff 0%,#f8fafc 45%,#ffffff 100%);display:flex;min-height:100vh;overflow-x:hidden;position:relative;}
+body::before{content:"";position:fixed;top:-250px;right:-250px;width:550px;height:550px;border-radius:50%;background:rgba(249,115,22,.12);filter:blur(90px);pointer-events:none;}
+body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;height:500px;border-radius:50%;background:rgba(37,99,235,.10);filter:blur(90px);pointer-events:none;}
+.sidebar{width:290px;background:linear-gradient(180deg,#0f172a,#1e293b);position:fixed;left:0;top:0;bottom:0;color:white;z-index:999;overflow-y:auto;display:flex;flex-direction:column;box-shadow:10px 0 40px rgba(0,0,0,.15);transform:translateX(0);transition:.3s;}
+.sidebar.closed{transform:translateX(-290px);}
+.sidebar-header{padding:30px 25px;border-bottom:1px solid rgba(255,255,255,.08);}
+.brand-title{font-size:24px;font-weight:800;line-height:1.2;}
+.brand-subtitle{margin-top:6px;font-size:12px;opacity:.7;}
+.menu{padding:20px 12px;flex:1;}
+.menu-group{font-size:11px;font-weight:700;opacity:.45;letter-spacing:1px;text-transform:uppercase;margin:18px 12px 10px;}
+.menu a{display:flex;align-items:center;padding:14px 16px;border-radius:16px;color:white;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:6px;transition:.25s;}
+.menu a:hover{background:rgba(255,255,255,.08);transform:translateX(4px);}
+.menu a.active{background:linear-gradient(135deg,rgba(249,115,22,.85),rgba(251,146,60,.85));}
+.menu-premium{background:linear-gradient(135deg,#f59e0b,#fbbf24) !important;color:#1f2937 !important;font-weight:800 !important;}
+.sidebar-footer{padding:20px;border-top:1px solid rgba(255,255,255,.08);}
+.logout-btn{width:100%;padding:14px;border:none;border-radius:16px;background:rgba(255,255,255,.08);color:white;font-weight:700;cursor:pointer;transition:.3s;}
+.hamburger{display:flex;position:fixed;top:15px;left:15px;width:48px;height:48px;border:none;border-radius:14px;background:var(--navy);color:white;font-size:20px;cursor:pointer;z-index:1001;align-items:center;justify-content:center;transition:.3s;}
+.hamburger.inside{left:227px;}
+.overlay{display:none;}
+.overlay.active{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:998;}
+.main{margin-left:290px;width:100%;padding:30px;position:relative;z-index:2;transition:.3s;}
+.main.full{margin-left:0;}
+.hero{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:30px;padding:40px;color:white;margin-bottom:25px;overflow:hidden;position:relative;box-shadow:0 25px 60px rgba(15,23,42,.2);}
+.hero::before{content:"";position:absolute;top:-120px;right:-120px;width:350px;height:350px;border-radius:50%;background:rgba(249,115,22,.15);}
+.hero-badge{display:inline-block;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;font-weight:700;margin-bottom:18px;position:relative;z-index:2;}
+.hero h1{font-size:40px;font-weight:800;margin-bottom:12px;position:relative;z-index:2;}
+.hero p{max-width:600px;opacity:.85;line-height:1.8;position:relative;z-index:2;}
+
+.modul-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+@media(max-width:1200px){.modul-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:700px){.modul-grid{grid-template-columns:1fr;}.hero h1{font-size:28px;}}
+
+.modul-card{background:white;border-radius:24px;padding:22px;box-shadow:var(--shadow);border:1px solid #eef2f7;display:flex;flex-direction:column;transition:.3s;}
+.modul-card:hover{transform:translateY(-5px);}
+.modul-thumb{width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;margin-bottom:16px;background:linear-gradient(135deg,#0f172a,#1e293b);display:flex;align-items:center;justify-content:center;}
+.modul-thumb img{width:100%;height:100%;object-fit:cover;}
+.modul-thumb-fallback{color:rgba(255,255,255,.85);font-size:13px;font-weight:700;}
+
+.badge{display:inline-block;padding:7px 14px;border-radius:999px;font-size:11px;font-weight:700;margin-bottom:12px;}
+.badge-gratis{background:#dcfce7;color:#166534;}
+.badge-berbayar{background:#fff7ed;color:#c2410c;}
+
+.modul-judul{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:8px;line-height:1.35;}
+.modul-desk{font-size:13.5px;color:var(--muted);line-height:1.65;margin-bottom:16px;flex:1;}
+.modul-harga{font-size:20px;font-weight:800;color:var(--orange);margin-bottom:14px;}
+
+.btn-modul{width:100%;padding:14px;border:none;border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;transition:.2s;text-align:center;font-family:inherit;}
+.btn-modul.orange{background:linear-gradient(135deg,#f97316,#fb923c);color:white;}
+.btn-modul.orange:hover{opacity:.92;}
+.btn-modul.blue{background:linear-gradient(135deg,#2563eb,#3b82f6);color:white;}
+.btn-modul.blue:hover{opacity:.92;}
+.btn-modul.gray{background:#f1f5f9;color:var(--muted);cursor:default;}
+
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-state b{display:block;font-size:18px;color:var(--navy);margin-bottom:8px;}
+
+/* MODAL PEMBAYARAN */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:2000;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.show{display:flex;}
+.modal{background:white;border-radius:24px;padding:30px;width:100%;max-width:420px;box-shadow:0 25px 60px rgba(15,23,42,.25);position:relative;}
+.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:10px;border:none;background:#f1f5f9;color:#64748b;cursor:pointer;font-size:14px;}
+.modal-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:4px;}
+.modal-desk{font-size:13px;color:var(--muted);margin-bottom:18px;}
+.modal-icon{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 18px;}
+.modal-icon.loading{background:#eef2ff;}
+.modal-icon.success{background:#dcfce7;}
+.modal-icon.error{background:#fee2e2;}
+.modal-btn-tutup{display:inline-block;padding:13px 22px;border:none;border-radius:14px;font-weight:700;font-size:14px;cursor:pointer;color:white;text-decoration:none;background:linear-gradient(135deg,#f97316,#fb923c);font-family:inherit;}
+.spinner{width:32px;height:32px;border-radius:50%;border:3px solid #e2e8f0;border-top-color:var(--orange);margin:0 auto;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+<button class="hamburger" id="hamburger">&#9776;</button>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="brand-title">PEJUANG KEDINASAN</div>
+    <div class="brand-subtitle">Platform Tryout Kedinasan No.1 Indonesia</div>
+  </div>
+  <div class="menu">
+    <div class="menu-group">Utama</div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="tryout-tersedia.html">Tryout Tersedia</a>
+    <a href="tryout-saya.html">Tryout Saya</a>
+    <div class="menu-group">Belajar</div>
+    <a href="latihan.html">Bank Soal</a>
+    <a href="materi.html" class="active">Materi Belajar</a>
+    <a href="video.html">Video Pembahasan</a>
+    <div class="menu-group">Kompetisi</div>
+    <a href="leaderboard.html">Ranking Nasional</a>
+    <a href="target.html">Target Kedinasan</a>
+    <div class="menu-group">Akun</div>
+    <a href="premium.html" class="menu-premium">&#11088; Premium</a>
+    <a href="profil.html">Profil Saya</a>
+    <a href="pengaturan.html">Pengaturan</a>
+  </div>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="main" id="mainEl">
+  <div class="hero">
+    <div class="hero-badge">&#128218; MATERI BELAJAR</div>
+    <h1>Modul & Materi</h1>
+    <p>Pelajari ringkasan materi dari modul gratis maupun premium yang sudah disiapkan untuk membantu persiapanmu.</p>
+  </div>
+
+  <div class="modul-grid" id="modulGrid">
+    <div class="empty-state">Memuat materi...</div>
+  </div>
+</div>
+
+<!-- MODAL STATUS PEMBAYARAN (Midtrans Snap) -->
+<div class="modal-bg" id="payModalBg">
+  <div class="modal" style="text-align:center;">
+    <button class="modal-close" onclick="closePayModal()">&#x2715;</button>
+    <div id="payModalContent"></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+const rawUser = localStorage.getItem("user");
+if (!rawUser) window.location.href = "login.html";
+const user = JSON.parse(rawUser);
+
+let semuaModul = [];
+let modulAktif = null;
+
+function formatRupiah(angka) {
+  return "Rp " + (angka || 0).toLocaleString("id-ID");
+}
+
+async function loadModul() {
+  const grid = document.getElementById("modulGrid");
+  try {
+    const res  = await fetch("/api/modul?email=" + encodeURIComponent(user.email));
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+    semuaModul = json.data || [];
+    renderGrid();
+  } catch (e) {
+    grid.innerHTML = '<div class="empty-state"><b>Gagal memuat materi</b>' + e.message + '</div>';
+  }
+}
+
+function renderGrid() {
+  const grid = document.getElementById("modulGrid");
+  if (!semuaModul.length) {
+    grid.innerHTML = '<div class="empty-state"><b>Belum ada materi</b>Materi baru akan muncul di sini setelah admin mempublikasikannya.</div>';
+    return;
+  }
+
+  grid.innerHTML = semuaModul.map(m => {
+    const badge = m.akses === "berbayar"
+      ? '<span class="badge badge-berbayar">Berbayar</span>'
+      : '<span class="badge badge-gratis">Gratis</span>';
+
+    const thumb = m.thumbnail_url
+      ? '<img src="' + m.thumbnail_url + '" alt="">'
+      : '<div class="modul-thumb-fallback">' + (m.judul || "Modul") + '</div>';
+
+    let btn;
+    if (m.akses === "gratis") {
+      btn = '<button class="btn-modul orange" onclick="unduhGratis(' + m.id + ')">' +
+        (m.status_akses === "sudah" ? "Download Lagi" : "Download Sekarang") + '</button>';
+    } else {
+      if (m.status_akses === "sudah") {
+        btn = '<button class="btn-modul blue" onclick="unduhBerbayar(' + m.id + ')">Download Sekarang</button>';
+      } else if (m.status_pembayaran === "pending") {
+        btn = '<button class="btn-modul orange" onclick="bukaModalBayar(' + m.id + ')">Lanjutkan Pembayaran</button>';
+      } else {
+        btn = '<button class="btn-modul orange" onclick="bukaModalBayar(' + m.id + ')">Beli Modul</button>';
+      }
+    }
+
+    return '<div class="modul-card">' +
+      '<div class="modul-thumb">' + thumb + '</div>' +
+      badge +
+      '<div class="modul-judul">' + (m.judul || "Modul") + '</div>' +
+      '<div class="modul-desk">' + (m.deskripsi || "") + '</div>' +
+      (m.akses === "berbayar" ? '<div class="modul-harga">' + formatRupiah(m.harga) + '</div>' : '') +
+      btn +
+    '</div>';
+  }).join("");
+}
+
+async function unduhGratis(modulId) {
+  try {
+    const res = await fetch("/api/modul/unduh-gratis", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email, modul_id: modulId })
+    });
+    const json = await res.json();
+    if (!json.success) { alert(json.message || "Gagal mengunduh modul."); return; }
+    window.location.href = json.pdf_url;
+    loadModul();
+  } catch (e) {
+    alert("Terjadi kesalahan. Coba lagi.");
+  }
+}
+
+async function unduhBerbayar(modulId) {
+  try {
+    const res = await fetch("/api/modul/unduh?email=" + encodeURIComponent(user.email) + "&modul_id=" + modulId);
+    const json = await res.json();
+    if (!json.success) { alert(json.message || "Gagal mengunduh modul."); return; }
+    window.location.href = json.pdf_url;
+  } catch (e) {
+    alert("Terjadi kesalahan. Coba lagi.");
+  }
+}
+
+function bukaModalBayar(modulId) {
+  const m = semuaModul.find(x => x.id === modulId);
+  if (!m) return;
+  modulAktif = m;
+  beliModul(m);
+}
+
+/* ── MIDTRANS (sama seperti di premium.html) ── */
+let snapReady = false;
+function loadMidtransSnap() {
+  return new Promise((resolve, reject) => {
+    if (snapReady && window.snap) { resolve(); return; }
+    const script = document.createElement("script");
+    script.src = (typeof MIDTRANS_SNAP_URL !== "undefined" && MIDTRANS_SNAP_URL) ||
+      "https://app.sandbox.midtrans.com/snap/snap.js";
+    script.setAttribute("data-client-key",
+      (typeof MIDTRANS_CLIENT_KEY !== "undefined" && MIDTRANS_CLIENT_KEY) || "");
+    script.onload = () => { snapReady = true; resolve(); };
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
+}
+
+async function beliModul(modul) {
+  try {
+    await loadMidtransSnap();
+    const res = await fetch("/api/payment/create-transaction", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: user.email, tipe: "modul", modul_id: modul.id })
+    });
+    const json = await res.json();
+
+    if (!json.success) {
+      if (json.sudah_lunas) { alert("Modul ini sudah pernah kamu beli."); loadModul(); return; }
+      alert(json.message || "Gagal membuat transaksi.");
+      return;
+    }
+
+    window.snap.pay(json.token, {
+      onSuccess: function() {
+        showPayModal("loading", "Memverifikasi...", "Pembayaran sedang diproses...");
+        pollStatus(json.order_id, modul);
+      },
+      onPending: function() {
+        showPayModal("loading", "Menunggu Pembayaran",
+          "Selesaikan pembayaran. Modul otomatis bisa diunduh setelah terkonfirmasi.");
+        pollStatus(json.order_id, modul);
+      },
+      onError:   function() { showPayModal("error", "Pembayaran Gagal", "Silakan coba lagi."); },
+      onClose:   function() {}
+    });
+  } catch (err) {
+    console.error(err);
+    alert("Gagal memulai pembayaran.");
+  }
+}
+
+/* ── POLL STATUS — refresh daftar modul setelah bayar sukses ── */
+function pollStatus(orderId, modul, attempt) {
+  attempt = attempt || 0;
+  if (attempt >= 15) {
+    showPayModal("loading", "Masih Diproses", "Modul akan otomatis bisa diunduh setelah verifikasi selesai.");
+    return;
+  }
+  fetch("/api/payment/status?order_id=" + encodeURIComponent(orderId))
+    .then(r => r.json())
+    .then(async json => {
+      if (json.success && json.status === "success") {
+        await loadModul();
+        showPayModal("success", "Pembayaran Berhasil!",
+          'Modul "' + modul.judul + '" sudah bisa diunduh sekarang.', modul);
+        return;
+      }
+      if (json.success && ["failed","cancel","expire"].includes(json.status)) {
+        showPayModal("error", "Pembayaran Tidak Berhasil", "Silakan coba beli modul lagi.");
+        return;
+      }
+      setTimeout(() => pollStatus(orderId, modul, attempt + 1), 3000);
+    })
+    .catch(() => setTimeout(() => pollStatus(orderId, modul, attempt + 1), 3000));
+}
+
+/* ── MODAL STATUS ── */
+function showPayModal(type, title, desc, modul) {
+  const icons = { loading:'<div class="spinner"></div>', success:"&#9989;", error:"&#10060;" };
+  let actionBtn = "";
+  if (type === "success" && modul) {
+    actionBtn = '<button class="modal-btn-tutup" onclick="closePayModal();unduhBerbayar(' + modul.id + ')">Download Sekarang</button>';
+  } else if (type !== "loading") {
+    actionBtn = '<button class="modal-btn-tutup" onclick="closePayModal()">Tutup</button>';
+  }
+  document.getElementById("payModalContent").innerHTML =
+    '<div class="modal-icon ' + type + '">' + icons[type] + '</div>' +
+    '<div class="modal-title">' + title + '</div>' +
+    '<div class="modal-desk">' + desc + '</div>' +
+    actionBtn;
+  document.getElementById("payModalBg").classList.add("show");
+}
+function closePayModal() { document.getElementById("payModalBg").classList.remove("show"); }
+document.getElementById("payModalBg").addEventListener("click", e => {
+  if (e.target === e.currentTarget) closePayModal();
+});
+
+/* SIDEBAR */
+const sidebar   = document.getElementById("sidebar");
+const hamburger = document.getElementById("hamburger");
+const overlay   = document.getElementById("overlay");
+const mainEl    = document.getElementById("mainEl");
+function openSidebar()  { sidebar.classList.remove("closed"); hamburger.innerHTML="&#x2715;"; hamburger.classList.add("inside"); window.innerWidth<=1000 ? overlay.classList.add("active") : overlay.classList.remove("active"); mainEl.classList.remove("full"); }
+function closeSidebar() { sidebar.classList.add("closed"); overlay.classList.remove("active"); mainEl.classList.add("full"); hamburger.innerHTML="&#9776;"; hamburger.classList.remove("inside"); }
+hamburger.addEventListener("click", () => sidebar.classList.contains("closed") ? openSidebar() : closeSidebar());
+overlay.addEventListener("click", closeSidebar);
+window.addEventListener("resize", () => window.innerWidth<=1000 ? closeSidebar() : openSidebar());
+window.innerWidth<=1000 ? closeSidebar() : openSidebar();
+
+function logout() { if(confirm("Yakin ingin keluar?")) { localStorage.removeItem("user"); window.location.href="login.html"; } }
+
+loadModul();
+</script>
+</body>
+</html>

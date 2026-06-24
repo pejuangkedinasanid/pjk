@@ -1,8 +1,8 @@
 // FILE: app/api/payment/status/route.ts
 // GET /api/payment/status?order_id=
 //
-// Dipakai frontend (premium.html) untuk polling status setelah
-// popup Snap ditutup.
+// Dipakai frontend (premium.html & materi.html) untuk polling status
+// setelah popup Snap ditutup.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
 
   const { data, error } = await supabase
     .from("transaksi")
-    .select("status, paket_jumlah")
+    .select("status, paket_jumlah, tipe, modul_id")
     .eq("order_id", orderId)
     .single();
 
@@ -40,5 +40,7 @@ export async function GET(req: NextRequest) {
     success: true,
     status: data.status,
     paket_jumlah: data.paket_jumlah,
+    tipe: data.tipe,
+    modul_id: data.modul_id,
   });
 }

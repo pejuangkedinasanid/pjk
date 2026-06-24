@@ -573,41 +573,12 @@ function bukaModalPremium(row) {
   document.getElementById("modalPremium").classList.add("show");
 }
 
-async function konfirmasiPakaKuota() {
+function konfirmasiPakaKuota() {
+  // Tidak lagi memanggil /api/kuota/pakai di sini -- supaya kuota cuma
+  // dipotong SEKALI, di kerjakan-tryout.html (gatekeeper tunggal).
+  // Memanggilnya di dua tempat sebelumnya menyebabkan kuota terpotong
+  // dobel kalau pencatatan "sudah unlock" gagal tersimpan.
   closeModal("modalPremium");
-
-  try {
-    const res  = await fetch("/api/kuota/pakai", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: user.email, tryout_id: activeTryout.id })
-    });
-    const json = await res.json();
-
-    if (!json.success) {
-      if (json.kuota_habis) {
-        alert("Kuota habis. Silakan beli kuota di halaman Premium.");
-        window.location.href = "premium.html";
-        return;
-      }
-      alert(json.message || "Gagal membuka akses.");
-      return;
-    }
-
-    kuotaUser     = json.kuota ?? 0;
-    planUser      = json.plan  ?? "free";
-    isUserPremium = planUser === "premium" && kuotaUser > 0;
-    user.kuota_tryout = kuotaUser;
-    user.plan         = planUser;
-    localStorage.setItem("user", JSON.stringify(user));
-
-    // Tandai di data lokal supaya kalau user kembali ke daftar tanpa reload,
-    // tryout ini langsung tampil sebagai "sudah di-unlock".
-    activeTryout.sudah_premium = true;
-    const idx = allTryout.findIndex(r => r.id === activeTryout.id);
-    if (idx > -1) allTryout[idx].sudah_premium = true;
-  } catch(e) { console.error("pakai kuota:", e); }
-
   activeMulaiMode = "premium";
   tampilModalMulai(activeTryout, "premium");
 }
