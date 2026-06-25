@@ -129,21 +129,6 @@ async function login(event) {
       return;
     }
 
-    // Cek apakah sudah verifikasi OTP
-    if (!data.is_verified) {
-      // Kirim ulang OTP dan arahkan ke halaman verifikasi
-      showMsg(" Akun belum diverifikasi. Mengirim OTP ke email Anda...", "success");
-      await fetch("/api/otp/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
-      });
-      setTimeout(() => {
-        window.location.href = "otp.html?email=" + encodeURIComponent(email);
-      }, 1500);
-      return;
-    }
-
     // Simpan data user ke localStorage
     localStorage.setItem("user", JSON.stringify(data));
 
