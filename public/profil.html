@@ -194,28 +194,76 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
       </div>
 
       <div class="form-group">
-        <label class="form-label">Username / Nama Lengkap</label>
-        <input type="text" class="form-input" id="inputNama" placeholder="Nama kamu">
+        <label class="form-label">Nama Lengkap</label>
+        <input type="text" class="form-input" id="inputNama" placeholder="Nama lengkap kamu">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Username</label>
+        <input type="text" class="form-input" id="inputUsername" placeholder="Username kamu">
       </div>
 
       <div class="form-row-2">
         <div class="form-group">
           <label class="form-label">Sekolah Tujuan</label>
           <select class="form-select" id="inputSekolah">
-            <option value="">— Pilih Sekolah Tujuan —</option>
-            <option value="IPDN">IPDN</option>
-            <option value="STAN / PKN STAN">STAN / PKN STAN</option>
-            <option value="STIS / Polstat STIS">STIS / Polstat STIS</option>
-            <option value="PKTJ">PKTJ</option>
-            <option value="STTD">STTD</option>
-            <option value="Poltekip">Poltekip</option>
-            <option value="Poltekim">Poltekim</option>
-            <option value="STMKG">STMKG</option>
-            <option value="Akpol">Akpol</option>
-            <option value="Akmil">Akmil</option>
-            <option value="AAL">AAL</option>
-            <option value="AAU">AAU</option>
-            <option value="Lainnya">Lainnya</option>
+            <option value="">— Pilih Sekolah Kedinasan —</option>
+            <optgroup label="— Kementerian Keuangan —">
+              <option value="PKN STAN">PKN STAN (Politeknik Keuangan Negara STAN)</option>
+            </optgroup>
+            <optgroup label="— Kementerian Dalam Negeri —">
+              <option value="IPDN">IPDN (Institut Pemerintahan Dalam Negeri)</option>
+            </optgroup>
+            <optgroup label="— Badan Intelijen Negara —">
+              <option value="STIN">STIN (Sekolah Tinggi Intelijen Negara)</option>
+            </optgroup>
+            <optgroup label="— BSSN —">
+              <option value="Poltek SSN">Politeknik Siber dan Sandi Negara (Poltek SSN)</option>
+            </optgroup>
+            <optgroup label="— BMKG —">
+              <option value="STMKG">STMKG (Sekolah Tinggi Meteorologi Klimatologi dan Geofisika)</option>
+            </optgroup>
+            <optgroup label="— Kementerian Hukum —">
+              <option value="Poltekim">Poltekim (Politeknik Imigrasi)</option>
+              <option value="Poltekip">Poltekip (Politeknik Ilmu Pemasyarakatan)</option>
+            </optgroup>
+            <optgroup label="— Kementerian Perhubungan —">
+              <option value="STTD">STTD (Sekolah Tinggi Transportasi Darat)</option>
+              <option value="STIP">STIP (Sekolah Tinggi Ilmu Pelayaran)</option>
+              <option value="PKTJ">PKTJ (Politeknik Keselamatan Transportasi Jalan)</option>
+              <option value="PIP Semarang">PIP Semarang (Politeknik Ilmu Pelayaran Semarang)</option>
+              <option value="PIP Makassar">PIP Makassar (Politeknik Ilmu Pelayaran Makassar)</option>
+              <option value="Poltekpel Surabaya">Poltekpel Surabaya</option>
+              <option value="Poltekpel Barombong">Poltekpel Barombong</option>
+              <option value="Poltekpel Banten">Poltekpel Banten</option>
+              <option value="Poltekpel Sorong">Poltekpel Sorong</option>
+              <option value="Politeknik Penerbangan Indonesia Curug">Politeknik Penerbangan Indonesia Curug</option>
+              <option value="Politeknik Penerbangan Makassar">Politeknik Penerbangan Makassar</option>
+              <option value="Politeknik Penerbangan Jayapura">Politeknik Penerbangan Jayapura</option>
+              <option value="Politeknik Penerbangan Surabaya">Politeknik Penerbangan Surabaya</option>
+              <option value="Politeknik Penerbangan Medan">Politeknik Penerbangan Medan</option>
+              <option value="Politeknik Perkeretaapian Indonesia Madiun">Politeknik Perkeretaapian Indonesia Madiun</option>
+            </optgroup>
+            <optgroup label="— BPS —">
+              <option value="Politeknik Statistika STIS">Politeknik Statistika STIS</option>
+            </optgroup>
+            <optgroup label="— Kementerian ATR/BPN —">
+              <option value="STPN">STPN (Sekolah Tinggi Pertanahan Nasional)</option>
+            </optgroup>
+            <optgroup label="— TNI —">
+              <option value="AKMIL">AKMIL (Akademi Militer)</option>
+              <option value="AAL">AAL (Akademi Angkatan Laut)</option>
+              <option value="AAU">AAU (Akademi Angkatan Udara)</option>
+              <option value="AKABRI">Sekolah Calon Perwira TNI</option>
+            </optgroup>
+            <optgroup label="— POLRI —">
+              <option value="AKPOL">AKPOL (Akademi Kepolisian)</option>
+              <option value="SIPSS">SIPSS (Sekolah Inspektur Polisi Sumber Sarjana)</option>
+              <option value="BINTARA POLRI">Bintara Polri</option>
+            </optgroup>
+            <optgroup label="— Lainnya —">
+              <option value="STIN Lainnya">Sekolah Kedinasan Lainnya</option>
+            </optgroup>
           </select>
         </div>
 
@@ -226,8 +274,48 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
       </div>
 
       <div class="form-group">
-        <label class="form-label">Daerah Asal</label>
-        <input type="text" class="form-input" id="inputDaerah" placeholder="Contoh: Surabaya, Jawa Timur">
+        <label class="form-label">Provinsi</label>
+        <select class="form-select" id="inputProvinsi">
+          <option value="">Pilih Provinsi</option>
+          <option>Aceh</option>
+          <option>Bali</option>
+          <option>Banten</option>
+          <option>Bengkulu</option>
+          <option>DI Yogyakarta</option>
+          <option>DKI Jakarta</option>
+          <option>Gorontalo</option>
+          <option>Jambi</option>
+          <option>Jawa Barat</option>
+          <option>Jawa Tengah</option>
+          <option>Jawa Timur</option>
+          <option>Kalimantan Barat</option>
+          <option>Kalimantan Selatan</option>
+          <option>Kalimantan Tengah</option>
+          <option>Kalimantan Timur</option>
+          <option>Kalimantan Utara</option>
+          <option>Kepulauan Bangka Belitung</option>
+          <option>Kepulauan Riau</option>
+          <option>Lampung</option>
+          <option>Maluku</option>
+          <option>Maluku Utara</option>
+          <option>Nusa Tenggara Barat</option>
+          <option>Nusa Tenggara Timur</option>
+          <option>Papua</option>
+          <option>Papua Barat</option>
+          <option>Papua Barat Daya</option>
+          <option>Papua Pegunungan</option>
+          <option>Papua Selatan</option>
+          <option>Papua Tengah</option>
+          <option>Riau</option>
+          <option>Sulawesi Barat</option>
+          <option>Sulawesi Selatan</option>
+          <option>Sulawesi Tengah</option>
+          <option>Sulawesi Tenggara</option>
+          <option>Sulawesi Utara</option>
+          <option>Sumatera Barat</option>
+          <option>Sumatera Selatan</option>
+          <option>Sumatera Utara</option>
+        </select>
       </div>
 
       <button class="btn-simpan" id="btnSimpan" onclick="simpanProfil()">Simpan Perubahan</button>
@@ -282,10 +370,11 @@ function renderProfil(data) {
     document.getElementById("infoTanggal").textContent = d.getDate() + " " + BULAN[d.getMonth()] + " " + d.getFullYear();
   }
 
-  document.getElementById("inputEmail").value   = data.email || "";
-  document.getElementById("inputNama").value    = data.nama || "";
-  document.getElementById("inputSekolah").value = data.sekolah_kedinasan || "";
-  document.getElementById("inputDaerah").value  = data.daerah || "";
+  document.getElementById("inputEmail").value    = data.email || "";
+  document.getElementById("inputNama").value     = data.nama || "";
+  document.getElementById("inputUsername").value = data.username || "";
+  document.getElementById("inputSekolah").value  = data.sekolah_kedinasan || "";
+  document.getElementById("inputProvinsi").value = data.provinsi || "";
   if (data.tahun_seleksi) document.getElementById("inputTahun").value = data.tahun_seleksi;
 }
 
@@ -304,12 +393,14 @@ async function loadProfil() {
 }
 
 async function simpanProfil() {
-  const nama   = document.getElementById("inputNama").value.trim();
-  const sekolah = document.getElementById("inputSekolah").value;
-  const daerah  = document.getElementById("inputDaerah").value.trim();
-  const tahun   = document.getElementById("inputTahun").value;
+  const nama     = document.getElementById("inputNama").value.trim();
+  const username = document.getElementById("inputUsername").value.trim();
+  const sekolah  = document.getElementById("inputSekolah").value;
+  const provinsi = document.getElementById("inputProvinsi").value;
+  const tahun    = document.getElementById("inputTahun").value;
 
   if (!nama) { showToast("Nama tidak boleh kosong.", true); return; }
+  if (!username) { showToast("Username tidak boleh kosong.", true); return; }
 
   const btn = document.getElementById("btnSimpan");
   btn.disabled = true;
@@ -322,8 +413,9 @@ async function simpanProfil() {
       body: JSON.stringify({
         email: user.email,
         nama,
+        username,
         sekolah_kedinasan: sekolah,
-        daerah,
+        provinsi,
         tahun_seleksi: tahun
       })
     });
@@ -339,9 +431,9 @@ async function simpanProfil() {
     // Sinkronkan ke localStorage supaya halaman lain (Dashboard, dll)
     // langsung ikut menampilkan data terbaru tanpa perlu logout-login.
     user.nama              = json.data.nama;
-    user.username          = json.data.nama;
+    user.username          = json.data.username;
     user.sekolah_kedinasan = json.data.sekolah_kedinasan;
-    user.daerah            = json.data.daerah;
+    user.provinsi          = json.data.provinsi;
     user.tahun_seleksi     = json.data.tahun_seleksi;
     localStorage.setItem("user", JSON.stringify(user));
 

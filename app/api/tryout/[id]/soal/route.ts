@@ -27,7 +27,7 @@ export async function GET(
 
   const { data, error } = await supabase
     .from("soal")
-    .select("id, nomor, seksi, teks, gambar_url, opsi")
+    .select("id, nomor, seksi, aspek, teks, gambar_url, opsi") // ✅ tambah aspek
     .eq("tryout_id", tryoutId)
     .order("nomor", { ascending: true });
 
@@ -40,6 +40,7 @@ export async function GET(
     id: row.id,
     nomor: row.nomor,
     seksi: row.seksi,
+    aspek: row.aspek || null,  // ✅ tambah aspek
     teks: row.teks,
     gambar_url: row.gambar_url,
     opsi: (row.opsi || []).map((o: any) => ({ huruf: o.huruf, teks: o.teks })),

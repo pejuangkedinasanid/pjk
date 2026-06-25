@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Latihan Soal | Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f172a;--navy2:#1e293b;--orange:#f97316;--orange2:#fb923c;--blue:#2563eb;--bg:#f5f7fb;--card:#ffffff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--shadow:0 20px 50px rgba(15,23,42,.08);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:linear-gradient(180deg,#eef2ff 0%,#f8fafc 45%,#ffffff 100%);display:flex;min-height:100vh;overflow-x:hidden;position:relative;}
+body::before{content:"";position:fixed;top:-250px;right:-250px;width:550px;height:550px;border-radius:50%;background:rgba(249,115,22,.12);filter:blur(90px);pointer-events:none;}
+body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;height:500px;border-radius:50%;background:rgba(37,99,235,.10);filter:blur(90px);pointer-events:none;}
+
+.sidebar{width:290px;background:linear-gradient(180deg,#0f172a,#1e293b);position:fixed;left:0;top:0;bottom:0;color:white;z-index:999;overflow-y:auto;display:flex;flex-direction:column;box-shadow:10px 0 40px rgba(0,0,0,.15);transform:translateX(0);transition:.3s;}
+.sidebar.closed{transform:translateX(-290px);}
+.sidebar-header{padding:30px 25px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.brand-title{font-size:24px;font-weight:800;line-height:1.2;}
+.brand-subtitle{margin-top:6px;font-size:12px;opacity:.7;}
+.sidebar-close{background:none;border:none;color:white;opacity:.6;font-size:16px;cursor:pointer;}
+.menu{padding:20px 12px;flex:1;}
+.menu-group{font-size:11px;font-weight:700;opacity:.45;letter-spacing:1px;text-transform:uppercase;margin:18px 12px 10px;}
+.menu a{display:flex;align-items:center;padding:14px 16px;border-radius:16px;color:white;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:6px;transition:.25s;}
+.menu a:hover{background:rgba(255,255,255,.08);transform:translateX(4px);}
+.menu a.active{background:linear-gradient(135deg,rgba(249,115,22,.85),rgba(251,146,60,.85));}
+.menu-premium{background:linear-gradient(135deg,#f59e0b,#fbbf24) !important;color:#1f2937 !important;font-weight:800 !important;}
+.sidebar-footer{padding:20px;border-top:1px solid rgba(255,255,255,.08);}
+.logout-btn{width:100%;padding:14px;border:none;border-radius:16px;background:rgba(255,255,255,.08);color:white;font-weight:700;cursor:pointer;transition:.3s;}
+.logout-btn:hover{background:rgba(255,255,255,.15);}
+
+.hamburger{display:flex;position:fixed;top:15px;left:15px;width:48px;height:48px;border:none;border-radius:14px;background:var(--navy);color:white;font-size:20px;cursor:pointer;z-index:1001;align-items:center;justify-content:center;transition:.3s;}
+.hamburger.inside{left:227px;}
+.overlay{display:none;}
+.overlay.active{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:998;}
+
+.main{margin-left:290px;width:100%;padding:30px;position:relative;z-index:2;transition:.3s;}
+.main.full{margin-left:0;}
+@media(max-width:1000px){.main{margin-left:0;padding:20px;}}
+
+.hero{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:30px;padding:40px;color:white;margin-bottom:25px;overflow:hidden;position:relative;box-shadow:0 25px 60px rgba(15,23,42,.2);}
+.hero::before{content:"";position:absolute;top:-120px;right:-120px;width:350px;height:350px;border-radius:50%;background:rgba(249,115,22,.15);}
+.hero-badge{display:inline-block;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;font-weight:700;margin-bottom:18px;position:relative;z-index:2;}
+.hero h1{font-size:36px;font-weight:800;margin-bottom:10px;position:relative;z-index:2;}
+.hero p{max-width:600px;opacity:.85;line-height:1.8;position:relative;z-index:2;}
+
+.filter-bar{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap;}
+.filter-chip{padding:11px 20px;border-radius:999px;border:1px solid var(--border);background:white;font-weight:700;font-size:13px;color:var(--muted);cursor:pointer;transition:.2s;}
+.filter-chip:hover{border-color:var(--orange);}
+.filter-chip.active{background:var(--navy);color:white;border-color:var(--navy);}
+
+.video-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+@media(max-width:1200px){.video-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:700px){.video-grid{grid-template-columns:1fr;}}
+
+.video-card{background:white;border-radius:24px;padding:20px;box-shadow:var(--shadow);transition:.3s;border:1px solid #eef2f7;display:flex;flex-direction:column;}
+.video-card:hover{transform:translateY(-5px);}
+.video-banner-wrap{width:100%;aspect-ratio:16/9;border-radius:16px;overflow:hidden;margin-bottom:16px;background:linear-gradient(135deg,#0f172a,#1e293b);position:relative;}
+.video-banner-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.play-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.15);}
+.play-icon{width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;}
+
+.badge{display:inline-block;padding:7px 14px;border-radius:999px;font-size:11px;font-weight:700;margin-bottom:12px;}
+.badge-twk{background:#dbeafe;color:#1d4ed8;}
+.badge-tiu{background:#dcfce7;color:#15803d;}
+.badge-tkp{background:#fff7ed;color:#c2410c;}
+.badge-umum{background:#f1f5f9;color:#475569;}
+
+.video-judul{font-size:16.5px;font-weight:800;color:var(--navy);margin-bottom:16px;line-height:1.4;flex:1;}
+
+.btn-tonton{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:700;font-size:14px;cursor:pointer;transition:.2s;text-align:center;text-decoration:none;display:block;font-family:inherit;}
+.btn-tonton:hover{opacity:.92;}
+
+.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);}
+.empty-state b{display:block;font-size:18px;color:var(--navy);margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+<button class="hamburger" id="hamburger">&#9776;</button>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="brand-title">PEJUANG KEDINASAN</div>
+      <div class="brand-subtitle">Platform Tryout Kedinasan No.1 Indonesia</div>
+    </div>
+    <button class="sidebar-close" id="sidebarCloseBtn">&#x2715;</button>
+  </div>
+  <div class="menu">
+    <div class="menu-group">Utama</div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="tryout-tersedia.html">Tryout Tersedia</a>
+    <a href="tryout-saya.html">Tryout Saya</a>
+    <div class="menu-group">Belajar</div>
+    <a href="materi.html">Modul</a>
+    <a href="video.html" class="active">Video Latihan Soal</a>
+    <div class="menu-group">Kompetisi</div>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="analisis.html">Analisis Perkembangan</a>
+    <div class="menu-group">Akun</div>
+    <a href="premium.html" class="menu-premium">&#11088; Premium</a>
+    <a href="profil.html">Profil Saya</a>
+    <a href="pengaturan.html">Pengaturan</a>
+  </div>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="main" id="mainEl">
+  <div class="hero">
+    <div class="hero-badge">&#127909; VIDEO LATIHAN SOAL</div>
+    <h1>Video Pembahasan</h1>
+    <p>Tonton pembahasan soal TWK, TIU, dan TKP lewat video — biar lebih mudah dipahami.</p>
+  </div>
+
+  <div class="filter-bar" id="filterBar">
+    <button class="filter-chip active" data-kategori="" onclick="pilihFilter('', this)">Semua</button>
+    <button class="filter-chip" data-kategori="TWK" onclick="pilihFilter('TWK', this)">TWK</button>
+    <button class="filter-chip" data-kategori="TIU" onclick="pilihFilter('TIU', this)">TIU</button>
+    <button class="filter-chip" data-kategori="TKP" onclick="pilihFilter('TKP', this)">TKP</button>
+    <button class="filter-chip" data-kategori="Umum" onclick="pilihFilter('Umum', this)">Umum</button>
+  </div>
+
+  <div class="video-grid" id="videoGrid">
+    <div class="empty-state">Memuat video...</div>
+  </div>
+</div>
+
+<script>
+const rawUser = localStorage.getItem("user");
+if (!rawUser) window.location.href = "login.html";
+const user = JSON.parse(rawUser);
+
+let semuaVideo = [];
+let kategoriAktif = "";
+
+function badgeKategori(k) {
+  const kUpper = String(k || "").trim().toUpperCase();
+  const cls = kUpper === "TWK" ? "badge-twk" : kUpper === "TIU" ? "badge-tiu" : kUpper === "TKP" ? "badge-tkp" : "badge-umum";
+  return '<span class="badge ' + cls + '">' + (k || "Umum") + '</span>';
+}
+
+/* Pencocokan kategori dibuat toleran (trim + case-insensitive),
+   supaya tidak gagal cocok kalau ada selisih spasi/kapital dari data. */
+function samaKategori(a, b) {
+  return String(a || "").trim().toLowerCase() === String(b || "").trim().toLowerCase();
+}
+
+async function loadVideo() {
+  const grid = document.getElementById("videoGrid");
+  try {
+    const res  = await fetch("/api/video");
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+    semuaVideo = json.data || [];
+    updateJumlahFilter();
+    renderGrid();
+  } catch (e) {
+    grid.innerHTML = '<div class="empty-state"><b>Gagal memuat video</b>' + e.message + '</div>';
+  }
+}
+
+/* Tampilkan jumlah video real di tiap chip filter, supaya kelihatan
+   jelas datanya sesuai -- "Semua" = total semua, TWK/TIU/TKP/Umum
+   = jumlah video yang benar-benar berkategori itu. */
+function updateJumlahFilter() {
+  const total = semuaVideo.length;
+  const hitung = (kat) => semuaVideo.filter(v => samaKategori(v.kategori, kat)).length;
+
+  document.querySelectorAll(".filter-chip").forEach(chip => {
+    const kat = chip.getAttribute("data-kategori");
+    const jumlah = kat ? hitung(kat) : total;
+    const labelAsli = chip.getAttribute("data-label") || chip.textContent.replace(/\s*\(\d+\)$/, "").trim();
+    chip.setAttribute("data-label", labelAsli);
+    chip.textContent = labelAsli + " (" + jumlah + ")";
+  });
+}
+
+function renderGrid() {
+  const grid = document.getElementById("videoGrid");
+  const rows = kategoriAktif
+    ? semuaVideo.filter(v => samaKategori(v.kategori, kategoriAktif))
+    : semuaVideo;
+
+  if (!rows.length) {
+    grid.innerHTML = '<div class="empty-state"><b>Belum ada video</b>Video pembahasan baru akan muncul di sini setelah admin mempublikasikannya.</div>';
+    return;
+  }
+
+  grid.innerHTML = rows.map(v => {
+    const bannerInner = v.banner_url
+      ? '<img src="' + v.banner_url + '" alt="" onerror="this.parentElement.style.background=\'linear-gradient(135deg,#0f172a,#1e293b)\';this.remove();">' +
+        '<div class="play-overlay"><div class="play-icon">&#9654;&#65039;</div></div>'
+      : '<div class="play-overlay" style="background:rgba(15,23,42,.35);"><div class="play-icon">&#9654;&#65039;</div></div>';
+
+    return '<div class="video-card">' +
+      '<div class="video-banner-wrap">' + bannerInner + '</div>' +
+      badgeKategori(v.kategori) +
+      '<div class="video-judul">' + (v.judul || "Video Pembahasan") + '</div>' +
+      '<a class="btn-tonton" href="' + v.youtube_url + '" target="_blank" rel="noopener">Tonton Sekarang</a>' +
+    '</div>';
+  }).join("");
+}
+
+function pilihFilter(kategori, btn) {
+  kategoriAktif = kategori;
+  document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+  btn.classList.add("active");
+  renderGrid();
+}
+
+/* SIDEBAR */
+const sidebar   = document.getElementById("sidebar");
+const hamburger = document.getElementById("hamburger");
+const overlay   = document.getElementById("overlay");
+const mainEl    = document.getElementById("mainEl");
+function openSidebar()  { sidebar.classList.remove("closed"); hamburger.innerHTML="&#x2715;"; hamburger.classList.add("inside"); window.innerWidth<=1000 ? overlay.classList.add("active") : overlay.classList.remove("active"); mainEl.classList.remove("full"); }
+function closeSidebar() { sidebar.classList.add("closed"); overlay.classList.remove("active"); mainEl.classList.add("full"); hamburger.innerHTML="&#9776;"; hamburger.classList.remove("inside"); }
+hamburger.addEventListener("click", () => sidebar.classList.contains("closed") ? openSidebar() : closeSidebar());
+document.getElementById("sidebarCloseBtn").addEventListener("click", closeSidebar);
+overlay.addEventListener("click", closeSidebar);
+window.addEventListener("resize", () => window.innerWidth<=1000 ? closeSidebar() : openSidebar());
+
+function logout() { if (confirm("Yakin ingin keluar?")) { localStorage.removeItem("user"); window.location.href = "login.html"; } }
+
+window.innerWidth<=1000 ? closeSidebar() : openSidebar();
+loadVideo();
+</script>
+</body>
+</html>

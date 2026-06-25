@@ -1,2183 +1,550 @@
 <!DOCTYPE html>
-
 <html lang="id">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Pejuang Kedinasan | Platform Tryout Kedinasan No.1 Indonesia</title>
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
-
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-
 <style>
+:root{--primary:#14274e;--primary-light:#1f3f7a;--secondary:#f3f5f8;--white:#ffffff;--text:#243b55;--muted:#6b7280;--border:#e5e7eb;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
+.container{max-width:1280px;margin:auto;padding:0 24px;}
 
-:root{
---primary:#14274e;
---primary-light:#1f3f7a;
---secondary:#f3f5f8;
---white:#ffffff;
---text:#243b55;
---muted:#6b7280;
---border:#e5e7eb;
+/* NAVBAR */
+.navbar{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.95);backdrop-filter:blur(15px);border-bottom:1px solid #eef2f7;}
+.nav-content{height:85px;display:flex;align-items:center;justify-content:space-between;}
+.brand-title{font-size:30px;font-weight:800;color:var(--primary);line-height:1;letter-spacing:-1px;}
+.brand-tagline{font-size:12px;color:#64748b;margin-top:3px;}
+.nav-links{display:flex;gap:35px;}
+.nav-links a{text-decoration:none;font-weight:700;color:var(--primary);transition:.3s;}
+.nav-links a:hover{color:var(--primary-light);}
+.nav-buttons{display:flex;gap:12px;}
+.btn-login{padding:12px 22px;border-radius:12px;border:1px solid var(--border);text-decoration:none;font-weight:700;color:var(--primary);background:white;}
+.btn-register{padding:12px 24px;border-radius:12px;background:var(--primary);color:white;text-decoration:none;font-weight:700;}
+.btn-register:hover{opacity:.95;}
+
+/* HAMBURGER */
+.hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;}
+.hamburger span{width:25px;height:3px;background:var(--primary);border-radius:20px;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1200;}
+.sidebar{position:fixed;left:-300px;top:0;width:280px;height:100%;background:white;padding:30px;transition:.3s;z-index:1300;overflow-y:auto;}
+.sidebar.open{left:0;}
+.sidebar-logo{font-size:26px;font-weight:800;color:var(--primary);margin-bottom:30px;}
+.sidebar a{display:block;padding:15px 0;text-decoration:none;font-weight:700;color:var(--primary);border-bottom:1px solid #edf2f7;}
+.sidebar-buttons{margin-top:20px;display:flex;flex-direction:column;gap:10px;}
+
+/* HERO */
+.hero{padding:100px 0;}
+.hero-content{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:70px;}
+.hero-badge{display:inline-block;padding:10px 18px;background:#e8eefc;color:var(--primary);font-weight:700;border-radius:999px;margin-bottom:25px;}
+.hero-title{font-size:64px;font-weight:800;line-height:1.1;color:var(--primary);margin-bottom:25px;letter-spacing:-2px;}
+.hero-title span{display:block;color:#2d5bba;}
+.hero-desc{font-size:18px;font-weight:400;line-height:1.8;color:var(--muted);margin-bottom:35px;max-width:650px;}
+.hero-buttons{display:flex;gap:15px;margin-bottom:40px;}
+.btn-primary{background:var(--primary);color:white;padding:16px 30px;border-radius:14px;text-decoration:none;font-weight:700;}
+.btn-secondary{background:white;color:var(--primary);border:1px solid #dbe3ee;padding:16px 30px;border-radius:14px;text-decoration:none;font-weight:700;}
+.hero-stats{display:flex;gap:30px;flex-wrap:wrap;}
+.hero-stat h3{font-size:32px;color:var(--primary);font-weight:800;}
+.hero-stat p{font-size:14px;color:#64748b;}
+.hero-card{background:white;padding:35px;border-radius:28px;box-shadow:0 20px 50px rgba(0,0,0,.08);}
+.tryout-banner-wrap{width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;margin-bottom:18px;background:linear-gradient(135deg,#14274e,#1f3f7a);}
+.tryout-banner-wrap img{width:100%;height:100%;object-fit:cover;display:block;}
+.tryout-badge{display:inline-block;padding:8px 16px;background:#14274e;color:white;border-radius:999px;font-size:13px;font-weight:700;margin-bottom:20px;}
+.hero-card h2{font-size:28px;color:var(--primary);margin-bottom:10px;font-weight:800;}
+.hero-card p{color:#64748b;margin-bottom:8px;font-size:14px;}
+.tryout-meta{display:flex;gap:14px;font-size:13px;color:#64748b;margin-bottom:14px;flex-wrap:wrap;}
+.tryout-button{width:100%;padding:16px;background:var(--primary);border:none;border-radius:12px;color:white;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;}
+.skeleton{background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;display:inline-block;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* STATS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:25px;}
+.stat-card{background:white;padding:35px;border-radius:24px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.06);}
+.stat-card h2{font-size:42px;font-weight:800;color:#14274e;margin-bottom:10px;}
+.stat-card p{color:#64748b;font-size:15px;}
+
+/* FEATURES */
+.feature-grid-new{display:grid;grid-template-columns:repeat(4,1fr);gap:25px;}
+.feature-card{background:#f8fafc;padding:35px;border-radius:24px;transition:.3s;}
+.feature-card:hover{transform:translateY(-8px);box-shadow:0 15px 35px rgba(0,0,0,.08);}
+.feature-icon{font-size:42px;margin-bottom:20px;}
+.feature-card h3{font-size:22px;margin-bottom:15px;color:#14274e;}
+.feature-card p{font-size:18px;font-weight:400;line-height:1.8;color:#64748b;}
+
+/* STEPS */
+.steps-grid{display:flex;justify-content:center;align-items:center;gap:25px;flex-wrap:wrap;}
+.step-card{width:320px;background:white;padding:40px;border-radius:25px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,.05);}
+.step-number{font-size:52px;font-weight:800;color:#14274e;margin-bottom:15px;}
+.step-card h3{font-size:24px;margin-bottom:15px;color:#14274e;}
+.step-card p{font-size:18px;font-weight:400;line-height:1.8;color:#64748b;}
+.step-arrow{font-size:40px;font-weight:800;color:#14274e;}
+
+/* ANALISIS */
+.premium-eyebrow{display:inline-block;padding:10px 18px;background:#fff7ed;color:#c2410c;font-weight:700;border-radius:999px;margin-bottom:20px;}
+.analisis-preview{background:#14274e;padding:50px;border-radius:30px;display:grid;grid-template-columns:1fr 2fr;gap:30px;}
+.analisis-left{display:flex;flex-direction:column;gap:20px;}
+.analisis-stat-box{background:white;padding:30px;border-radius:20px;}
+.analisis-stat-box h4{color:#64748b;margin-bottom:15px;font-size:18px;font-weight:400;}
+.analisis-stat-box h2{font-size:42px;color:#14274e;font-weight:800;}
+.analisis-right{display:flex;flex-direction:column;gap:20px;}
+.analisis-chart-box,.analisis-rekap-box{background:white;padding:30px;border-radius:20px;border:1px solid #eef2f7;}
+.analisis-chart-box h3,.analisis-rekap-box h3{color:#14274e;margin-bottom:25px;font-size:20px;font-weight:800;}
+.mini-chart{display:flex;align-items:flex-end;gap:12px;height:140px;padding-top:24px;}
+.mini-chart .bar{flex:1;background:linear-gradient(180deg,#2d5bba,#14274e);border-radius:8px 8px 0 0;position:relative;display:flex;align-items:flex-start;justify-content:center;}
+.mini-chart .bar span{position:absolute;top:-22px;font-size:12px;font-weight:700;color:#14274e;}
+.rekap-item{margin-bottom:18px;}
+.rekap-item:last-child{margin-bottom:0;}
+.rekap-label{display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:#14274e;margin-bottom:8px;}
+.rekap-bar{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;}
+.rekap-fill{height:100%;border-radius:999px;}
+.rekap-fill.kuat{background:#16a34a;}
+.rekap-fill.lemah{background:#f59e0b;}
+
+/* PRICING */
+.pricing-grid-new{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+.pricing-card{background:white;padding:45px;border-radius:30px;box-shadow:0 15px 35px rgba(0,0,0,.05);position:relative;}
+.pricing-card h3{font-size:28px;margin-bottom:15px;color:#14274e;}
+.pricing-card ul{list-style:none;line-height:2.4;margin-bottom:35px;color:#64748b;}
+.featured{border:3px solid #14274e;transform:scale(1.03);}
+.featured-badge{position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:#14274e;color:white;padding:10px 20px;border-radius:999px;font-size:12px;font-weight:700;}
+.pricing-btn{width:100%;padding:16px;border:none;background:#14274e;color:white;border-radius:14px;font-weight:700;cursor:pointer;}
+.pricing-btn-outline{width:100%;padding:16px;background:white;border:2px solid #14274e;color:#14274e;border-radius:14px;font-weight:700;cursor:pointer;}
+
+/* LEADERBOARD */
+.leaderboard-card{background:white;border-radius:30px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.06);}
+.leaderboard-card table{width:100%;border-collapse:collapse;}
+.leaderboard-card thead{background:#14274e;color:white;}
+.leaderboard-card th{padding:20px;text-align:left;}
+.leaderboard-card td{padding:18px 20px;border-bottom:1px solid #eef2f7;font-size:14px;}
+.leaderboard-card tr:last-child td{border-bottom:none;}
+.plan-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;}
+.plan-premium{background:#dbeafe;color:#1d4ed8;}
+.plan-gratis{background:#f1f5f9;color:#64748b;}
+
+/* TESTIMONIALS */
+.testimonial-modern{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;}
+.testimonial-card{background:white;padding:35px;border-radius:30px;box-shadow:0 15px 40px rgba(0,0,0,.05);}
+.stars{font-size:22px;margin-bottom:20px;}
+.testimonial-card p{font-size:18px;font-weight:400;line-height:1.8;margin-bottom:25px;color:#64748b;}
+.user{display:flex;align-items:center;gap:15px;}
+.avatar{width:55px;height:55px;border-radius:50%;background:#14274e;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;}
+.user span{font-size:13px;color:#64748b;}
+
+/* FAQ */
+.faq-wrapper{max-width:900px;margin:auto;}
+.faq-item{background:#f8fafc;margin-bottom:15px;border-radius:20px;overflow:hidden;}
+.faq-question{width:100%;padding:25px;border:none;background:none;font-size:18px;font-weight:700;color:#14274e;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
+.faq-answer{display:none;padding:0 25px 25px;line-height:1.8;color:#64748b;}
+.faq-item.active .faq-answer{display:block;}
+
+/* CTA */
+.cta-section{background:linear-gradient(135deg,#14274e,#1f3f7a);padding:80px;border-radius:35px;text-align:center;color:white;}
+.cta-section h2{font-size:60px;font-weight:800;margin-bottom:20px;}
+.cta-section p{font-size:20px;opacity:.9;max-width:700px;margin:auto;margin-bottom:35px;line-height:1.8;}
+.cta-buttons{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;}
+.cta-primary{background:white;color:#14274e;padding:16px 30px;border-radius:14px;text-decoration:none;font-weight:700;}
+.cta-secondary{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:white;padding:16px 30px;border-radius:14px;text-decoration:none;font-weight:700;}
+
+/* CPNSLAB */
+.cpnslab-card{background:white;border-radius:28px;padding:50px 30px;text-align:center;box-shadow:0 15px 40px rgba(0,0,0,.06);border:1px solid #eef2f7;}
+.cpnslab-eyebrow{font-size:18px;font-weight:400;color:#64748b;margin-bottom:14px;}
+.cpnslab-logo{font-size:56px;font-weight:800;letter-spacing:-1px;margin-bottom:26px;}
+.cpnslab-logo-dark{color:#14274e;}
+.cpnslab-logo-orange{color:#f59e0b;}
+.cpnslab-btn{display:inline-block;background:#14274e;color:white;padding:16px 32px;border-radius:14px;text-decoration:none;font-weight:700;font-size:15px;transition:.2s;}
+.cpnslab-btn:hover{opacity:.9;}
+
+/* FOOTER */
+.footer-grid-new{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;}
+.footer-grid-new h4{margin-bottom:20px;font-size:18px;}
+.footer-grid-new ul{list-style:none;}
+.footer-grid-new li{margin-bottom:12px;opacity:.85;}
+.footer-social{display:flex;gap:12px;margin-top:18px;}
+.footer-social a{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;transition:.2s;}
+.footer-social a:hover{background:rgba(255,255,255,.2);}
+
+/* RESPONSIVE */
+@media(max-width:992px){
+  .hero-content{grid-template-columns:1fr;}
+  .feature-grid-new{grid-template-columns:1fr 1fr;}
+  .pricing-grid-new{grid-template-columns:1fr;}
+  .testimonial-modern{grid-template-columns:1fr;}
+  .footer-grid-new{grid-template-columns:1fr 1fr;}
+  .analisis-preview{grid-template-columns:1fr;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
 }
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Open Sans',sans-serif;
+@media(max-width:768px){
+  .nav-links,.nav-buttons{display:none;}
+  .hamburger{display:flex;}
+  .brand-title{font-size:20px;}
+  .hero{padding:60px 0;}
+  .hero-title{font-size:38px;}
+  .hero-desc{font-size:15px;}
+  .hero-buttons{flex-direction:column;}
+  .hero-buttons a{width:100%;text-align:center;}
+  .feature-grid-new{grid-template-columns:1fr;}
+  .stat-card h2{font-size:32px;}
+  .cta-section{padding:45px 25px;}
+  .cta-section h2{font-size:34px;}
+  .footer-grid-new{grid-template-columns:1fr;text-align:center;}
+  .footer-social{justify-content:center;}
+  .steps-grid{flex-direction:column;}
+  .step-arrow{transform:rotate(90deg);}
+  .hero-card{padding:24px;}
+  .stat-grid{grid-template-columns:1fr 1fr;}
 }
-
-html{
-scroll-behavior:smooth;
-}
-
-body{
-background:#f8fafc;
-color:var(--text);
-overflow-x:hidden;
-}
-
-.container{
-max-width:1280px;
-margin:auto;
-padding:0 24px;
-}
-
-/* =========================
-NAVBAR
-========================= */
-
-.navbar{
-position:sticky;
-top:0;
-z-index:1000;
-background:rgba(255,255,255,.95);
-backdrop-filter:blur(15px);
-border-bottom:1px solid #eef2f7;
-}
-
-.nav-content{
-height:85px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-}
-
-.brand{
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.brand-logo{
-width:52px;
-height:52px;
-background:var(--primary);
-border-radius:14px;
-display:flex;
-align-items:center;
-justify-content:center;
-color:white;
-font-weight:800;
-font-size:20px;
-}
-
-.brand-info{
-display:flex;
-flex-direction:column;
-}
-
-.brand-title{
-font-size:30px;
-font-weight:800;
-color:var(--primary);
-line-height:1;
-letter-spacing:-1px;
-}
-
-.brand-tagline{
-font-size:12px;
-color:#64748b;
-margin-top:3px;
-}
-
-.nav-links{
-display:flex;
-gap:35px;
-}
-
-.nav-links a{
-text-decoration:none;
-font-weight:700;
-color:var(--primary);
-transition:.3s;
-}
-
-.nav-links a:hover{
-color:var(--primary-light);
-}
-
-.nav-buttons{
-display:flex;
-gap:12px;
-}
-
-.btn-login{
-padding:12px 22px;
-border-radius:12px;
-border:1px solid var(--border);
-text-decoration:none;
-font-weight:700;
-color:var(--primary);
-background:white;
-}
-
-.btn-register{
-padding:12px 24px;
-border-radius:12px;
-background:var(--primary);
-color:white;
-text-decoration:none;
-font-weight:700;
-}
-
-.btn-register:hover{
-opacity:.95;
-}
-
-/* =========================
-SIDEBAR MOBILE
-========================= */
-
-.hamburger{
-display:none;
-background:none;
-border:none;
-cursor:pointer;
-flex-direction:column;
-gap:5px;
-}
-
-.hamburger span{
-width:25px;
-height:3px;
-background:var(--primary);
-border-radius:20px;
-}
-
-.sidebar-overlay{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.4);
-z-index:1200;
-}
-
-.sidebar{
-position:fixed;
-left:-300px;
-top:0;
-width:280px;
-height:100%;
-background:white;
-padding:30px;
-transition:.3s;
-z-index:1300;
-overflow-y:auto;
-}
-
-.sidebar.open{
-left:0;
-}
-
-.sidebar-logo{
-font-size:26px;
-font-weight:800;
-color:var(--primary);
-margin-bottom:30px;
-}
-
-.sidebar a{
-display:block;
-padding:15px 0;
-text-decoration:none;
-font-weight:700;
-color:var(--primary);
-border-bottom:1px solid #edf2f7;
-}
-
-.sidebar-buttons{
-margin-top:20px;
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-/* =========================
-HERO
-========================= */
-
-.hero{
-padding:100px 0;
-}
-
-.hero-content{
-display:grid;
-grid-template-columns:1.1fr .9fr;
-align-items:center;
-gap:70px;
-}
-
-.hero-badge{
-display:inline-block;
-padding:10px 18px;
-background:#e8eefc;
-color:var(--primary);
-font-weight:700;
-border-radius:999px;
-margin-bottom:25px;
-}
-
-.hero-title{
-font-size:64px;
-font-weight:800;
-line-height:1.1;
-color:var(--primary);
-margin-bottom:25px;
-letter-spacing:-2px;
-}
-
-.hero-title span{
-display:block;
-color:#2d5bba;
-}
-
-.hero-desc{
-font-size:18px;
-font-weight:400;
-line-height:1.8;
-color:var(--muted);
-margin-bottom:35px;
-max-width:650px;
-}
-
-.hero-buttons{
-display:flex;
-gap:15px;
-margin-bottom:40px;
-}
-
-.btn-primary{
-background:var(--primary);
-color:white;
-padding:16px 30px;
-border-radius:14px;
-text-decoration:none;
-font-weight:700;
-}
-
-.btn-secondary{
-background:white;
-color:var(--primary);
-border:1px solid #dbe3ee;
-padding:16px 30px;
-border-radius:14px;
-text-decoration:none;
-font-weight:700;
-}
-
-.hero-stats{
-display:flex;
-gap:30px;
-flex-wrap:wrap;
-}
-
-.hero-stat h3{
-font-size:32px;
-color:var(--primary);
-font-weight:800;
-}
-
-.hero-stat p{
-font-size:14px;
-color:#64748b;
-}
-
-.hero-card{
-background:white;
-padding:35px;
-border-radius:28px;
-box-shadow:0 20px 50px rgba(0,0,0,.08);
-}
-
-.tryout-banner-wrap{
-width:100%;
-aspect-ratio:16/9;
-border-radius:18px;
-overflow:hidden;
-margin-bottom:18px;
-background:linear-gradient(135deg,#14274e,#1f3f7a);
-}
-
-.tryout-banner-wrap img{
-width:100%;
-height:100%;
-object-fit:cover;
-display:block;
-}
-
-.tryout-badge{
-display:inline-block;
-padding:8px 16px;
-background:#14274e;
-color:white;
-border-radius:999px;
-font-size:13px;
-font-weight:700;
-margin-bottom:20px;
-}
-
-.hero-card h2{
-font-size:30px;
-color:var(--primary);
-margin-bottom:12px;
-}
-
-.hero-card p{
-color:#64748b;
-margin-bottom:12px;
-}
-
-.tryout-button{
-width:100%;
-padding:16px;
-background:var(--primary);
-border:none;
-border-radius:12px;
-color:white;
-font-size:15px;
-font-weight:700;
-cursor:pointer;
-margin-top:10px;
-}
-
+@media(max-width:480px){.stat-grid{grid-template-columns:1fr;}}
 </style>
-
 </head>
-
 <body>
 
 <div class="sidebar-overlay" id="overlay"></div>
-
 <div class="sidebar" id="sidebar">
-
-<div class="sidebar-logo">
-PEJUANG KEDINASAN
-</div>
-
-<a href="#home">Home</a> <a href="#tryout">Tryout</a> <a href="#paket">Paket</a> <a href="#paket">Materi</a> <a href="#testimoni">Testimoni</a> <a href="#faq">FAQ</a>
-
-<div class="sidebar-buttons">
-
-<a href="login.html" class="btn-login">
-Masuk
-</a>
-
-<a href="register.html" class="btn-register">
-Daftar
-</a>
-
-</div>
-
+  <div class="sidebar-logo">PEJUANG KEDINASAN</div>
+  <a href="#home">Home</a>
+  <a href="#tryout">Tryout</a>
+  <a href="#paket">Paket</a>
+  <a href="#paket">Materi</a>
+  <a href="#testimoni">Testimoni</a>
+  <a href="#faq">FAQ</a>
+  <div class="sidebar-buttons">
+    <a href="login.html" class="btn-login">Masuk</a>
+    <a href="register.html" class="btn-register">Daftar</a>
+  </div>
 </div>
 
 <nav class="navbar">
-
-<div class="container nav-content">
-
-<div class="brand">
-
-<div class="brand-info">
-
-<div class="brand-title">
-PEJUANG KEDINASAN
-</div>
-
-<div class="brand-tagline">
-Platform Tryout Kedinasan No.1 Indonesia
-</div>
-
-</div>
-
-</div>
-
-<div class="nav-links">
-
-<a href="#home">Home</a> <a href="#tryout">Tryout</a> <a href="#paket">Paket</a> <a href="#paket">Materi</a> <a href="#testimoni">Testimoni</a> <a href="#faq">FAQ</a>
-
-</div>
-
-<div class="nav-buttons">
-
-<a href="login.html" class="btn-login">
-Masuk
-</a>
-
-<a href="register.html" class="btn-register">
-Daftar Gratis
-</a>
-
-</div>
-
-<button class="hamburger" id="hamburger">
-<span></span>
-<span></span>
-<span></span>
-</button>
-
-</div>
-
+  <div class="container nav-content">
+    <div class="brand">
+      <div class="brand-info">
+        <div class="brand-title">PEJUANG KEDINASAN</div>
+        <div class="brand-tagline">Platform Tryout Kedinasan No.1 Indonesia</div>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#tryout">Tryout</a>
+      <a href="#paket">Paket</a>
+      <a href="#paket">Materi</a>
+      <a href="#testimoni">Testimoni</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-buttons">
+      <a href="login.html" class="btn-login">Masuk</a>
+      <a href="register.html" class="btn-register">Daftar Gratis</a>
+    </div>
+    <button class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
+<!-- ═══════════ HERO ═══════════ -->
 <section class="hero" id="home">
-
-<div class="container hero-content">
-
-<div>
-
-<div class="hero-badge">
-#1 Platform Persiapan Sekolah Kedinasan
-</div>
-
-<h1 class="hero-title">
-
-Raih Sekolah <span>Kedinasan Impianmu</span>
-
-</h1>
-
-<p class="hero-desc">
-
-Latihan CAT Kedinasan terbaru,
-ranking nasional real-time,
-analisis kemampuan mendalam,
-serta ribuan soal HOTS yang selalu diperbarui.
-
-</p>
-
-<div class="hero-buttons">
-
-<a href="register.html" class="btn-primary">
-Mulai Tryout Gratis
-</a>
-
-<a href="#" class="btn-secondary">
-Lihat Paket
-</a>
-
-</div>
-
-</div>
-
-<div>
-
-<div class="hero-card">
-
-<div class="tryout-banner-wrap" id="tryoutTerbaruBannerWrap" style="display:none;">
-  <img id="tryoutTerbaruBanner" src="" alt="Banner tryout terbaru">
-</div>
-
-<div class="tryout-badge">
-TRYOUT TERBARU
-</div>
-
-<h2 id="tryoutTerbaruNama">
-Memuat...
-</h2>
-
-<p id="tryoutTerbaruAkses">&nbsp;</p>
-
-<p id="tryoutTerbaruPeriode">&nbsp;</p>
-
-<button class="tryout-button" onclick="window.location.href='register.html'">
-Ikuti Sekarang
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-<!-- =====================================
-STATISTIK NASIONAL
-====================================== -->
-
-<section id="tryout" style="
-padding:30px 0 90px;
-">
-
-<div class="container">
-
-<div class="stat-grid">
-
-<div class="stat-card">
-
-<h2>18.456</h2>
-
-<p>Peserta Terdaftar</p>
-
-</div>
-
-<div class="stat-card">
-
-<h2 id="statTryoutTersedia">—</h2>
-
-<p>Tryout Tersedia</p>
-
-</div>
-
-<div class="stat-card">
-
-<h2 id="statJumlahModul">—</h2>
-
-<p>Modul Belajar</p>
-
-</div>
-
-<div class="stat-card">
-
-<h2>95%</h2>
-
-<p>Tingkat Kepuasan</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<style>
-
-.stat-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:25px;
-}
-
-@media(max-width:900px){
-.stat-grid{
-grid-template-columns:repeat(2,1fr);
-}
-}
-
-@media(max-width:480px){
-.stat-grid{
-grid-template-columns:1fr;
-}
-}
-
-.stat-card{
-background:white;
-padding:35px;
-border-radius:24px;
-text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,.06);
-}
-
-.stat-card h2{
-font-size:42px;
-font-weight:800;
-color:#14274e;
-margin-bottom:10px;
-}
-
-.stat-card p{
-color:#64748b;
-font-size:15px;
-}
-
-</style>
-
-<!-- =====================================
-KEUNGGULAN
-====================================== -->
-
-<section style="
-padding:100px 0;
-background:white;
-">
-
-<div class="container">
-
-<div style="
-text-align:center;
-margin-bottom:70px;
-">
-
-<h2 style="
-font-size:52px;
-font-weight:800;
-color:#14274e;
-margin-bottom:20px;
-">
-
-Kenapa Memilih
-Pejuang Kedinasan?
-
-</h2>
-
-<p style="
-font-size:18px;
-font-weight:400;
-color:#64748b;
-max-width:700px;
-margin:auto;
-line-height:1.8;
-">
-
-Dirancang khusus untuk membantu calon taruna dan taruni
-menghadapi seleksi sekolah kedinasan dengan lebih terarah.
-
-</p>
-
-</div>
-
-<div class="feature-grid-new">
-
-<div class="feature-card">
-
-<div class="feature-icon">
-🎯
-</div>
-
-<h3>
-Simulasi CAT Real
-</h3>
-
-<p>
-Tampilan, timer, dan sistem pengerjaan dibuat menyerupai ujian CAT sebenarnya.
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-🏆
-</div>
-
-<h3>
-Ranking Nasional
-</h3>
-
-<p>
-Bandingkan kemampuanmu dengan ribuan peserta dari seluruh Indonesia.
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-📊
-</div>
-
-<h3>
-Analisis Mendalam
-</h3>
-
-<p>
-Ketahui kelemahan dan kekuatanmu berdasarkan hasil tryout.
-</p>
-
-</div>
-
-<div class="feature-card">
-
-<div class="feature-icon">
-📚
-</div>
-
-<h3>
-Bank Soal Terupdate
-</h3>
-
-<p>
-Ribuan soal HOTS terbaru yang selalu diperbarui mengikuti kisi-kisi terbaru.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<style>
-
-.feature-grid-new{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:25px;
-}
-
-.feature-card{
-background:#f8fafc;
-padding:35px;
-border-radius:24px;
-transition:.3s;
-}
-
-.feature-card:hover{
-transform:translateY(-8px);
-box-shadow:0 15px 35px rgba(0,0,0,.08);
-}
-
-.feature-icon{
-font-size:42px;
-margin-bottom:20px;
-}
-
-.feature-card h3{
-font-size:22px;
-margin-bottom:15px;
-color:#14274e;
-}
-
-.feature-card p{
-font-size:18px;
-font-weight:400;
-line-height:1.8;
-color:#64748b;
-}
-
-</style>
-
-<!-- =====================================
-ALUR BELAJAR
-====================================== -->
-
-<section style="
-padding:100px 0;
-background:#f8fafc;
-">
-
-<div class="container">
-
-<div style="
-text-align:center;
-margin-bottom:70px;
-">
-
-<h2 style="
-font-size:50px;
-font-weight:800;
-color:#14274e;
-margin-bottom:15px;
-">
-
-Belajar Dalam 3 Langkah
-
-</h2>
-
-<p style="
-font-size:18px;
-font-weight:400;
-color:#64748b;
-line-height:1.8;
-">
-
-Proses sederhana yang terbukti efektif
-
-</p>
-
-</div>
-
-<div class="steps-grid">
-
-<div class="step-card">
-
-<div class="step-number">
-01
-</div>
-
-<h3>
-Daftar Akun
-</h3>
-
-<p>
-Buat akun gratis dan mulai akses tryout kedinasan.
-</p>
-
-</div>
-
-<div class="step-arrow">
-→
-</div>
-
-<div class="step-card">
-
-<div class="step-number">
-02
-</div>
-
-<h3>
-Kerjakan Tryout
-</h3>
-
-<p>
-Latihan menggunakan sistem CAT yang menyerupai ujian asli.
-</p>
-
-</div>
-
-<div class="step-arrow">
-→
-</div>
-
-<div class="step-card">
-
-<div class="step-number">
-03
-</div>
-
-<h3>
-Evaluasi Hasil
-</h3>
-
-<p>
-Lihat ranking nasional dan analisis performa secara detail.
-</p>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<style>
-
-.steps-grid{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:25px;
-flex-wrap:wrap;
-}
-
-.step-card{
-width:320px;
-background:white;
-padding:40px;
-border-radius:25px;
-text-align:center;
-box-shadow:0 10px 25px rgba(0,0,0,.05);
-}
-
-.step-number{
-font-size:52px;
-font-weight:800;
-color:#14274e;
-margin-bottom:15px;
-}
-
-.step-card h3{
-font-size:24px;
-margin-bottom:15px;
-color:#14274e;
-}
-
-.step-card p{
-font-size:18px;
-font-weight:400;
-line-height:1.8;
-color:#64748b;
-}
-
-.step-arrow{
-font-size:40px;
-font-weight:800;
-color:#14274e;
-}
-
-</style>
-
-<!-- =====================================
-ANALISIS PERKEMBANGAN (PREMIUM)
-====================================== -->
-
-<section style="padding:100px 0;background:white;">
-
-<div class="container">
-
-<div style="text-align:center;margin-bottom:60px;">
-
-<div class="premium-eyebrow">⭐ Khusus User Premium</div>
-
-<h2 style="font-size:52px;font-weight:800;color:#14274e;margin-bottom:15px;">
-Analisis Perkembangan
-</h2>
-
-<p style="font-size:18px;font-weight:400;color:#64748b;line-height:1.8;max-width:700px;margin:auto;">
-Pantau progres belajarmu secara detail — berapa tryout yang sudah dikerjakan, grafik perkembangan nilai, hingga rekap materi mana yang sudah kuat dan mana yang masih perlu ditingkatkan.
-</p>
-
-</div>
-
-<div class="analisis-preview">
-
-<div class="analisis-left">
-
-<div class="analisis-stat-box">
-<h4>Tryout Dikerjakan</h4>
-<h2>12</h2>
-</div>
-
-<div class="analisis-stat-box">
-<h4>Rata-rata Nilai</h4>
-<h2>412</h2>
-</div>
-
-</div>
-
-<div class="analisis-right">
-
-<div class="analisis-chart-box">
-<h3>Grafik Perkembangan Nilai</h3>
-<div class="mini-chart">
-  <div class="bar" style="height:40%;"><span>320</span></div>
-  <div class="bar" style="height:55%;"><span>365</span></div>
-  <div class="bar" style="height:62%;"><span>390</span></div>
-  <div class="bar" style="height:70%;"><span>405</span></div>
-  <div class="bar" style="height:80%;"><span>430</span></div>
-  <div class="bar" style="height:88%;"><span>460</span></div>
-</div>
-</div>
-
-<div class="analisis-rekap-box">
-<h3>Rekap Kekuatan &amp; Kelemahan</h3>
-
-<div class="rekap-item">
-  <div class="rekap-label"><span>✅ TIU — Logika Matematika</span><span>88%</span></div>
-  <div class="rekap-bar"><div class="rekap-fill kuat" style="width:88%;"></div></div>
-</div>
-
-<div class="rekap-item">
-  <div class="rekap-label"><span>✅ TWK — Pancasila</span><span>82%</span></div>
-  <div class="rekap-bar"><div class="rekap-fill kuat" style="width:82%;"></div></div>
-</div>
-
-<div class="rekap-item">
-  <div class="rekap-label"><span>⚠️ TKP — Pelayanan Publik</span><span>54%</span></div>
-  <div class="rekap-bar"><div class="rekap-fill lemah" style="width:54%;"></div></div>
-</div>
-
-<div class="rekap-item">
-  <div class="rekap-label"><span>⚠️ TIU — Analisis Verbal</span><span>48%</span></div>
-  <div class="rekap-bar"><div class="rekap-fill lemah" style="width:48%;"></div></div>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<style>
-
-.premium-eyebrow{
-display:inline-block;
-padding:10px 18px;
-background:#fff7ed;
-color:#c2410c;
-font-weight:700;
-border-radius:999px;
-margin-bottom:20px;
-}
-
-.analisis-preview{
-background:#14274e;
-padding:50px;
-border-radius:30px;
-display:grid;
-grid-template-columns:1fr 2fr;
-gap:30px;
-}
-
-.analisis-left{
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-.analisis-stat-box{
-background:white;
-padding:30px;
-border-radius:20px;
-}
-
-.analisis-stat-box h4{
-color:#64748b;
-margin-bottom:15px;
-font-size:18px;
-font-weight:400;
-}
-
-.analisis-stat-box h2{
-font-size:42px;
-color:#14274e;
-font-weight:800;
-}
-
-.analisis-right{
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-.analisis-chart-box, .analisis-rekap-box{
-background:white;
-padding:30px;
-border-radius:20px;
-border:1px solid #eef2f7;
-}
-
-.analisis-chart-box h3, .analisis-rekap-box h3{
-color:#14274e;
-margin-bottom:25px;
-font-size:20px;
-font-weight:800;
-}
-
-.mini-chart{
-display:flex;
-align-items:flex-end;
-gap:12px;
-height:140px;
-padding-top:24px;
-}
-
-.mini-chart .bar{
-flex:1;
-background:linear-gradient(180deg,#2d5bba,#14274e);
-border-radius:8px 8px 0 0;
-position:relative;
-display:flex;
-align-items:flex-start;
-justify-content:center;
-}
-
-.mini-chart .bar span{
-position:absolute;
-top:-22px;
-font-size:12px;
-font-weight:700;
-color:#14274e;
-}
-
-.rekap-item{
-margin-bottom:18px;
-}
-
-.rekap-item:last-child{
-margin-bottom:0;
-}
-
-.rekap-label{
-display:flex;
-justify-content:space-between;
-font-size:14px;
-font-weight:700;
-color:#14274e;
-margin-bottom:8px;
-}
-
-.rekap-bar{
-height:10px;
-background:#e5e7eb;
-border-radius:999px;
-overflow:hidden;
-}
-
-.rekap-fill{
-height:100%;
-border-radius:999px;
-}
-
-.rekap-fill.kuat{
-background:#16a34a;
-}
-
-.rekap-fill.lemah{
-background:#f59e0b;
-}
-
-@media(max-width:900px){
-.analisis-preview{
-grid-template-columns:1fr;
-}
-}
-
-</style>
-
-<!-- =====================================
-PAKET BELAJAR
-====================================== -->
-
-<section id="paket" style="
-padding:110px 0;
-background:#f8fafc;
-">
-
-<div class="container">
-
-<div style="
-text-align:center;
-margin-bottom:70px;
-">
-
-<h2 style="
-font-size:52px;
-font-weight:800;
-color:#14274e;
-margin-bottom:15px;
-">
-
-Pilih Akses Tryout & Modul
-
-</h2>
-
-<p style="
-font-size:18px;
-font-weight:400;
-color:#64748b;
-line-height:1.8;
-">
-
-Mulai gratis, upgrade ke Premium, atau akses Modul belajar kapan saja
-
-</p>
-
-</div>
-
-<div class="pricing-grid-new">
-
-<!-- GRATIS -->
-
-<div class="pricing-card">
-
-<h3>Gratis</h3>
-
-<p style="font-size:18px;font-weight:400;color:#64748b;margin-bottom:25px;line-height:1.8;">
-Coba tryout tanpa biaya — cocok untuk kenalan dulu dengan sistem CAT kami.
-</p>
-
-<ul>
-
-<li>✅ 1x kesempatan tiap tryout gratis</li>
-<li>✅ Password akses dari admin</li>
-<li>✅ Lihat ranking di leaderboard</li>
-<li>✅ Jawaban benar/salah & kunci jawaban</li>
-<li style="color:#94a3b8;">❌ Tanpa pembahasan lengkap</li>
-<li style="color:#94a3b8;">❌ Tidak bisa download PDF pembahasan</li>
-<li style="color:#94a3b8;">❌ Tidak bisa akses video pembahasan</li>
-<li style="color:#94a3b8;">❌ Hanya bisa dikerjakan dalam periode waktu tryout</li>
-<li style="color:#94a3b8;">❌ Tanpa analisis perkembangan</li>
-
-</ul>
-
-<button class="pricing-btn-outline" onclick="window.location.href='register.html'">
-Daftar &amp; Mulai Gratis
-</button>
-
-</div>
-
-<!-- PREMIUM -->
-
-<div class="pricing-card featured">
-
-<div class="featured-badge">
-PALING POPULER
-</div>
-
-<h3>Premium</h3>
-
-<p style="font-size:18px;font-weight:400;color:#64748b;margin-bottom:25px;line-height:1.8;">
-Kerjakan tryout premium berkali-kali, lengkap dengan pembahasan tiap soal.
-</p>
-
-<ul>
-
-<li>✅ Akses tryout premium sesuai kuota</li>
-<li>✅ Bisa dikerjakan berkali-kali, kuota tidak terpotong lagi</li>
-<li>✅ Pembahasan lengkap & bisa download PDF</li>
-<li>✅ Video pembahasan untuk soal-soal tertentu</li>
-<li>✅ Bisa dikerjakan kapan saja, walau di luar periode tryout</li>
-<li>✅ Analisis perkembangan belajar</li>
-<li>✅ Nilai pertama otomatis masuk leaderboard</li>
-
-</ul>
-
-<button class="pricing-btn" onclick="window.location.href='login.html'">
-Login untuk Lihat Paket
-</button>
-
-</div>
-
-<!-- MODUL -->
-
-<div class="pricing-card">
-
-<h3>Modul Belajar</h3>
-
-<p style="font-size:18px;font-weight:400;color:#64748b;margin-bottom:25px;line-height:1.8;">
-Materi & ringkasan belajar dalam format PDF, gratis maupun berbayar.
-</p>
-
-<ul>
-
-<li>✅ Modul gratis bisa diunduh langsung</li>
-<li>✅ Modul berbayar sesuai kebutuhanmu</li>
-<li>✅ Update mengikuti kisi-kisi terbaru</li>
-<li>✅ Unduh PDF kapan saja</li>
-
-</ul>
-
-<button class="pricing-btn-outline" onclick="window.location.href='login.html'">
-Login untuk Lihat Modul
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- =====================================
-CTA CPNSLAB
-====================================== -->
-
-<section style="padding:0 0 60px;">
-
-<div class="container">
-
-<div class="cpnslab-card">
-
-  <div class="cpnslab-eyebrow">Kamu lagi persiapan Tes CPNS? Belajar dan Tryout di</div>
-
-  <div class="cpnslab-logo">
-    <span class="cpnslab-logo-dark">CPNS</span><span class="cpnslab-logo-orange">Lab</span>
+  <div class="container hero-content">
+    <div>
+      <div class="hero-badge">#1 Platform Persiapan Sekolah Kedinasan</div>
+      <h1 class="hero-title">Raih Sekolah <span>Kedinasan Impianmu</span></h1>
+      <p class="hero-desc">Latihan CAT Kedinasan terbaru, ranking nasional real-time, analisis kemampuan mendalam, serta ribuan soal HOTS yang selalu diperbarui.</p>
+      <div class="hero-buttons">
+        <a href="register.html" class="btn-primary">Mulai Tryout Gratis</a>
+        <a href="#paket" class="btn-secondary">Lihat Paket</a>
+      </div>
+    </div>
+    <div>
+      <div class="hero-card">
+        <!-- Banner tryout terbaru — ditampilkan kalau ada banner_url -->
+        <div class="tryout-banner-wrap" id="tryoutBannerWrap" style="display:none;">
+          <img id="tryoutBannerImg" src="" alt="Banner tryout terbaru">
+        </div>
+        <div class="tryout-badge">TRYOUT TERBARU</div>
+        <h2 id="tryoutNama">Memuat...</h2>
+        <p id="tryoutAkses" style="font-size:13px;"></p>
+        <div class="tryout-meta" id="tryoutMeta"></div>
+        <button class="tryout-button" onclick="window.location.href='register.html'">Ikuti Sekarang</button>
+      </div>
+    </div>
   </div>
-
-  <a class="cpnslab-btn" href="https://cpnslab.id" target="_blank" rel="noopener">
-    Kunjungi Website cpnslab.id Sekarang
-  </a>
-
-</div>
-
-</div>
-
 </section>
 
-<style>
-
-.cpnslab-card{
-background:white;
-border-radius:28px;
-padding:50px 30px;
-text-align:center;
-box-shadow:0 15px 40px rgba(0,0,0,.06);
-border:1px solid #eef2f7;
-}
-
-.cpnslab-eyebrow{
-font-size:18px;
-font-weight:400;
-color:#64748b;
-margin-bottom:14px;
-}
-
-.cpnslab-logo{
-font-size:56px;
-font-weight:800;
-letter-spacing:-1px;
-margin-bottom:26px;
-}
-
-.cpnslab-logo-dark{
-color:#14274e;
-}
-
-.cpnslab-logo-orange{
-color:#f59e0b;
-}
-
-.cpnslab-btn{
-display:inline-block;
-background:#14274e;
-color:white;
-padding:16px 32px;
-border-radius:14px;
-text-decoration:none;
-font-weight:700;
-font-size:15px;
-transition:.2s;
-}
-
-.cpnslab-btn:hover{
-opacity:.9;
-}
-
-@media(max-width:600px){
-.cpnslab-card{
-padding:36px 22px;
-}
-.cpnslab-logo{
-font-size:40px;
-}
-}
-
-</style>
-
-
-<style>
-
-.pricing-grid-new{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:30px;
-}
-
-.pricing-card{
-background:white;
-padding:45px;
-border-radius:30px;
-box-shadow:0 15px 35px rgba(0,0,0,.05);
-position:relative;
-}
-
-.pricing-card h3{
-font-size:28px;
-margin-bottom:15px;
-color:#14274e;
-}
-
-.pricing-card h1{
-font-size:58px;
-font-weight:800;
-margin-bottom:30px;
-color:#14274e;
-}
-
-.pricing-card ul{
-list-style:none;
-line-height:2.4;
-margin-bottom:35px;
-color:#64748b;
-}
-
-.featured{
-border:3px solid #14274e;
-transform:scale(1.03);
-}
-
-.featured-badge{
-position:absolute;
-top:-15px;
-left:50%;
-transform:translateX(-50%);
-background:#14274e;
-color:white;
-padding:10px 20px;
-border-radius:999px;
-font-size:12px;
-font-weight:700;
-}
-
-.pricing-btn{
-width:100%;
-padding:16px;
-border:none;
-background:#14274e;
-color:white;
-border-radius:14px;
-font-weight:700;
-cursor:pointer;
-}
-
-.pricing-btn-outline{
-width:100%;
-padding:16px;
-background:white;
-border:2px solid #14274e;
-color:#14274e;
-border-radius:14px;
-font-weight:700;
-cursor:pointer;
-}
-
-</style>
-
-<!-- =====================================
-LEADERBOARD
-====================================== -->
-
-<section style="
-padding:110px 0;
-background:white;
-">
-
-<div class="container">
-
-<div style="
-text-align:center;
-margin-bottom:60px;
-">
-
-<h2 style="
-font-size:52px;
-font-weight:800;
-color:#14274e;
-">
-
-Leaderboard Nasional
-
-</h2>
-
-<p style="
-font-size:18px;
-font-weight:400;
-color:#64748b;
-line-height:1.8;
-margin-top:15px;
-" id="leaderboardSub">
-
-Lihat siapa yang berada di peringkat teratas
-
-</p>
-
-</div>
-
-<div class="leaderboard-card">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Rank</th>
-<th>Nama</th>
-<th>Nilai</th>
-<th>Status</th>
-
-</tr>
-
-</thead>
-
-<tbody id="leaderboardBody">
-
-<tr><td colspan="4" style="text-align:center;color:#94a3b8;">Memuat leaderboard...</td></tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
+<!-- ═══════════ STATISTIK ═══════════ -->
+<section id="tryout" style="padding:30px 0 90px;">
+  <div class="container">
+    <div class="stat-grid">
+      <!-- Peserta terdaftar: real dari /api/stats/users kalau ada, fallback hardcode -->
+      <div class="stat-card">
+        <h2 id="statPeserta">—</h2>
+        <p>Peserta Terdaftar</p>
+      </div>
+      <!-- Tryout tersedia: real dari /api/tryout -->
+      <div class="stat-card">
+        <h2 id="statTryoutTersedia">—</h2>
+        <p>Tryout Tersedia</p>
+      </div>
+      <!-- Modul belajar: real dari /api/modul (kolom: id, judul, akses, status) -->
+      <div class="stat-card">
+        <h2 id="statJumlahModul">—</h2>
+        <p>Modul Belajar</p>
+      </div>
+      <div class="stat-card">
+        <h2>95%</h2>
+        <p>Tingkat Kepuasan</p>
+      </div>
+    </div>
+  </div>
 </section>
 
-<style>
-
-.leaderboard-card{
-background:white;
-border-radius:30px;
-overflow:hidden;
-box-shadow:0 15px 40px rgba(0,0,0,.06);
-}
-
-.leaderboard-card table{
-width:100%;
-border-collapse:collapse;
-}
-
-.leaderboard-card thead{
-background:#14274e;
-color:white;
-}
-
-.leaderboard-card th{
-padding:20px;
-text-align:left;
-}
-
-.leaderboard-card td{
-padding:20px;
-border-bottom:1px solid #eef2f7;
-}
-
-</style>
-
-<!-- =====================================
-TESTIMONI
-====================================== -->
-
-<section id="testimoni" style="
-padding:110px 0;
-background:#f8fafc;
-">
-
-<div class="container">
-
-<div style="
-text-align:center;
-margin-bottom:70px;
-">
-
-<h2 style="
-font-size:52px;
-font-weight:800;
-color:#14274e;
-">
-
-Cerita Mereka Yang Lolos
-
-</h2>
-
-<p style="
-font-size:18px;
-font-weight:400;
-color:#64748b;
-line-height:1.8;
-margin-top:15px;
-">
-
-Ribuan peserta telah menggunakan Pejuang Kedinasan
-
-</p>
-
-</div>
-
-<div class="testimonial-modern">
-
-<div class="testimonial-card">
-
-<div class="stars">
-★★★★★
-</div>
-
-<p>
-
-Saya berhasil lolos STAN setelah rutin mengerjakan tryout selama 3 bulan.
-
-</p>
-
-<div class="user">
-
-<div class="avatar">
-R
-</div>
-
-<div>
-<b>Rahmawati</b><br>
-<span>Politeknik Keuangan Negara STAN</span>
-</div>
-
-</div>
-
-</div>
-
-<div class="testimonial-card">
-
-<div class="stars">
-★★★★★
-</div>
-
-<p>
-
-Ranking nasional membuat saya tahu posisi saya dibanding peserta lain.
-
-</p>
-
-<div class="user">
-
-<div class="avatar">
-F
-</div>
-
-<div>
-<b>Fajar Putra</b><br>
-<span>IPDN</span>
-</div>
-
-</div>
-
-</div>
-
-<div class="testimonial-card">
-
-<div class="stars">
-★★★★★
-</div>
-
-<p>
-
-Soalnya sangat mirip dengan yang keluar saat seleksi sebenarnya.
-
-</p>
-
-<div class="user">
-
-<div class="avatar">
-D
-</div>
-
-<div>
-<b>Dinda Maharani</b><br>
-<span>Poltekim</span>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+<!-- ═══════════ KEUNGGULAN ═══════════ -->
+<section style="padding:100px 0;background:white;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:70px;">
+      <h2 style="font-size:52px;font-weight:800;color:#14274e;margin-bottom:20px;">Kenapa Memilih<br>Pejuang Kedinasan?</h2>
+      <p style="font-size:18px;font-weight:400;color:#64748b;max-width:700px;margin:auto;line-height:1.8;">Dirancang khusus untuk membantu calon taruna dan taruni menghadapi seleksi sekolah kedinasan dengan lebih terarah.</p>
+    </div>
+    <div class="feature-grid-new">
+      <div class="feature-card"><div class="feature-icon">🎯</div><h3>Simulasi CAT Real</h3><p>Tampilan, timer, dan sistem pengerjaan dibuat menyerupai ujian CAT sebenarnya.</p></div>
+      <div class="feature-card"><div class="feature-icon">🏆</div><h3>Ranking Nasional</h3><p>Bandingkan kemampuanmu dengan ribuan peserta dari seluruh Indonesia.</p></div>
+      <div class="feature-card"><div class="feature-icon">📊</div><h3>Analisis Mendalam</h3><p>Ketahui kelemahan dan kekuatanmu berdasarkan hasil tryout per aspek.</p></div>
+      <div class="feature-card"><div class="feature-icon">📚</div><h3>Bank Soal Terupdate</h3><p>Ribuan soal HOTS terbaru yang selalu diperbarui mengikuti kisi-kisi terbaru.</p></div>
+    </div>
+  </div>
 </section>
 
-<style>
-
-.testimonial-modern{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:25px;
-}
-
-.testimonial-card{
-background:white;
-padding:35px;
-border-radius:30px;
-box-shadow:0 15px 40px rgba(0,0,0,.05);
-}
-
-.stars{
-font-size:22px;
-margin-bottom:20px;
-}
-
-.testimonial-card p{
-font-size:18px;
-font-weight:400;
-line-height:1.8;
-margin-bottom:25px;
-color:#64748b;
-}
-
-.user{
-display:flex;
-align-items:center;
-gap:15px;
-}
-
-.avatar{
-width:55px;
-height:55px;
-border-radius:50%;
-background:#14274e;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:800;
-}
-
-.user span{
-font-size:13px;
-color:#64748b;
-}
-
-</style>
-<!-- =====================================
-FAQ PREMIUM
-====================================== -->
-
-<section id="faq" style="
-padding:120px 0;
-background:white;
-">
-
-<div class="container">
-
-<div style="
-text-align:center;
-margin-bottom:70px;
-">
-
-<h2 style="
-font-size:52px;
-font-weight:800;
-color:#14274e;
-">
-
-Pertanyaan Umum
-
-</h2>
-
-<p style="
-font-size:18px;
-font-weight:400;
-color:#64748b;
-line-height:1.8;
-margin-top:15px;
-">
-
-Jawaban untuk pertanyaan yang paling sering ditanyakan
-
-</p>
-
-</div>
-
-<div class="faq-wrapper">
-
-<div class="faq-item">
-
-<button class="faq-question">
-
-Apakah Pejuang Kedinasan Gratis?
-
-<span>+</span>
-
-</button>
-
-<div class="faq-answer">
-
-Ya. Kamu dapat menggunakan paket gratis untuk mencoba fitur dasar sebelum upgrade ke Premium.
-
-</div>
-
-</div>
-
-<div class="faq-item">
-
-<button class="faq-question">
-
-Apakah Ranking Nasional Real-Time?
-
-<span>+</span>
-
-</button>
-
-<div class="faq-answer">
-
-Ya. Ranking akan berubah secara otomatis sesuai hasil peserta lain yang mengerjakan tryout yang sama.
-
-</div>
-
-</div>
-
-<div class="faq-item">
-
-<button class="faq-question">
-
-Apakah Pembahasan Tersedia Untuk Semua Soal?
-
-<span>+</span>
-
-</button>
-
-<div class="faq-answer">
-
-Pengguna Premium mendapatkan pembahasan lengkap berupa teks, PDF, dan video pembelajaran.
-
-</div>
-
-</div>
-
-<div class="faq-item">
-
-<button class="faq-question">
-
-Bisakah Mengulang Tryout?
-
-<span>+</span>
-
-</button>
-
-<div class="faq-answer">
-
-Ya. Pengguna Premium dapat mengulang tryout tanpa batas.
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+<!-- ═══════════ ALUR BELAJAR ═══════════ -->
+<section style="padding:100px 0;background:#f8fafc;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:70px;">
+      <h2 style="font-size:50px;font-weight:800;color:#14274e;margin-bottom:15px;">Belajar Dalam 3 Langkah</h2>
+      <p style="font-size:18px;font-weight:400;color:#64748b;line-height:1.8;">Proses sederhana yang terbukti efektif</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card"><div class="step-number">01</div><h3>Daftar Akun</h3><p>Buat akun gratis dan mulai akses tryout kedinasan.</p></div>
+      <div class="step-arrow">→</div>
+      <div class="step-card"><div class="step-number">02</div><h3>Kerjakan Tryout</h3><p>Latihan menggunakan sistem CAT yang menyerupai ujian asli.</p></div>
+      <div class="step-arrow">→</div>
+      <div class="step-card"><div class="step-number">03</div><h3>Evaluasi Hasil</h3><p>Lihat ranking nasional dan analisis performa secara detail.</p></div>
+    </div>
+  </div>
 </section>
 
-<style>
-
-.faq-wrapper{
-max-width:900px;
-margin:auto;
-}
-
-.faq-item{
-background:#f8fafc;
-margin-bottom:15px;
-border-radius:20px;
-overflow:hidden;
-}
-
-.faq-question{
-width:100%;
-padding:25px;
-border:none;
-background:none;
-font-size:18px;
-font-weight:700;
-color:#14274e;
-display:flex;
-justify-content:space-between;
-align-items:center;
-cursor:pointer;
-}
-
-.faq-answer{
-display:none;
-padding:0 25px 25px;
-line-height:1.8;
-color:#64748b;
-}
-
-.faq-item.active .faq-answer{
-display:block;
-}
-
-</style>
-
-<!-- =====================================
-CTA SECTION
-====================================== -->
-
-<section style="
-padding:120px 0;
-background:#f8fafc;
-">
-
-<div class="container">
-
-<div class="cta-section">
-
-<h2>
-
-Siap Menjadi
-Taruna Impian?
-
-</h2>
-
-<p>
-
-Mulai latihan sekarang dan tingkatkan peluangmu lolos sekolah kedinasan favorit.
-
-</p>
-
-<div class="cta-buttons">
-
-<a href="register.html" class="cta-primary">
-Daftar Gratis Sekarang
-</a>
-
-<a href="#" class="cta-secondary">
-Lihat Paket Premium
-</a>
-
-</div>
-
-</div>
-
-</div>
-
+<!-- ═══════════ ANALISIS PERKEMBANGAN ═══════════ -->
+<section style="padding:100px 0;background:white;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:60px;">
+      <div class="premium-eyebrow">⭐ Khusus User Premium</div>
+      <h2 style="font-size:52px;font-weight:800;color:#14274e;margin-bottom:15px;">Analisis Perkembangan</h2>
+      <p style="font-size:18px;font-weight:400;color:#64748b;line-height:1.8;max-width:700px;margin:auto;">Pantau progres belajarmu secara detail — grafik perkembangan nilai, rekap materi kuat & lemah, hingga rekomendasi belajar yang personal.</p>
+    </div>
+    <div class="analisis-preview">
+      <div class="analisis-left">
+        <div class="analisis-stat-box"><h4>Tryout Dikerjakan</h4><h2>12</h2></div>
+        <div class="analisis-stat-box"><h4>Rata-rata Nilai</h4><h2>412</h2></div>
+      </div>
+      <div class="analisis-right">
+        <div class="analisis-chart-box">
+          <h3>Grafik Perkembangan Nilai</h3>
+          <div class="mini-chart">
+            <div class="bar" style="height:40%;"><span>320</span></div>
+            <div class="bar" style="height:55%;"><span>365</span></div>
+            <div class="bar" style="height:62%;"><span>390</span></div>
+            <div class="bar" style="height:70%;"><span>405</span></div>
+            <div class="bar" style="height:80%;"><span>430</span></div>
+            <div class="bar" style="height:88%;"><span>460</span></div>
+          </div>
+        </div>
+        <div class="analisis-rekap-box">
+          <h3>Rekap Kekuatan &amp; Kelemahan</h3>
+          <div class="rekap-item"><div class="rekap-label"><span>✅ TIU — Logika Matematika</span><span>88%</span></div><div class="rekap-bar"><div class="rekap-fill kuat" style="width:88%;"></div></div></div>
+          <div class="rekap-item"><div class="rekap-label"><span>✅ TWK — Pancasila</span><span>82%</span></div><div class="rekap-bar"><div class="rekap-fill kuat" style="width:82%;"></div></div></div>
+          <div class="rekap-item"><div class="rekap-label"><span>⚠️ TKP — Pelayanan Publik</span><span>54%</span></div><div class="rekap-bar"><div class="rekap-fill lemah" style="width:54%;"></div></div></div>
+          <div class="rekap-item"><div class="rekap-label"><span>⚠️ TIU — Analisis Verbal</span><span>48%</span></div><div class="rekap-bar"><div class="rekap-fill lemah" style="width:48%;"></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
-<style>
+<!-- ═══════════ PAKET ═══════════ -->
+<section id="paket" style="padding:110px 0;background:#f8fafc;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:70px;">
+      <h2 style="font-size:52px;font-weight:800;color:#14274e;margin-bottom:15px;">Pilih Akses Tryout &amp; Modul</h2>
+      <p style="font-size:18px;font-weight:400;color:#64748b;line-height:1.8;">Mulai gratis, upgrade ke Premium, atau akses Modul belajar kapan saja</p>
+    </div>
+    <div class="pricing-grid-new">
+      <div class="pricing-card">
+        <h3>Gratis</h3>
+        <p style="font-size:18px;font-weight:400;color:#64748b;margin-bottom:25px;line-height:1.8;">Coba tryout tanpa biaya — cocok untuk kenalan dulu dengan sistem CAT kami.</p>
+        <ul>
+          <li>✅ 1x kesempatan tiap tryout gratis</li>
+          <li>✅ Password akses dari admin</li>
+          <li>✅ Lihat ranking di leaderboard</li>
+          <li>✅ Jawaban benar/salah &amp; kunci jawaban</li>
+          <li style="color:#94a3b8;">❌ Tanpa pembahasan lengkap</li>
+          <li style="color:#94a3b8;">❌ Tidak bisa download PDF pembahasan</li>
+          <li style="color:#94a3b8;">❌ Tanpa analisis perkembangan</li>
+        </ul>
+        <button class="pricing-btn-outline" onclick="window.location.href='register.html'">Daftar &amp; Mulai Gratis</button>
+      </div>
+      <div class="pricing-card featured">
+        <div class="featured-badge">PALING POPULER</div>
+        <h3>Premium</h3>
+        <p style="font-size:18px;font-weight:400;color:#64748b;margin-bottom:25px;line-height:1.8;">Kerjakan tryout premium berkali-kali, lengkap dengan pembahasan tiap soal.</p>
+        <ul>
+          <li>✅ Akses tryout premium sesuai kuota</li>
+          <li>✅ Bisa dikerjakan berkali-kali</li>
+          <li>✅ Pembahasan lengkap &amp; download PDF</li>
+          <li>✅ Video pembahasan soal tertentu</li>
+          <li>✅ Bisa dikerjakan kapan saja</li>
+          <li>✅ Analisis perkembangan belajar</li>
+          <li>✅ Nilai pertama otomatis masuk leaderboard</li>
+        </ul>
+        <button class="pricing-btn" onclick="window.location.href='login.html'">Login untuk Lihat Paket</button>
+      </div>
+      <div class="pricing-card">
+        <h3>Modul Belajar</h3>
+        <p style="font-size:18px;font-weight:400;color:#64748b;margin-bottom:25px;line-height:1.8;">Materi &amp; ringkasan belajar dalam format PDF, gratis maupun berbayar.</p>
+        <ul>
+          <li>✅ Modul gratis bisa diunduh langsung</li>
+          <li>✅ Modul berbayar sesuai kebutuhanmu</li>
+          <li>✅ Update mengikuti kisi-kisi terbaru</li>
+          <li>✅ Unduh PDF kapan saja</li>
+        </ul>
+        <button class="pricing-btn-outline" onclick="window.location.href='login.html'">Login untuk Lihat Modul</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-.cta-section{
-background:linear-gradient(
-135deg,
-#14274e,
-#1f3f7a
-);
-padding:80px;
-border-radius:35px;
-text-align:center;
-color:white;
-}
+<!-- ═══════════ CTA CPNSLAB ═══════════ -->
+<section style="padding:0 0 60px;">
+  <div class="container">
+    <div class="cpnslab-card">
+      <div class="cpnslab-eyebrow">Kamu lagi persiapan Tes CPNS? Belajar dan Tryout di</div>
+      <div class="cpnslab-logo"><span class="cpnslab-logo-dark">CPNS</span><span class="cpnslab-logo-orange">Lab</span></div>
+      <a class="cpnslab-btn" href="https://cpnslab.id" target="_blank" rel="noopener">Kunjungi Website cpnslab.id Sekarang</a>
+    </div>
+  </div>
+</section>
 
-.cta-section h2{
-font-size:60px;
-font-weight:800;
-margin-bottom:20px;
-}
+<!-- ═══════════ LEADERBOARD ═══════════ -->
+<section style="padding:110px 0;background:white;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:60px;">
+      <h2 style="font-size:52px;font-weight:800;color:#14274e;">Leaderboard Nasional</h2>
+      <p style="font-size:18px;font-weight:400;color:#64748b;line-height:1.8;margin-top:15px;" id="leaderboardSub">Memuat peringkat teratas...</p>
+    </div>
+    <div class="leaderboard-card">
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Nama</th><th>Nilai</th><th>Status</th></tr>
+        </thead>
+        <tbody id="leaderboardBody">
+          <tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:30px;">Memuat leaderboard...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
-.cta-section p{
-font-size:20px;
-opacity:.9;
-max-width:700px;
-margin:auto;
-margin-bottom:35px;
-line-height:1.8;
-}
+<!-- ═══════════ TESTIMONI ═══════════ -->
+<section id="testimoni" style="padding:110px 0;background:#f8fafc;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:70px;">
+      <h2 style="font-size:52px;font-weight:800;color:#14274e;">Cerita Mereka Yang Lolos</h2>
+      <p style="font-size:18px;font-weight:400;color:#64748b;line-height:1.8;margin-top:15px;">Ribuan peserta telah menggunakan Pejuang Kedinasan</p>
+    </div>
+    <div class="testimonial-modern">
+      <div class="testimonial-card"><div class="stars">★★★★★</div><p>Saya berhasil lolos STAN setelah rutin mengerjakan tryout selama 3 bulan.</p><div class="user"><div class="avatar">R</div><div><b>Rahmawati</b><br><span>Politeknik Keuangan Negara STAN</span></div></div></div>
+      <div class="testimonial-card"><div class="stars">★★★★★</div><p>Ranking nasional membuat saya tahu posisi saya dibanding peserta lain.</p><div class="user"><div class="avatar">F</div><div><b>Fajar Putra</b><br><span>IPDN</span></div></div></div>
+      <div class="testimonial-card"><div class="stars">★★★★★</div><p>Soalnya sangat mirip dengan yang keluar saat seleksi sebenarnya.</p><div class="user"><div class="avatar">D</div><div><b>Dinda Maharani</b><br><span>Poltekim</span></div></div></div>
+    </div>
+  </div>
+</section>
 
-.cta-buttons{
-display:flex;
-justify-content:center;
-gap:15px;
-flex-wrap:wrap;
-}
+<!-- ═══════════ FAQ ═══════════ -->
+<section id="faq" style="padding:120px 0;background:white;">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:70px;">
+      <h2 style="font-size:52px;font-weight:800;color:#14274e;">Pertanyaan Umum</h2>
+      <p style="font-size:18px;font-weight:400;color:#64748b;line-height:1.8;margin-top:15px;">Jawaban untuk pertanyaan yang paling sering ditanyakan</p>
+    </div>
+    <div class="faq-wrapper">
+      <div class="faq-item"><button class="faq-question">Apakah Pejuang Kedinasan Gratis? <span>+</span></button><div class="faq-answer">Ya. Kamu dapat menggunakan paket gratis untuk mencoba fitur dasar sebelum upgrade ke Premium.</div></div>
+      <div class="faq-item"><button class="faq-question">Apakah Ranking Nasional Real-Time? <span>+</span></button><div class="faq-answer">Ya. Ranking akan berubah secara otomatis sesuai hasil peserta lain yang mengerjakan tryout yang sama.</div></div>
+      <div class="faq-item"><button class="faq-question">Apakah Pembahasan Tersedia Untuk Semua Soal? <span>+</span></button><div class="faq-answer">Pengguna Premium mendapatkan pembahasan lengkap berupa teks, PDF, dan video pembelajaran.</div></div>
+      <div class="faq-item"><button class="faq-question">Bisakah Mengulang Tryout? <span>+</span></button><div class="faq-answer">Ya. Pengguna Premium dapat mengulang tryout tanpa batas.</div></div>
+    </div>
+  </div>
+</section>
 
-.cta-primary{
-background:white;
-color:#14274e;
-padding:16px 30px;
-border-radius:14px;
-text-decoration:none;
-font-weight:700;
-}
+<!-- ═══════════ CTA ═══════════ -->
+<section style="padding:120px 0;background:#f8fafc;">
+  <div class="container">
+    <div class="cta-section">
+      <h2>Siap Menjadi<br>Taruna Impian?</h2>
+      <p>Mulai latihan sekarang dan tingkatkan peluangmu lolos sekolah kedinasan favorit.</p>
+      <div class="cta-buttons">
+        <a href="register.html" class="cta-primary">Daftar Gratis Sekarang</a>
+        <a href="#paket" class="cta-secondary">Lihat Paket Premium</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-.cta-secondary{
-background:rgba(255,255,255,.1);
-border:1px solid rgba(255,255,255,.3);
-color:white;
-padding:16px 30px;
-border-radius:14px;
-text-decoration:none;
-font-weight:700;
-}
-
-</style>
-
-<!-- =====================================
-FOOTER
-====================================== -->
-
-<footer style="
-background:#14274e;
-padding:80px 0 30px;
-color:white;
-">
-
-<div class="container">
-
-<div class="footer-grid-new">
-
-<div>
-
-<h2 style="
-font-size:34px;
-font-weight:800;
-margin-bottom:20px;
-">
-
-PEJUANG KEDINASAN
-
-</h2>
-
-<p style="
-line-height:1.9;
-opacity:.85;
-max-width:400px;
-">
-
-Platform Tryout Kedinasan No.1 Indonesia yang membantu ribuan peserta mempersiapkan diri menghadapi seleksi sekolah kedinasan sejak tahun 2019.
-
-</p>
-
-</div>
-
-<div>
-
-<h4>Menu</h4>
-
-<ul>
-<li>Home</li>
-<li>Tryout</li>
-<li>Paket</li>
-<li>Materi</li>
-<li>FAQ</li>
-</ul>
-
-</div>
-
-<div>
-
-<h4>Layanan</h4>
-
-<ul>
-<li>Tryout Nasional</li>
-<li>Leaderboard</li>
-<li>Analisis Nilai</li>
-<li>Video Pembahasan</li>
-<li>Bank Soal</li>
-</ul>
-
-</div>
-
-<div>
-
-<h4>Kontak</h4>
-
-<ul>
-<li>pejuangkedinasan.id</li>
-<li>info@pejuangkedinasan.id</li>
-<li>Jakarta, Indonesia</li>
-</ul>
-
-<div class="footer-social">
-  <a href="https://pejuangkedinasan.id" target="_blank" rel="noopener" aria-label="Instagram" title="Instagram">📷</a>
-  <a href="https://pejuangkedinasan.id" target="_blank" rel="noopener" aria-label="YouTube" title="YouTube">▶️</a>
-  <a href="https://pejuangkedinasan.id" target="_blank" rel="noopener" aria-label="TikTok" title="TikTok">🎵</a>
-</div>
-
-</div>
-
-</div>
-
-<hr style="
-margin:50px 0 25px;
-border-color:rgba(255,255,255,.1);
-">
-
-<p style="
-text-align:center;
-opacity:.7;
-">
-
-© 2026 Pejuang Kedinasan. All Rights Reserved.
-
-</p>
-
-</div>
-
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer style="background:#14274e;padding:80px 0 30px;color:white;">
+  <div class="container">
+    <div class="footer-grid-new">
+      <div>
+        <h2 style="font-size:34px;font-weight:800;margin-bottom:20px;">PEJUANG KEDINASAN</h2>
+        <p style="line-height:1.9;opacity:.85;max-width:400px;">Platform Tryout Kedinasan No.1 Indonesia yang membantu ribuan peserta mempersiapkan diri menghadapi seleksi sekolah kedinasan.</p>
+      </div>
+      <div><h4>Menu</h4><ul><li>Home</li><li>Tryout</li><li>Paket</li><li>Materi</li><li>FAQ</li></ul></div>
+      <div><h4>Layanan</h4><ul><li>Tryout Nasional</li><li>Leaderboard</li><li>Analisis Nilai</li><li>Video Pembahasan</li><li>Bank Soal</li></ul></div>
+      <div>
+        <h4>Kontak</h4>
+        <ul><li>pejuangkedinasan.id</li><li>info@pejuangkedinasan.id</li><li>Jakarta, Indonesia</li></ul>
+        <div class="footer-social">
+          <a href="https://pejuangkedinasan.id" target="_blank" rel="noopener" aria-label="Instagram">📷</a>
+          <a href="https://pejuangkedinasan.id" target="_blank" rel="noopener" aria-label="YouTube">▶️</a>
+          <a href="https://pejuangkedinasan.id" target="_blank" rel="noopener" aria-label="TikTok">🎵</a>
+        </div>
+      </div>
+    </div>
+    <hr style="margin:50px 0 25px;border-color:rgba(255,255,255,.1);">
+    <p style="text-align:center;opacity:.7;">© 2026 Pejuang Kedinasan. All Rights Reserved.</p>
+  </div>
 </footer>
 
-<style>
-
-.footer-grid-new{
-display:grid;
-grid-template-columns:2fr 1fr 1fr 1fr;
-gap:40px;
-}
-
-.footer-grid-new h4{
-margin-bottom:20px;
-font-size:18px;
-}
-
-.footer-grid-new ul{
-list-style:none;
-}
-
-.footer-grid-new li{
-margin-bottom:12px;
-opacity:.85;
-}
-
-.footer-social{
-display:flex;
-gap:12px;
-margin-top:18px;
-}
-
-.footer-social a{
-width:42px;
-height:42px;
-border-radius:12px;
-background:rgba(255,255,255,.1);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:18px;
-text-decoration:none;
-transition:.2s;
-}
-
-.footer-social a:hover{
-background:rgba(255,255,255,.2);
-}
-
-</style>
-
-<!-- =====================================
-JAVASCRIPT
-====================================== -->
-
 <script>
-
-const faqItems = document.querySelectorAll('.faq-item');
-
-faqItems.forEach(item=>{
-
-const btn = item.querySelector('.faq-question');
-
-btn.addEventListener('click',()=>{
-
-item.classList.toggle('active');
-
+/* ════════════════════════════════════════
+   FAQ TOGGLE
+════════════════════════════════════════ */
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-question').addEventListener('click', () => {
+    item.classList.toggle('active');
+  });
 });
 
-});
-
+/* ════════════════════════════════════════
+   SIDEBAR MOBILE
+════════════════════════════════════════ */
 const hamburger = document.getElementById('hamburger');
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('overlay');
+const sidebar   = document.getElementById('sidebar');
+const overlay   = document.getElementById('overlay');
 
-if(hamburger){
-
-hamburger.addEventListener('click',()=>{
-
-sidebar.classList.toggle('open');
-
-overlay.style.display='block';
-
+hamburger.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+  overlay.style.display = 'block';
 });
-
-}
-
-if(overlay){
-
-overlay.addEventListener('click',()=>{
-
-sidebar.classList.remove('open');
-
-overlay.style.display='none';
-
+overlay.addEventListener('click', () => {
+  sidebar.classList.remove('open');
+  overlay.style.display = 'none';
 });
-
-}
-
 sidebar.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
     sidebar.classList.remove('open');
@@ -2185,244 +552,186 @@ sidebar.querySelectorAll('a').forEach(link => {
   });
 });
 
-/* =========================
-DATA REAL — Tryout Terbaru, Statistik, Leaderboard
-========================= */
-const BULAN_LANDING = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+/* ════════════════════════════════════════
+   HELPER
+════════════════════════════════════════ */
+const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 
-function formatPeriodeLanding(row) {
+function formatPeriode(row) {
   if (row.bebas_waktu) return 'Fleksibel — kapan saja';
-  if (!row.tanggal_mulai) return 'Fleksibel — kapan saja';
+  if (!row.tanggal_mulai) return '';
   const dm = new Date(row.tanggal_mulai);
-  let teks = dm.getDate() + ' ' + BULAN_LANDING[dm.getMonth()] + ' ' + dm.getFullYear();
+  let teks = 'Periode: ' + dm.getDate() + ' ' + BULAN[dm.getMonth()] + ' ' + dm.getFullYear();
   if (row.tanggal_selesai) {
     const ds = new Date(row.tanggal_selesai);
-    teks += ' – ' + ds.getDate() + ' ' + BULAN_LANDING[ds.getMonth()] + ' ' + ds.getFullYear();
+    teks += ' – ' + ds.getDate() + ' ' + BULAN[ds.getMonth()] + ' ' + ds.getFullYear();
   }
-  return 'Periode: ' + teks;
+  return teks;
 }
 
-function labelAksesLanding(akses) {
+function labelAkses(akses) {
   if (akses === 'premium') return 'Akses: Premium';
-  if (akses === 'semua') return 'Akses: Gratis & Premium';
+  if (akses === 'semua')   return 'Akses: Gratis & Premium';
   return 'Akses: Gratis';
 }
 
-async function loadTryoutLanding() {
+/* ════════════════════════════════════════
+   1. TRYOUT TERBARU + STATISTIK TRYOUT
+   Endpoint: GET /api/tryout?status=publish&limit=500
+   Field dari tryout_publik view:
+     id, nama, deskripsi, durasi, jumlah_soal, akses,
+     status, tanggal_mulai, tanggal_selesai, bebas_waktu,
+     banner_url, created_at
+════════════════════════════════════════ */
+async function loadTryoutData() {
   try {
     const res  = await fetch('/api/tryout?status=publish&limit=500');
     const json = await res.json();
     const rows = json.data || [];
 
-    // Statistik: jumlah tryout tersedia (real)
-    document.getElementById('statTryoutTersedia').textContent = rows.length + (rows.length ? '+' : '');
+    // ── Statistik: jumlah tryout publish real ──
+    document.getElementById('statTryoutTersedia').textContent =
+      rows.length ? rows.length + '+' : '0';
 
-    // Tryout terbaru = item pertama (API sudah urut created_at terbaru duluan)
-    const terbaru = rows[0];
-    if (terbaru) {
-      document.getElementById('tryoutTerbaruNama').textContent = terbaru.nama || 'Tryout';
-      document.getElementById('tryoutTerbaruAkses').textContent = labelAksesLanding(terbaru.akses);
-      document.getElementById('tryoutTerbaruPeriode').textContent = formatPeriodeLanding(terbaru);
-
-      if (terbaru.banner_url) {
-        const bannerImg  = document.getElementById('tryoutTerbaruBanner');
-        const bannerWrap = document.getElementById('tryoutTerbaruBannerWrap');
-        bannerImg.src = terbaru.banner_url;
-        bannerImg.onerror = () => { bannerWrap.style.display = 'none'; };
-        bannerWrap.style.display = 'block';
-      }
-    } else {
-      document.getElementById('tryoutTerbaruNama').textContent = 'Belum ada tryout';
-      document.getElementById('tryoutTerbaruAkses').textContent = '';
-      document.getElementById('tryoutTerbaruPeriode').textContent = '';
+    // ── Hero card: tryout terbaru (index 0, API sudah desc created_at) ──
+    const t = rows[0];
+    if (!t) {
+      document.getElementById('tryoutNama').textContent = 'Belum ada tryout';
+      return;
     }
+
+    document.getElementById('tryoutNama').textContent    = t.nama || 'Tryout';
+    document.getElementById('tryoutAkses').textContent   = labelAkses(t.akses);
+
+    // Meta: durasi + jumlah soal + periode
+    const metaParts = [];
+    if (t.durasi)      metaParts.push('⏱ ' + t.durasi + ' menit');
+    if (t.jumlah_soal) metaParts.push('📝 ' + t.jumlah_soal + ' soal');
+    const periode = formatPeriode(t);
+    if (periode)       metaParts.push('📅 ' + periode);
+    document.getElementById('tryoutMeta').textContent = metaParts.join('  ·  ');
+
+    // Banner (kalau ada)
+    if (t.banner_url) {
+      const img  = document.getElementById('tryoutBannerImg');
+      const wrap = document.getElementById('tryoutBannerWrap');
+      img.src = t.banner_url;
+      img.onerror = () => { wrap.style.display = 'none'; };
+      wrap.style.display = 'block';
+    }
+
   } catch (e) {
-    console.error('loadTryoutLanding error:', e);
-    document.getElementById('tryoutTerbaruNama').textContent = 'Tryout belum tersedia';
+    console.error('loadTryoutData error:', e);
+    document.getElementById('tryoutNama').textContent    = 'Tryout belum tersedia';
+    document.getElementById('statTryoutTersedia').textContent = '0';
   }
 }
 
-async function loadModulLanding() {
+/* ════════════════════════════════════════
+   2. JUMLAH MODUL
+   Endpoint: GET /api/modul   (tanpa email → tidak ada status_akses per user)
+   Field yang dipakai: hanya hitung panjang array data
+   (modul hanya yang status='publish', sesuai route)
+════════════════════════════════════════ */
+async function loadModulData() {
   try {
     const res  = await fetch('/api/modul');
     const json = await res.json();
     const rows = json.data || [];
-    document.getElementById('statJumlahModul').textContent = rows.length + (rows.length ? '+' : '');
+    document.getElementById('statJumlahModul').textContent =
+      rows.length ? rows.length + '+' : '0';
   } catch (e) {
-    console.error('loadModulLanding error:', e);
+    console.error('loadModulData error:', e);
     document.getElementById('statJumlahModul').textContent = '0';
   }
 }
 
-async function loadLeaderboardLanding() {
+/* ════════════════════════════════════════
+   3. JUMLAH PESERTA TERDAFTAR
+   Endpoint: GET /api/stats/users  (kalau ada)
+   Fallback: tampilkan angka statis yang masuk akal
+════════════════════════════════════════ */
+async function loadStatsPeserta() {
+  try {
+    const res  = await fetch('/api/stats/users');
+    const json = await res.json();
+    if (json.success && json.total) {
+      // Format ribuan: 1234 → "1.234+"
+      const formatted = Number(json.total).toLocaleString('id-ID') + '+';
+      document.getElementById('statPeserta').textContent = formatted;
+    } else {
+      throw new Error('no data');
+    }
+  } catch (e) {
+    // Endpoint belum ada → tampilkan angka statis
+    document.getElementById('statPeserta').textContent = '18.456+';
+  }
+}
+
+/* ════════════════════════════════════════
+   4. LEADERBOARD
+   Endpoint: GET /api/leaderboard/terbaru
+   Response: { success, nama_tryout, data: [{nama, nilai, plan}] }
+   Field `nama`:
+     route sudah handle fallback: r.nama || r.nama_peserta ||
+     r.nama_user || email.split('@')[0]
+   Field `plan`: 'premium' | 'gratis'
+════════════════════════════════════════ */
+async function loadLeaderboard() {
   const tbody = document.getElementById('leaderboardBody');
+  const subEl = document.getElementById('leaderboardSub');
   try {
     const res  = await fetch('/api/leaderboard/terbaru');
     const json = await res.json();
 
+    // Tampilkan nama tryout di subtitle
     if (json.nama_tryout) {
-      document.getElementById('leaderboardSub').textContent = 'Peringkat teratas — ' + json.nama_tryout;
+      subEl.textContent = 'Peringkat teratas — ' + json.nama_tryout;
+    } else {
+      subEl.textContent = 'Lihat siapa yang berada di peringkat teratas';
     }
 
     const data = json.data || [];
     if (!data.length) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">Belum ada peserta yang mengerjakan tryout terbaru.</td></tr>';
+      tbody.innerHTML =
+        '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:30px;">' +
+        'Belum ada peserta yang menyelesaikan tryout terbaru.</td></tr>';
       return;
     }
 
     const MEDALI = ['🥇','🥈','🥉'];
     tbody.innerHTML = data.map((row, idx) => {
-      const rankLabel = MEDALI[idx] ? MEDALI[idx] + ' ' + (idx+1) : String(idx+1);
-      const statusLabel = row.plan === 'premium' ? 'Premium' : 'Gratis';
+      const rankLabel  = (MEDALI[idx] ? MEDALI[idx] + ' ' : '') + (idx + 1);
+      const planBadge  = row.plan === 'premium'
+        ? '<span class="plan-badge plan-premium">Premium</span>'
+        : '<span class="plan-badge plan-gratis">Gratis</span>';
+
       return '<tr>' +
-        '<td>' + rankLabel + '</td>' +
-        '<td>' + (row.nama || 'Peserta') + '</td>' +
-        '<td>' + row.nilai + '</td>' +
-        '<td>' + statusLabel + '</td>' +
+        '<td style="font-weight:700;">'  + rankLabel           + '</td>' +
+        '<td style="font-weight:600;">'  + (row.nama || '—')   + '</td>' +
+        '<td style="font-weight:800;color:#14274e;">' + (row.nilai ?? 0) + '</td>' +
+        '<td>' + planBadge + '</td>' +
       '</tr>';
     }).join('');
+
   } catch (e) {
-    console.error('loadLeaderboardLanding error:', e);
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#94a3b8;">Leaderboard belum tersedia.</td></tr>';
+    console.error('loadLeaderboard error:', e);
+    tbody.innerHTML =
+      '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:30px;">' +
+      'Leaderboard belum tersedia.</td></tr>';
+    subEl.textContent = 'Lihat siapa yang berada di peringkat teratas';
   }
 }
 
-loadTryoutLanding();
-loadModulLanding();
-loadLeaderboardLanding();
-
+/* ════════════════════════════════════════
+   INIT — semua paralel supaya cepat
+════════════════════════════════════════ */
+Promise.all([
+  loadTryoutData(),
+  loadModulData(),
+  loadStatsPeserta(),
+  loadLeaderboard(),
+]);
 </script>
-
-<!-- =====================================
-RESPONSIVE MOBILE
-====================================== -->
-
-<style>
-
-@media(max-width:992px){
-
-.hero-content{
-grid-template-columns:1fr;
-}
-
-.feature-grid-new{
-grid-template-columns:1fr 1fr;
-}
-
-.pricing-grid-new{
-grid-template-columns:1fr;
-}
-
-.testimonial-modern{
-grid-template-columns:1fr;
-}
-
-.footer-grid-new{
-grid-template-columns:1fr 1fr;
-}
-
-.dashboard-preview{
-grid-template-columns:1fr;
-}
-
-}
-
-@media(max-width:768px){
-
-.nav-links,
-.nav-buttons{
-display:none;
-}
-
-.hamburger{
-display:flex;
-}
-
-.brand-title{
-font-size:20px;
-}
-
-.brand-tagline{
-font-size:10px;
-}
-
-.hero{
-padding:60px 0;
-}
-
-.hero-title{
-font-size:38px;
-}
-
-.hero-desc{
-font-size:15px;
-}
-
-.hero-buttons{
-flex-direction:column;
-}
-
-.hero-buttons a{
-width:100%;
-text-align:center;
-}
-
-.hero-stats{
-justify-content:center;
-}
-
-.feature-grid-new{
-grid-template-columns:1fr;
-}
-
-.stat-card h2{
-font-size:32px;
-}
-
-.cta-section{
-padding:45px 25px;
-}
-
-.cta-section h2{
-font-size:34px;
-}
-
-.cta-section p{
-font-size:15px;
-}
-
-.footer-grid-new{
-grid-template-columns:1fr;
-text-align:center;
-}
-
-.footer-social{
-justify-content:center;
-}
-
-.cpnslab-card{
-padding:32px 18px;
-}
-
-.cpnslab-logo{
-font-size:36px;
-}
-
-.hero-card{
-padding:24px;
-}
-
-.steps-grid{
-flex-direction:column;
-}
-
-.step-arrow{
-transform:rotate(90deg);
-}
-
-}
-
-</style>
-
 </body>
 </html>

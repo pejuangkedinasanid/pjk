@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisis Perkembangan | Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0f172a;--navy2:#1e293b;--orange:#f97316;--orange2:#fb923c;--blue:#2563eb;--bg:#f5f7fb;--card:#ffffff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--shadow:0 20px 50px rgba(15,23,42,.08);--green:#16a34a;--yellow:#eab308;--red:#dc2626;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:linear-gradient(180deg,#eef2ff 0%,#f8fafc 45%,#ffffff 100%);display:flex;min-height:100vh;overflow-x:hidden;position:relative;}
+body::before{content:"";position:fixed;top:-250px;right:-250px;width:550px;height:550px;border-radius:50%;background:rgba(249,115,22,.12);filter:blur(90px);pointer-events:none;}
+body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;height:500px;border-radius:50%;background:rgba(37,99,235,.10);filter:blur(90px);pointer-events:none;}
+
+.sidebar{width:290px;background:linear-gradient(180deg,#0f172a,#1e293b);position:fixed;left:0;top:0;bottom:0;color:white;z-index:999;overflow-y:auto;display:flex;flex-direction:column;box-shadow:10px 0 40px rgba(0,0,0,.15);transform:translateX(0);transition:.3s;}
+.sidebar.closed{transform:translateX(-290px);}
+.sidebar-header{padding:30px 25px;border-bottom:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.brand-title{font-size:24px;font-weight:800;line-height:1.2;}
+.brand-subtitle{margin-top:6px;font-size:12px;opacity:.7;}
+.sidebar-close{background:none;border:none;color:white;opacity:.6;font-size:16px;cursor:pointer;}
+.menu{padding:20px 12px;flex:1;}
+.menu-group{font-size:11px;font-weight:700;opacity:.45;letter-spacing:1px;text-transform:uppercase;margin:18px 12px 10px;}
+.menu a{display:flex;align-items:center;padding:14px 16px;border-radius:16px;color:white;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:6px;transition:.25s;}
+.menu a:hover{background:rgba(255,255,255,.08);transform:translateX(4px);}
+.menu a.active{background:linear-gradient(135deg,rgba(249,115,22,.85),rgba(251,146,60,.85));}
+.menu-premium{background:linear-gradient(135deg,#f59e0b,#fbbf24) !important;color:#1f2937 !important;font-weight:800 !important;}
+.sidebar-footer{padding:20px;border-top:1px solid rgba(255,255,255,.08);}
+.logout-btn{width:100%;padding:14px;border:none;border-radius:16px;background:rgba(255,255,255,.08);color:white;font-weight:700;cursor:pointer;transition:.3s;}
+.logout-btn:hover{background:rgba(255,255,255,.15);}
+
+.hamburger{display:flex;position:fixed;top:15px;left:15px;width:48px;height:48px;border:none;border-radius:14px;background:var(--navy);color:white;font-size:20px;cursor:pointer;z-index:1001;align-items:center;justify-content:center;transition:.3s;}
+.hamburger.inside{left:227px;}
+.overlay{display:none;}
+.overlay.active{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:998;}
+
+.main{margin-left:290px;width:100%;padding:30px;position:relative;z-index:2;transition:.3s;}
+.main.full{margin-left:0;}
+@media(max-width:1000px){.main{margin-left:0;padding:20px;}}
+
+.hero{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:30px;padding:40px;color:white;margin-bottom:25px;overflow:hidden;position:relative;box-shadow:0 25px 60px rgba(15,23,42,.2);}
+.hero::before{content:"";position:absolute;top:-120px;right:-120px;width:350px;height:350px;border-radius:50%;background:rgba(249,115,22,.15);}
+.hero-badge{display:inline-block;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.1);font-size:12px;font-weight:700;margin-bottom:18px;position:relative;z-index:2;}
+.hero h1{font-size:36px;font-weight:800;margin-bottom:10px;position:relative;z-index:2;}
+.hero p{max-width:600px;opacity:.85;line-height:1.8;position:relative;z-index:2;}
+
+.filter-card{background:white;border-radius:22px;padding:20px 24px;box-shadow:var(--shadow);margin-bottom:22px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.filter-label{font-size:13px;font-weight:700;color:var(--navy);white-space:nowrap;}
+.filter-select{flex:1;min-width:240px;padding:13px 14px;border:1px solid var(--border);border-radius:12px;font-size:14px;font-family:inherit;outline:none;cursor:pointer;}
+.filter-select:focus{border-color:var(--orange);}
+
+.locked-card{background:white;border-radius:24px;padding:60px 30px;text-align:center;box-shadow:var(--shadow);}
+.locked-icon{font-size:48px;margin-bottom:16px;}
+.locked-title{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:10px;}
+.locked-desc{font-size:14px;color:var(--muted);line-height:1.8;max-width:480px;margin:0 auto 22px;}
+.locked-btn{display:inline-block;padding:14px 28px;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:700;font-size:14px;text-decoration:none;}
+
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px;}
+@media(max-width:900px){.summary-grid{grid-template-columns:repeat(2,1fr);}}
+.summary-box{background:white;border-radius:20px;padding:20px 22px;box-shadow:var(--shadow);}
+.summary-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.summary-value{font-size:28px;font-weight:800;color:var(--navy);}
+.summary-sub{font-size:11px;color:var(--muted);margin-top:4px;}
+
+.card{background:white;border-radius:24px;padding:26px;box-shadow:var(--shadow);margin-bottom:22px;}
+.card-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:20px;}
+
+/* ── GRAFIK ── */
+.chart-wrap{display:flex;align-items:flex-end;gap:14px;height:180px;padding-top:30px;overflow-x:auto;padding-bottom:4px;}
+.chart-bar-col{flex:1;min-width:50px;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;}
+.chart-bar{width:100%;max-width:52px;border-radius:8px 8px 0 0;background:linear-gradient(180deg,#fb923c,#f97316);position:relative;transition:.3s;}
+.chart-bar-val{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;color:var(--navy);white-space:nowrap;}
+.chart-bar-label{font-size:11px;color:var(--muted);margin-top:8px;text-align:center;line-height:1.4;}
+
+/* ── SEKSI RINGKASAN ── */
+.seksi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+@media(max-width:700px){.seksi-grid{grid-template-columns:1fr;}}
+.seksi-box{background:#f8fafc;border-radius:18px;padding:20px;text-align:center;}
+.seksi-nama{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.5px;margin-bottom:10px;}
+.seksi-skor{font-size:32px;font-weight:800;color:var(--navy);}
+.seksi-satuan{font-size:11px;color:var(--muted);margin-top:4px;}
+.seksi-bar{height:6px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin-top:10px;}
+.seksi-bar-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#f97316,#fb923c);}
+
+/* ── ASPEK ── */
+.aspek-item{margin-bottom:16px;}
+.aspek-item:last-child{margin-bottom:0;}
+.aspek-label{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:8px;gap:10px;}
+.aspek-seksi-tag{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:999px;}
+.tag-twk{background:#dbeafe;color:#1d4ed8;}
+.tag-tiu{background:#dcfce7;color:#15803d;}
+.tag-tkp{background:#fff7ed;color:#c2410c;}
+.aspek-bar{height:10px;background:#e2e8f0;border-radius:999px;overflow:hidden;}
+.aspek-fill{height:100%;border-radius:999px;}
+.aspek-fill.kuat{background:var(--green);}
+.aspek-fill.sedang{background:var(--yellow);}
+.aspek-fill.lemah{background:var(--red);}
+.aspek-skor-label{min-width:36px;text-align:right;font-size:13px;font-weight:800;}
+.aspek-skor-label.kuat{color:var(--green);}
+.aspek-skor-label.sedang{color:var(--yellow);}
+.aspek-skor-label.lemah{color:var(--red);}
+
+/* ── REKOMENDASI ── */
+.rekom-section{margin-bottom:18px;}
+.rekom-section:last-child{margin-bottom:0;}
+.rekom-title{font-size:13px;font-weight:800;margin-bottom:10px;}
+.rekom-title.kuat{color:var(--green);}
+.rekom-title.lemah{color:#c2410c;}
+.rekom-list{list-style:none;}
+.rekom-list li{padding:10px 14px;border-radius:12px;background:#f8fafc;margin-bottom:8px;font-size:13.5px;color:var(--text);display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.rekom-list li .rekom-aspek{font-weight:700;color:var(--navy);}
+.rekom-list li .rekom-skor{font-weight:800;font-size:15px;}
+.rekom-skor.kuat{color:var(--green);}
+.rekom-skor.sedang{color:var(--yellow);}
+.rekom-skor.lemah{color:var(--red);}
+
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
+.spinner{width:36px;height:36px;border-radius:50%;border:3px solid #e2e8f0;border-top-color:var(--orange);animation:spin .8s linear infinite;margin:0 auto 16px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<div class="overlay" id="overlay"></div>
+<button class="hamburger" id="hamburger">&#9776;</button>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div>
+      <div class="brand-title">PEJUANG KEDINASAN</div>
+      <div class="brand-subtitle">Platform Tryout Kedinasan No.1 Indonesia</div>
+    </div>
+    <button class="sidebar-close" id="sidebarCloseBtn">&#x2715;</button>
+  </div>
+  <div class="menu">
+    <div class="menu-group">Utama</div>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="tryout-tersedia.html">Tryout Tersedia</a>
+    <a href="tryout-saya.html">Tryout Saya</a>
+    <div class="menu-group">Belajar</div>
+    <a href="materi.html">Modul</a>
+    <a href="video.html">Video Latihan Soal</a>
+    <div class="menu-group">Kompetisi</div>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="analisis-perkembangan.html" class="active">Analisis Perkembangan</a>
+    <div class="menu-group">Akun</div>
+    <a href="premium.html" class="menu-premium">&#11088; Premium</a>
+    <a href="profil.html">Profil Saya</a>
+    <a href="pengaturan.html">Pengaturan</a>
+  </div>
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="main" id="mainEl">
+  <div class="hero">
+    <div class="hero-badge">&#128202; ANALISIS PERKEMBANGAN</div>
+    <h1>Analisis Perkembangan</h1>
+    <p>Pantau progres nilai, kekuatan, dan kelemahanmu — khusus untuk tryout yang dikerjakan secara <b>Premium</b>.</p>
+  </div>
+
+  <div id="contentWrap">
+    <div class="empty-state"><div class="spinner"></div>Memuat data...</div>
+  </div>
+</div>
+
+<script>
+const rawUser = localStorage.getItem("user");
+if (!rawUser) window.location.href = "login.html";
+const user = JSON.parse(rawUser);
+
+const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+let daftarTryoutPremium = [];
+
+/* ════════════════════════════════════
+   INIT — ambil daftar tryout premium
+════════════════════════════════════ */
+async function init() {
+  const wrap = document.getElementById("contentWrap");
+  try {
+    const res  = await fetch("/api/analisis/tryout-premium?email=" + encodeURIComponent(user.email));
+    const json = await res.json();
+
+    if (!json.success || !json.data || !json.data.length) {
+      wrap.innerHTML =
+        '<div class="locked-card">' +
+          '<div class="locked-icon">&#128274;</div>' +
+          '<div class="locked-title">Analisis Belum Tersedia</div>' +
+          '<div class="locked-desc">Analisis perkembangan hanya tersedia untuk tryout yang dikerjakan secara <b>Premium</b>. ' +
+            'Tryout gratis tidak dianalisis. Kerjakan minimal satu tryout secara premium untuk membuka fitur ini.</div>' +
+          '<a class="locked-btn" href="tryout-tersedia.html">Lihat Tryout Tersedia</a>' +
+        '</div>';
+      return;
+    }
+
+    daftarTryoutPremium = json.data;
+    renderFilterDanIsi();
+
+  } catch (e) {
+    wrap.innerHTML = '<div class="empty-state">Gagal memuat data analisis.<br><small>' + e.message + '</small></div>';
+  }
+}
+
+/* ════════════════════════════════════
+   RENDER FILTER + AREA ANALISIS
+════════════════════════════════════ */
+function renderFilterDanIsi() {
+  const wrap = document.getElementById("contentWrap");
+
+  const opsiTryout = daftarTryoutPremium.map(t =>
+    '<option value="' + t.tryout_id + '">' +
+      t.nama_tryout +
+      ' (' + t.jumlah_percobaan + 'x dikerjakan, terakhir: ' + t.nilai_terbaru + ')' +
+    '</option>'
+  ).join("");
+
+  wrap.innerHTML =
+    '<div class="filter-card">' +
+      '<div class="filter-label">Pilih Tryout</div>' +
+      '<select class="filter-select" id="pilihTryout" onchange="muatAnalisis()">' +
+        '<option value="semua">&#128202; Gabungan Semua Tryout Premium</option>' +
+        opsiTryout +
+      '</select>' +
+    '</div>' +
+    '<div id="analisisBody"><div class="empty-state"><div class="spinner"></div>Memuat analisis...</div></div>';
+
+  muatAnalisis();
+}
+
+/* ════════════════════════════════════
+   MUAT & RENDER ANALISIS
+════════════════════════════════════ */
+async function muatAnalisis() {
+  const body     = document.getElementById("analisisBody");
+  const tryoutId = document.getElementById("pilihTryout").value;
+  body.innerHTML = '<div class="empty-state"><div class="spinner"></div>Memuat analisis...</div>';
+
+  try {
+    const res  = await fetch(
+      "/api/analisis/detail?email=" + encodeURIComponent(user.email) +
+      "&tryout_id=" + tryoutId
+    );
+    const json = await res.json();
+
+    if (!json.success) {
+      body.innerHTML = '<div class="empty-state">' + (json.message || "Gagal memuat analisis.") + '</div>';
+      return;
+    }
+
+    body.innerHTML =
+      renderRingkasan(json.ringkasan_progres) +
+      renderGrafik(json.grafik, json.nama_analisis) +
+      renderSeksi(json.ringkasan_seksi) +
+      renderAspek(json.rincian_aspek) +
+      renderRekomendasi(json.rekomendasi);
+
+  } catch (e) {
+    body.innerHTML = '<div class="empty-state">Terjadi kesalahan: ' + e.message + '</div>';
+  }
+}
+
+/* ════════════════════════════════════
+   HELPER
+════════════════════════════════════ */
+function labelSkor(skor) {
+  if (skor >= 70) return "kuat";
+  if (skor >= 50) return "sedang";
+  return "lemah";
+}
+
+function tagKelas(seksi) {
+  if (seksi === "TWK") return "tag-twk";
+  if (seksi === "TIU") return "tag-tiu";
+  return "tag-tkp";
+}
+
+/* ════════════════════════════════════
+   RENDER: RINGKASAN PROGRES
+════════════════════════════════════ */
+function renderRingkasan(r) {
+  // Hitung selisih nilai pertama vs terbaru
+  const delta     = r.nilai_terbaru - r.nilai_pertama;
+  const deltaStr  = (delta >= 0 ? "+" : "") + delta;
+  const deltaColor = delta >= 0 ? "var(--green)" : "var(--red)";
+
+  return '<div class="summary-grid">' +
+    '<div class="summary-box">' +
+      '<div class="summary-label">Total Percobaan</div>' +
+      '<div class="summary-value">' + r.total_percobaan + 'x</div>' +
+      '<div class="summary-sub">tryout premium</div>' +
+    '</div>' +
+    '<div class="summary-box">' +
+      '<div class="summary-label">Nilai Pertama</div>' +
+      '<div class="summary-value">' + r.nilai_pertama + '</div>' +
+    '</div>' +
+    '<div class="summary-box">' +
+      '<div class="summary-label">Nilai Terbaru</div>' +
+      '<div class="summary-value">' + r.nilai_terbaru + '</div>' +
+      '<div class="summary-sub" style="color:' + deltaColor + ';font-weight:700;">' + deltaStr + ' dari pertama</div>' +
+    '</div>' +
+    '<div class="summary-box">' +
+      '<div class="summary-label">Nilai Tertinggi</div>' +
+      '<div class="summary-value">' + r.nilai_tertinggi + '</div>' +
+      '<div class="summary-sub">rata-rata: ' + r.rata_rata + '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+/* ════════════════════════════════════
+   RENDER: GRAFIK BATANG
+════════════════════════════════════ */
+function renderGrafik(grafik, namaAnalisis) {
+  if (!grafik || !grafik.length) return '';
+
+  const maxNilai = Math.max(...grafik.map(g => g.nilai || 0), 1);
+
+  const bars = grafik.map(g => {
+    const tinggi = Math.max(8, Math.round((g.nilai / maxNilai) * 100));
+    const d   = new Date(g.tanggal);
+    const tgl = d.getDate() + ' ' + BULAN[d.getMonth()];
+
+    return '<div class="chart-bar-col">' +
+      '<div class="chart-bar" style="height:' + tinggi + '%;">' +
+        '<div class="chart-bar-val">' + g.nilai + '</div>' +
+      '</div>' +
+      '<div class="chart-bar-label">Ke-' + g.percobaan_ke + '<br>' + tgl + '</div>' +
+    '</div>';
+  }).join('');
+
+  return '<div class="card">' +
+    '<div class="card-title">&#128201; Grafik Perkembangan Nilai — ' + namaAnalisis + '</div>' +
+    '<div class="chart-wrap">' + bars + '</div>' +
+  '</div>';
+}
+
+/* ════════════════════════════════════
+   RENDER: REKAP PER SUBTES
+════════════════════════════════════ */
+function renderSeksi(rows) {
+  if (!rows || !rows.length) return '';
+
+  const boxes = rows.map(r => {
+    const pct = Math.min(r.skor, 100);
+    return '<div class="seksi-box">' +
+      '<div class="seksi-nama">' + r.seksi + '</div>' +
+      '<div class="seksi-skor">' + r.skor + '</div>' +
+      '<div class="seksi-satuan">' + r.satuan + '</div>' +
+      '<div class="seksi-bar"><div class="seksi-bar-fill" style="width:' + pct + '%;"></div></div>' +
+    '</div>';
+  }).join('');
+
+  return '<div class="card"><div class="card-title">&#128200; Rekap per Subtes</div><div class="seksi-grid">' + boxes + '</div></div>';
+}
+
+/* ════════════════════════════════════
+   RENDER: RINCIAN PER ASPEK
+════════════════════════════════════ */
+function renderAspek(rows) {
+  if (!rows || !rows.length) return '';
+
+  // Urutkan: lemah di atas supaya langsung kelihatan masalahnya
+  const items = rows.map(r => {
+    const cls  = labelSkor(r.skor);
+    const tag  = tagKelas(r.seksi);
+    return '<div class="aspek-item">' +
+      '<div class="aspek-label">' +
+        '<span><span class="aspek-seksi-tag ' + tag + '">' + r.seksi + '</span> ' + r.aspek + '</span>' +
+        '<span class="aspek-skor-label ' + cls + '">' + r.skor + (r.seksi === "TKP" ? "" : "%") + '</span>' +
+      '</div>' +
+      '<div class="aspek-bar"><div class="aspek-fill ' + cls + '" style="width:' + Math.min(r.skor,100) + '%;"></div></div>' +
+    '</div>';
+  }).join('');
+
+  return '<div class="card"><div class="card-title">&#128203; Rincian per Aspek / Topik</div>' + items + '</div>';
+}
+
+/* ════════════════════════════════════
+   RENDER: REKOMENDASI
+════════════════════════════════════ */
+function renderRekomendasi(r) {
+  if (!r) return '';
+
+  const kuat = (r.terkuat || []).map(a => {
+    const cls = labelSkor(a.skor);
+    return '<li>' +
+      '<span class="rekom-aspek">' + a.seksi + ' — ' + a.aspek + '</span>' +
+      '<span class="rekom-skor ' + cls + '">' + a.skor + (a.seksi === "TKP" ? "" : "%") + '</span>' +
+    '</li>';
+  }).join('');
+
+  const lemah = (r.terlemah || []).map(a => {
+    const cls = labelSkor(a.skor);
+    return '<li>' +
+      '<span class="rekom-aspek">' + a.seksi + ' — ' + a.aspek + '</span>' +
+      '<span class="rekom-skor ' + cls + '">' + a.skor + (a.seksi === "TKP" ? "" : "%") + '</span>' +
+    '</li>';
+  }).join('');
+
+  return '<div class="card">' +
+    '<div class="card-title">&#128161; Rekomendasi Belajar</div>' +
+    (kuat  ? '<div class="rekom-section"><div class="rekom-title kuat">&#9989; Kekuatanmu</div><ul class="rekom-list">' + kuat + '</ul></div>' : '') +
+    (lemah ? '<div class="rekom-section"><div class="rekom-title lemah">&#9888;&#65039; Perlu Ditingkatkan</div><ul class="rekom-list">' + lemah + '</ul></div>' : '') +
+  '</div>';
+}
+
+/* ════════════════════════════════════
+   SIDEBAR
+════════════════════════════════════ */
+const sidebar   = document.getElementById("sidebar");
+const hamburger = document.getElementById("hamburger");
+const overlay   = document.getElementById("overlay");
+const mainEl    = document.getElementById("mainEl");
+function openSidebar()  { sidebar.classList.remove("closed"); hamburger.innerHTML="&#x2715;"; hamburger.classList.add("inside"); window.innerWidth<=1000 ? overlay.classList.add("active") : overlay.classList.remove("active"); mainEl.classList.remove("full"); }
+function closeSidebar() { sidebar.classList.add("closed"); overlay.classList.remove("active"); mainEl.classList.add("full"); hamburger.innerHTML="&#9776;"; hamburger.classList.remove("inside"); }
+hamburger.addEventListener("click", () => sidebar.classList.contains("closed") ? openSidebar() : closeSidebar());
+document.getElementById("sidebarCloseBtn").addEventListener("click", closeSidebar);
+overlay.addEventListener("click", closeSidebar);
+window.addEventListener("resize", () => window.innerWidth<=1000 ? closeSidebar() : openSidebar());
+function logout() { if (confirm("Yakin ingin keluar?")) { localStorage.removeItem("user"); window.location.href = "login.html"; } }
+window.innerWidth<=1000 ? closeSidebar() : openSidebar();
+
+init();
+</script>
+</body>
+</html>

@@ -178,6 +178,7 @@ textarea#jsonInput:focus{border-color:var(--orange);}
     <a href="admin-tryout.html">Kelola Tryout</a>
     <a href="admin-soal.html" class="active">Kelola Soal</a>
     <a href="admin-modul.html">Kelola Modul</a>
+    <a href="admin-video.html">Kelola Video</a>
     <div class="menu-title">Peserta</div>
     <a href="admin-users.html">Daftar User</a>
     <a href="admin-premium.html">Member Premium</a>
@@ -237,10 +238,10 @@ textarea#jsonInput:focus{border-color:var(--orange);}
       <div style="overflow-x:auto;">
         <table class="dtable">
           <thead>
-            <tr><th>#</th><th>Seksi</th><th>Teks Soal</th><th>Jawaban / Bobot</th><th>Pembahasan</th><th>Aksi</th></tr>
+            <tr><th>#</th><th>Seksi</th><th>Aspek</th><th>Teks Soal</th><th>Jawaban / Bobot</th><th>Pembahasan</th><th>Aksi</th></tr>
           </thead>
           <tbody id="tableBody">
-            <tr><td colspan="6" style="text-align:center;padding:40px;color:#64748b;">Memuat...</td></tr>
+            <tr><td colspan="7" style="text-align:center;padding:40px;color:#64748b;">Memuat...</td></tr>
           </tbody>
         </table>
       </div>
@@ -273,6 +274,13 @@ textarea#jsonInput:focus{border-color:var(--orange);}
           <label>Nomor Soal (global 1–110)</label>
           <input type="number" id="f_nomor" min="1" placeholder="Otomatis jika kosong">
         </div>
+      </div>
+
+      <div class="form-group">
+        <label>Aspek / Topik</label>
+        <select id="f_aspek">
+          <option value="">— Pilih Aspek/Topik —</option>
+        </select>
       </div>
 
       <div class="form-group">
@@ -348,12 +356,17 @@ textarea#jsonInput:focus{border-color:var(--orange);}
     <div class="json-help" id="jsonHelpBox" style="display:none;">
       Format harus berupa <b>array JSON</b>. Setiap soal wajib punya <code>kategori</code>, <code>pertanyaan</code>, dan <code>opsi</code> (objek A–E).
       <br><br>
+      • <code>aspek</code> bersifat <b>opsional</b>, tapi sangat disarankan diisi (dipakai di halaman Analisis Perkembangan). Isi salah satu sesuai kategorinya:<br>
+      &nbsp;&nbsp;– <b>TWK</b>: Nasionalisme, Integritas, Bela Negara, Pilar Negara, Bahasa Indonesia<br>
+      &nbsp;&nbsp;– <b>TIU</b>: Analogi Verbal, Silogisme, Analitis, Berhitung, Deret Angka, Perbandingan Kuantitatif, Soal Cerita, Analogi Figural, Ketidaksamaan Figural, Serial Figural<br>
+      &nbsp;&nbsp;– <b>TKP</b>: Pelayanan Publik, Jejaring Kerja, Sosial Budaya, Teknologi Informasi dan Komunikasi (TIK), Profesionalisme, Anti Radikalisme<br><br>
       • <b>TWK / TIU</b> → wajib isi <code>jawaban_benar</code> (satu huruf A–E). Otomatis: benar = 5 poin, salah = 0.<br>
       • <b>TKP</b> → wajib isi <code>poin</code> (objek angka 1–5 untuk tiap huruf A–E), <u>jangan</u> isi <code>jawaban_benar</code>.<br>
       • <code>gambar_url</code> dan <code>pembahasan</code> sifatnya opsional.
       <pre>[
   {
     "kategori": "TWK",
+    "aspek": "Pilar Negara",
     "pertanyaan": "Pancasila disahkan pada tanggal...",
     "opsi": { "A": "17 Agustus 1945", "B": "18 Agustus 1945", "C": "1 Juni 1945", "D": "22 Juni 1945", "E": "29 Mei 1945" },
     "jawaban_benar": "B",
@@ -361,6 +374,7 @@ textarea#jsonInput:focus{border-color:var(--orange);}
   },
   {
     "kategori": "TKP",
+    "aspek": "Pelayanan Publik",
     "pertanyaan": "Ketika rekan kerja melakukan kesalahan, saya...",
     "opsi": { "A": "Menegur keras", "B": "Mendiamkan saja", "C": "Lapor atasan", "D": "Membantu tanpa menyalahkan", "E": "Mengabaikan" },
     "poin": { "A": 2, "B": 1, "C": 3, "D": 5, "E": 1 },
@@ -425,6 +439,25 @@ let currentTryoutNama = '';
 
 const KATEGORI_ORDER = { TWK: 0, TIU: 1, TKP: 2 };
 
+/* ══ DAFTAR ASPEK RESMI PER SEKSI ══ */
+const ASPEK_MAP = {
+  TWK: ['Nasionalisme','Integritas','Bela Negara','Pilar Negara','Bahasa Indonesia'],
+  TIU: ['Analogi Verbal','Silogisme','Analitis','Berhitung','Deret Angka','Perbandingan Kuantitatif','Soal Cerita','Analogi Figural','Ketidaksamaan Figural','Serial Figural'],
+  TKP: ['Pelayanan Publik','Jejaring Kerja','Sosial Budaya','Teknologi Informasi dan Komunikasi (TIK)','Profesionalisme','Anti Radikalisme'],
+};
+
+function updateAspekOptions(preserveValue) {
+  const seksi  = document.getElementById('f_seksi').value;
+  const select = document.getElementById('f_aspek');
+  const daftar = ASPEK_MAP[seksi] || [];
+  const valLama = preserveValue !== undefined ? preserveValue : select.value;
+
+  select.innerHTML = '<option value="">— Pilih Aspek/Topik —</option>' +
+    daftar.map(a => '<option value="' + a + '">' + a + '</option>').join('');
+
+  if (daftar.includes(valLama)) select.value = valLama;
+}
+
 function renderMath(el){
   if (window.MathJax && window.MathJax.typesetPromise) {
     window.MathJax.typesetPromise([el]).catch(err => console.warn('MathJax error:', err));
@@ -481,12 +514,12 @@ function backToOverview() {
 }
 
 async function loadSoal() {
-  document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#64748b;">Memuat soal...</td></tr>';
+  document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#64748b;">Memuat soal...</td></tr>';
   try {
     const res = await fetch('/api/admin/soal?tryout_id=' + currentTryoutId, { headers: { 'x-admin-email': adminEmail } });
     const json = await res.json();
     if (!json.success) {
-      document.getElementById('tableBody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:#dc2626;">Gagal memuat: ' + json.message + '</td></tr>';
+      document.getElementById('tableBody').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:#dc2626;">Gagal memuat: ' + json.message + '</td></tr>';
       return;
     }
     allSoal = json.data || [];
@@ -514,7 +547,7 @@ function renderTable(rows) {
   document.getElementById('soalListSub').textContent = sorted.length + ' soal';
 
   if (!sorted.length) {
-    tbody.innerHTML = '<tr><td colspan="6"><div class="empty"><b>Belum ada soal</b>Kembali ke daftar tryout, klik "📝 Input Soal" untuk menambahkan.</div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7"><div class="empty"><b>Belum ada soal</b>Kembali ke daftar tryout, klik "📝 Input Soal" untuk menambahkan.</div></td></tr>';
     return;
   }
 
@@ -529,12 +562,13 @@ function renderTable(rows) {
       jawabanInfo = benarOpt ? 'Jawaban: ' + benarOpt.huruf : '<span style="color:#dc2626;">Belum diisi</span>';
     }
 
-    const teksPreview = (r.teks || '').slice(0, 70) + ((r.teks||'').length > 70 ? '…' : '');
+    const teksPreview = (r.teks || '').slice(0, 60) + ((r.teks||'').length > 60 ? '…' : '');
     const safeR = encodeURIComponent(JSON.stringify(r));
 
     return '<tr>' +
       '<td style="color:#94a3b8;font-size:12px;">' + (i+1) + '</td>' +
       '<td><span class="badge ' + badgeClass + '">' + r.seksi + '</span></td>' +
+      '<td style="font-size:12px;color:' + (r.aspek ? '#334155;font-weight:600;' : '#cbd5e1;') + '">' + (r.aspek || '—') + '</td>' +
       '<td class="soal-text">' + teksPreview + (r.gambar_url ? ' 🖼️' : '') + '</td>' +
       '<td style="font-size:12px;font-weight:600;color:#334155;">' + jawabanInfo + '</td>' +
       '<td style="font-size:12px;color:#64748b;">' + (r.pembahasan ? '✅ Ada' : '— Kosong') + '</td>' +
@@ -563,6 +597,7 @@ function toggleKategoriFields() {
   const seksi = document.getElementById('f_seksi').value;
   document.getElementById('jawabanBenarRow').style.display = seksi === 'TKP' ? 'none' : 'block';
   document.getElementById('poinTkpRow').style.display      = seksi === 'TKP' ? 'block' : 'none';
+  updateAspekOptions();
 }
 
 function previewGambar(input) {
@@ -619,6 +654,8 @@ function editSoal(encoded) {
   document.getElementById('f_teks').value         = r.teks || '';
   document.getElementById('f_pembahasan').value   = r.pembahasan || '';
 
+  updateAspekOptions(r.aspek || '');
+
   document.getElementById('f_opsi_a').value = findOpsi(r,'A').teks || '';
   document.getElementById('f_opsi_b').value = findOpsi(r,'B').teks || '';
   document.getElementById('f_opsi_c').value = findOpsi(r,'C').teks || '';
@@ -651,6 +688,7 @@ function editSoal(encoded) {
   }
 
   toggleKategoriFields();
+  document.getElementById('f_aspek').value = r.aspek || '';
   updateLatexPreview();
   document.getElementById('modalBg').classList.add('show');
 }
@@ -699,6 +737,7 @@ async function saveSoal(e) {
     const payload = {
       tryout_id:   currentTryoutId,
       seksi:       seksi,
+      aspek:       document.getElementById('f_aspek').value || null,
       nomor:       parseInt(document.getElementById('f_nomor').value) || (allSoal.length + 1),
       teks:        document.getElementById('f_teks').value,
       opsi:        opsi,

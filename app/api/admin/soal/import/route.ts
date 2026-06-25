@@ -5,6 +5,7 @@
 // Format tiap item (yang ditulis admin, format "friendly"):
 // {
 //   "kategori": "TWK" | "TIU" | "TKP",
+//   "aspek": "..." (opsional — disimpan ke kolom aspek),
 //   "pertanyaan": "...",
 //   "gambar_url": "..." (opsional),
 //   "opsi": { "A": "...", "B": "...", "C": "...", "D": "...", "E": "..." },
@@ -111,6 +112,7 @@ export async function POST(req: NextRequest) {
       rowsToInsert.push({
         tryout_id,
         seksi,
+        aspek: item.aspek || null,   // ✅ FIX: field aspek sekarang ikut disimpan
         nomor: nextNomor++,
         teks,
         opsi: opsiArray,

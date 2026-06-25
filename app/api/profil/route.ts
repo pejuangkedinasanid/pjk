@@ -1,11 +1,12 @@
 // FILE: app/api/profil/route.ts
 // GET   /api/profil?email=...                -> ambil data profil user
 // PATCH /api/profil                           -> update data profil user
-//   Body: { email, nama, sekolah_kedinasan, daerah, tahun_seleksi }
+//   Body: { email, nama, username, sekolah_kedinasan, provinsi, tahun_seleksi }
 //
-// ASUMSI nama kolom di tabel "users": nama, sekolah_kedinasan, daerah,
-// tahun_seleksi -- tolong koreksi kalau ternyata beda dengan skema
-// asli kamu (terutama "daerah", karena saya belum lihat register.html).
+// PERBAIKAN (revisi ini): nama kolom disesuaikan dengan register.html
+// yang sebenarnya -- "provinsi" (bukan "daerah"), dan "username"
+// adalah kolom TERPISAH dari "nama" (sebelumnya keliru digabung jadi
+// satu field).
 //
 // Email TIDAK BISA diubah lewat sini -- dipakai sebagai identitas
 // utama di seluruh sistem (localStorage, semua API lain dikunci by
@@ -33,7 +34,7 @@ export async function GET(req: NextRequest) {
 
     const { data, error } = await supabase
       .from("users")
-      .select("nama, email, sekolah_kedinasan, daerah, tahun_seleksi, plan, kuota_tryout, role, created_at")
+      .select("nama, username, email, sekolah_kedinasan, provinsi, tahun_seleksi, plan, kuota_tryout, role, created_at")
       .eq("email", email)
       .maybeSingle();
 
@@ -57,7 +58,7 @@ export async function GET(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, nama, sekolah_kedinasan, daerah, tahun_seleksi } = body;
+    const { email, nama, username, sekolah_kedinasan, provinsi, tahun_seleksi } = body;
 
     if (!email) {
       return NextResponse.json(
@@ -73,10 +74,18 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
+    if (!username || !username.trim()) {
+      return NextResponse.json(
+        { success: false, message: "Username tidak boleh kosong." },
+        { status: 400 }
+      );
+    }
+
     const updateData: Record<string, any> = {
       nama: nama.trim(),
+      username: username.trim(),
       sekolah_kedinasan: sekolah_kedinasan || null,
-      daerah: daerah || null,
+      provinsi: provinsi || null,
     };
     if (tahun_seleksi) updateData.tahun_seleksi = tahun_seleksi;
 
@@ -84,7 +93,7 @@ export async function PATCH(req: NextRequest) {
       .from("users")
       .update(updateData)
       .eq("email", email)
-      .select("nama, email, sekolah_kedinasan, daerah, tahun_seleksi, plan, kuota_tryout, role, created_at")
+      .select("nama, username, email, sekolah_kedinasan, provinsi, tahun_seleksi, plan, kuota_tryout, role, created_at")
       .single();
 
     if (error) {

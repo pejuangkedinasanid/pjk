@@ -184,43 +184,43 @@ body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding
           <select id="provinsi" required>
             <option value="">Pilih Provinsi</option>
             <option>Aceh</option>
-            <option>Sumatera Utara</option>
-            <option>Sumatera Barat</option>
-            <option>Riau</option>
-            <option>Kepulauan Riau</option>
-            <option>Jambi</option>
-            <option>Sumatera Selatan</option>
-            <option>Kepulauan Bangka Belitung</option>
-            <option>Bengkulu</option>
-            <option>Lampung</option>
+            <option>Bali</option>
             <option>Banten</option>
+            <option>Bengkulu</option>
+            <option>DI Yogyakarta</option>
             <option>DKI Jakarta</option>
+            <option>Gorontalo</option>
+            <option>Jambi</option>
             <option>Jawa Barat</option>
             <option>Jawa Tengah</option>
-            <option>DI Yogyakarta</option>
             <option>Jawa Timur</option>
-            <option>Bali</option>
-            <option>Nusa Tenggara Barat</option>
-            <option>Nusa Tenggara Timur</option>
             <option>Kalimantan Barat</option>
-            <option>Kalimantan Tengah</option>
             <option>Kalimantan Selatan</option>
+            <option>Kalimantan Tengah</option>
             <option>Kalimantan Timur</option>
             <option>Kalimantan Utara</option>
-            <option>Sulawesi Utara</option>
-            <option>Gorontalo</option>
-            <option>Sulawesi Tengah</option>
-            <option>Sulawesi Barat</option>
-            <option>Sulawesi Selatan</option>
-            <option>Sulawesi Tenggara</option>
+            <option>Kepulauan Bangka Belitung</option>
+            <option>Kepulauan Riau</option>
+            <option>Lampung</option>
             <option>Maluku</option>
             <option>Maluku Utara</option>
+            <option>Nusa Tenggara Barat</option>
+            <option>Nusa Tenggara Timur</option>
+            <option>Papua</option>
             <option>Papua Barat</option>
             <option>Papua Barat Daya</option>
-            <option>Papua</option>
+            <option>Papua Pegunungan</option>
             <option>Papua Selatan</option>
             <option>Papua Tengah</option>
-            <option>Papua Pegunungan</option>
+            <option>Riau</option>
+            <option>Sulawesi Barat</option>
+            <option>Sulawesi Selatan</option>
+            <option>Sulawesi Tengah</option>
+            <option>Sulawesi Tenggara</option>
+            <option>Sulawesi Utara</option>
+            <option>Sumatera Barat</option>
+            <option>Sumatera Selatan</option>
+            <option>Sumatera Utara</option>
           </select>
         </div>
         <div class="form-group">
@@ -336,11 +336,7 @@ body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
 <script>
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirmPassword");
 const passwordError = document.getElementById("passwordError");
@@ -367,58 +363,39 @@ document.getElementById("registerForm").addEventListener("submit", async functio
   const email = document.getElementById("email").value.trim().toLowerCase();
 
   try {
-    const { data: existing } = await supabaseClient
-      .from("users")
-      .select("id")
-      .eq("email", email)
-      .maybeSingle();
-
-    if (existing) {
-      alert("Email sudah terdaftar. Silakan login.");
-      btn.disabled = false;
-      btn.innerHTML = "Daftar Akun";
-      return;
-    }
-
-    const { error: insertError } = await supabaseClient.from("users").insert([{
-      nama: document.getElementById("nama").value,
-      username: document.getElementById("username").value,
-      email: email,
-      password: document.getElementById("password").value,
-      whatsapp: document.getElementById("whatsapp").value,
-      instagram: document.getElementById("instagram").value,
-      provinsi: document.getElementById("provinsi").value,
-      tahun_seleksi: document.getElementById("tahun_seleksi").value,
-      sekolah_kedinasan: document.getElementById("sekolah_kedinasan").value,
-      source: document.getElementById("source").value,
-      role: "peserta",
-      is_verified: false,
-      created_at: new Date().toISOString()
-    }]);
-
-    if (insertError) {
-      alert("Gagal registrasi: " + insertError.message);
-      btn.disabled = false;
-      btn.innerHTML = "Daftar Akun";
-      return;
-    }
-
-    btn.innerHTML = "Mengirim OTP...";
-    const res = await fetch("/api/otp/send", {
+    const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({
+        nama: document.getElementById("nama").value,
+        username: document.getElementById("username").value,
+        email: email,
+        password: document.getElementById("password").value,
+        whatsapp: document.getElementById("whatsapp").value,
+        instagram: document.getElementById("instagram").value,
+        provinsi: document.getElementById("provinsi").value,
+        tahun_seleksi: document.getElementById("tahun_seleksi").value,
+        sekolah_kedinasan: document.getElementById("sekolah_kedinasan").value,
+        source: document.getElementById("source").value,
+      })
     });
+
     const data = await res.json();
 
     if (!data.success) {
-      alert("Akun dibuat, tapi gagal kirim OTP: " + data.message);
+      alert(data.message || "Gagal mendaftar. Silakan coba lagi.");
       btn.disabled = false;
       btn.innerHTML = "Daftar Akun";
       return;
     }
 
-    window.location.href = "otp.html?email=" + encodeURIComponent(email);
+    if (!data.otp_sent) {
+      // Akun sudah dibuat, OTP gagal terkirim -- tetap arahkan ke
+      // halaman OTP, di sana ada tombol "Kirim Ulang OTP".
+      alert(data.message || "Akun dibuat, tapi OTP gagal terkirim. Coba kirim ulang di halaman berikutnya.");
+    }
+
+    window.location.href = "otp.html?email=" + encodeURIComponent(data.email || email);
 
   } catch (err) {
     console.error(err);
