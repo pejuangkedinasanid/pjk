@@ -53,7 +53,10 @@ filter:blur(90px);
 pointer-events:none;
 }
 
-/* SIDEBAR */
+/* =========================
+SIDEBAR
+========================= */
+
 .sidebar{
 width:290px;
 background:linear-gradient(180deg,#0f172a,#1e293b);
@@ -85,34 +88,88 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
 .btn-close:hover{background:rgba(255,255,255,.18);}
 
 .menu{padding:18px 12px;flex:1;}
-.menu-title{font-size:11px;font-weight:700;opacity:.45;text-transform:uppercase;letter-spacing:1px;margin:18px 12px 8px;}
-.menu a{display:flex;align-items:center;padding:13px 16px;border-radius:14px;color:white;text-decoration:none;font-size:14px;font-weight:600;margin-bottom:4px;transition:.25s;}
+
+.menu-title{
+font-size:11px;font-weight:700;opacity:.45;
+text-transform:uppercase;letter-spacing:1px;margin:18px 12px 8px;
+}
+
+.menu a{
+display:flex;align-items:center;
+padding:13px 16px;border-radius:14px;
+color:white;text-decoration:none;
+font-size:14px;font-weight:600;
+margin-bottom:4px;transition:.25s;
+}
 .menu a:hover{background:rgba(255,255,255,.08);transform:translateX(4px);}
 .menu a.active{background:linear-gradient(135deg,rgba(249,115,22,.85),rgba(251,146,60,.85));}
 
 .sidebar-footer{padding:18px 12px;border-top:1px solid rgba(255,255,255,.08);}
-.btn-logout{display:block;width:100%;padding:13px 16px;border-radius:14px;color:rgba(255,255,255,.65);font-size:14px;font-weight:600;cursor:pointer;border:none;background:rgba(255,255,255,.05);text-align:left;transition:.2s;}
+
+.btn-logout{
+display:block;width:100%;padding:13px 16px;border-radius:14px;
+color:rgba(255,255,255,.65);font-size:14px;font-weight:600;
+cursor:pointer;border:none;background:rgba(255,255,255,.05);
+text-align:left;transition:.2s;
+}
 .btn-logout:hover{background:rgba(239,68,68,.18);color:#fca5a5;}
 
-/* HAMBURGER & OVERLAY */
-.hamburger{display:flex;position:fixed;top:15px;left:15px;width:48px;height:48px;border:none;border-radius:14px;background:var(--navy);color:white;font-size:20px;cursor:pointer;z-index:1001;align-items:center;justify-content:center;transition:.3s;box-shadow:0 8px 20px rgba(15,23,42,.25);}
+/* =========================
+HAMBURGER & OVERLAY
+========================= */
+
+.hamburger{
+display:flex;position:fixed;top:15px;left:15px;
+width:48px;height:48px;border:none;border-radius:14px;
+background:var(--navy);color:white;font-size:20px;cursor:pointer;
+z-index:1001;align-items:center;justify-content:center;
+transition:.3s;box-shadow:0 8px 20px rgba(15,23,42,.25);
+}
+.hamburger.inside{left:227px;}
+
 .overlay{display:none;}
 .overlay.active{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:998;}
 
-/* MAIN */
+/* =========================
+MAIN
+========================= */
+
 .main{margin-left:290px;width:100%;padding:30px;position:relative;z-index:2;transition:.3s;}
 .main.full{margin-left:0;}
 
-/* HERO */
-.hero{background:linear-gradient(135deg,#0f172a,#1e293b);padding:32px 35px;border-radius:28px;color:white;margin-bottom:25px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;overflow:hidden;position:relative;box-shadow:0 25px 60px rgba(15,23,42,.2);}
-.hero::before{content:"";position:absolute;top:-110px;right:-110px;width:300px;height:300px;border-radius:50%;background:rgba(249,115,22,.18);}
+/* =========================
+HERO
+========================= */
+
+.hero{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+padding:32px 35px;border-radius:28px;color:white;margin-bottom:25px;
+display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;
+overflow:hidden;position:relative;
+box-shadow:0 25px 60px rgba(15,23,42,.2);
+}
+.hero::before{
+content:"";position:absolute;top:-110px;right:-110px;
+width:300px;height:300px;border-radius:50%;
+background:rgba(249,115,22,.18);
+}
 .hero h1{font-size:28px;font-weight:800;margin-bottom:6px;position:relative;z-index:2;}
 .hero p{opacity:.8;font-size:14px;position:relative;z-index:2;}
 
-.btn-primary{padding:13px 24px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;border:none;border-radius:14px;font-weight:800;font-size:14px;cursor:pointer;transition:.2s;white-space:nowrap;position:relative;z-index:2;}
+.btn-primary{
+padding:13px 24px;
+background:linear-gradient(135deg,#f97316,#fb923c);
+color:white;border:none;border-radius:14px;
+font-weight:800;font-size:14px;cursor:pointer;
+transition:.2s;white-space:nowrap;
+position:relative;z-index:2;
+}
 .btn-primary:hover{opacity:.92;}
 
-/* STATS */
+/* =========================
+STATS
+========================= */
+
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:25px;}
 .stat-card{background:white;padding:22px 24px;border-radius:20px;box-shadow:var(--shadow);transition:.25s;}
 .stat-card:hover{transform:translateY(-4px);}
@@ -120,16 +177,30 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
 .stat-value{font-size:30px;font-weight:800;color:var(--navy);}
 .stat-sub{font-size:12px;color:var(--muted);margin-top:4px;}
 
-/* TOOLBAR */
+/* =========================
+TOOLBAR
+========================= */
+
 .toolbar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;}
 .search-wrap{position:relative;flex:1;min-width:200px;}
-.search-wrap input{width:100%;padding:12px 14px 12px 40px;border:1px solid var(--border);border-radius:14px;font-size:14px;outline:none;background:white;}
+.search-wrap input{
+width:100%;padding:12px 14px 12px 40px;
+border:1px solid var(--border);border-radius:14px;
+font-size:14px;outline:none;background:white;
+}
 .search-wrap input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(249,115,22,.1);}
 .search-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:#94a3b8;}
-.filter-select{padding:12px 14px;border:1px solid var(--border);border-radius:14px;font-size:13px;font-weight:600;color:var(--text);background:white;outline:none;cursor:pointer;}
+
+.filter-select{
+padding:12px 14px;border:1px solid var(--border);border-radius:14px;
+font-size:13px;font-weight:600;color:var(--text);background:white;outline:none;cursor:pointer;
+}
 .filter-select:focus{border-color:var(--orange);}
 
-/* CARD & TABLE */
+/* =========================
+CARD & TABLE
+========================= */
+
 .card{background:white;border-radius:24px;box-shadow:var(--shadow);overflow:hidden;}
 .card-header{padding:20px 25px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .card-title{font-size:18px;font-weight:800;color:var(--navy);}
@@ -146,7 +217,6 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
 .badge-blue{background:#dbeafe;color:#1d4ed8;}
 .badge-orange{background:#fff7ed;color:#c2410c;}
 .badge-red{background:#fee2e2;color:#dc2626;}
-.badge-purple{background:#f3e8ff;color:#7c3aed;}
 
 .act-btn{padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;border:none;cursor:pointer;transition:.15s;}
 .act-edit{background:#fff7ed;color:#c2410c;}
@@ -156,7 +226,10 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
 .act-toggle{background:#f0fdf4;color:#16a34a;}
 .act-toggle:hover{background:#dcfce7;}
 
-/* MODAL */
+/* =========================
+MODAL
+========================= */
+
 .modal-bg{display:none;position:fixed;inset:0;background:rgba(15,23,42,.6);z-index:2000;align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;}
 .modal-bg.show{display:flex;}
 .modal{background:white;border-radius:26px;padding:32px;width:100%;max-width:680px;position:relative;margin:auto;}
@@ -166,44 +239,56 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
 
 .form-group{margin-bottom:16px;}
 .form-group label{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;}
-.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;font-size:14px;outline:none;font-family:inherit;transition:.2s;}
+.form-group input,.form-group textarea,.form-group select{
+width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:14px;
+font-size:14px;outline:none;font-family:inherit;transition:.2s;
+}
 .form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(249,115,22,.1);}
-.form-group input:disabled{background:#f8fafc;color:#94a3b8;cursor:not-allowed;}
 
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .form-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
 
 .section-divider{font-size:12px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin:20px 0 12px;padding-bottom:8px;border-bottom:2px solid #f1f5f9;}
 
-.btn-save{width:100%;padding:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;margin-top:10px;transition:.2s;}
+.btn-save{
+width:100%;padding:14px;
+background:linear-gradient(135deg,#f97316,#fb923c);
+color:white;border:none;border-radius:14px;
+font-size:15px;font-weight:800;cursor:pointer;margin-top:10px;transition:.2s;
+}
 .btn-save:hover{opacity:.92;}
 .btn-save:disabled{opacity:.6;cursor:not-allowed;}
 
-/* BANNER UPLOAD */
+/* =========================
+BANNER UPLOAD
+========================= */
+
 .banner-upload{border:2px dashed var(--border);border-radius:16px;padding:20px;text-align:center;cursor:pointer;transition:.2s;position:relative;}
 .banner-upload:hover{border-color:var(--orange);background:#fffaf5;}
 .banner-upload input{position:absolute;inset:0;opacity:0;cursor:pointer;}
 .banner-preview{width:100%;height:140px;object-fit:cover;border-radius:12px;margin-bottom:10px;display:none;}
 .banner-label{font-size:13px;color:#94a3b8;font-weight:600;}
 
-/* HARGA BOX */
-.harga-box{background:#f8fafc;border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px;}
-.harga-box-title{font-size:12px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
-.harga-box-title span{background:linear-gradient(135deg,#f97316,#fb923c);color:white;padding:2px 10px;border-radius:999px;font-size:10px;}
-.input-rp{position:relative;}
-.input-rp .rp-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-weight:700;color:#64748b;font-size:14px;pointer-events:none;}
-.input-rp input{padding-left:40px !important;}
-.harga-note{font-size:11.5px;color:#64748b;margin-top:6px;line-height:1.6;}
+/* =========================
+INFO AKSES "SEMUA"
+========================= */
 
-/* INFO BOXES */
-#aksesInfoRow .box{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:14px 16px;font-size:13px;color:#9a3412;line-height:1.7;}
-.info-midtrans{background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:14px 16px;font-size:12.5px;color:#1e40af;line-height:1.7;margin-bottom:16px;}
+#aksesInfoRow .box{
+background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;
+padding:14px 16px;font-size:13px;color:#9a3412;line-height:1.7;
+}
 
-/* EMPTY */
+/* =========================
+EMPTY
+========================= */
+
 .empty{text-align:center;padding:50px 20px;color:var(--muted);}
 .empty b{display:block;font-size:16px;color:var(--navy);margin-bottom:8px;}
 
-/* RESPONSIVE */
+/* =========================
+RESPONSIVE
+========================= */
+
 @media(max-width:1100px){.stats{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:1000px){.main{margin-left:0;padding:20px 16px;}}
 @media(max-width:700px){.form-row{grid-template-columns:1fr;}.form-row3{grid-template-columns:1fr 1fr;}.stats{grid-template-columns:1fr 1fr;}}
@@ -256,7 +341,7 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
   <div class="stats">
     <div class="stat-card"><div class="stat-title">Total Tryout</div><div class="stat-value" id="statTotal">—</div><div class="stat-sub">semua tryout</div></div>
     <div class="stat-card"><div class="stat-title">Aktif / Publish</div><div class="stat-value" id="statAktif">—</div><div class="stat-sub">sedang berjalan</div></div>
-    <div class="stat-card"><div class="stat-title">Premium / Berbayar</div><div class="stat-value" id="statPremium">—</div><div class="stat-sub">tryout berbayar</div></div>
+    <div class="stat-card"><div class="stat-title">Premium</div><div class="stat-value" id="statPremium">—</div><div class="stat-sub">tryout berbayar</div></div>
     <div class="stat-card"><div class="stat-title">Total Pengerjaan</div><div class="stat-value" id="statHasil">—</div><div class="stat-sub">dari semua tryout</div></div>
   </div>
 
@@ -268,8 +353,7 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
     <select class="filter-select" id="filterAkses" onchange="filterTable()">
       <option value="">Semua Akses</option>
       <option value="gratis">Gratis</option>
-      <option value="berbayar">Berbayar (Satuan)</option>
-      <option value="premium">Premium</option>
+      <option value="premium">Berbayar</option>
       <option value="semua">Gratis + Berbayar</option>
     </select>
     <select class="filter-select" id="filterStatus" onchange="filterTable()">
@@ -288,12 +372,12 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
       <table class="dtable">
         <thead>
           <tr>
-            <th>#</th><th>Tryout</th><th>Akses</th><th>Harga</th><th>Durasi</th>
+            <th>#</th><th>Tryout</th><th>Akses</th><th>Durasi</th>
             <th>Passing Grade</th><th>Pelaksanaan</th><th>Status</th><th>Aksi</th>
           </tr>
         </thead>
         <tbody id="tableBody">
-          <tr><td colspan="9" style="text-align:center;padding:40px;color:#64748b;">Memuat data...</td></tr>
+          <tr><td colspan="8" style="text-align:center;padding:40px;color:#64748b;">Memuat data...</td></tr>
         </tbody>
       </table>
     </div>
@@ -333,10 +417,9 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
       <div class="form-row">
         <div class="form-group">
           <label>Akses Peserta *</label>
-          <select id="f_akses" onchange="onAksesChange()">
+          <select id="f_akses" onchange="togglePasswordField()">
             <option value="gratis">Gratis — semua user bisa kerjakan</option>
-            <option value="berbayar">Berbayar Satuan — bayar per tryout via Midtrans</option>
-            <option value="premium">Premium — hanya member premium</option>
+            <option value="premium">Berbayar — hanya member premium</option>
             <option value="semua">Gratis + Berbayar — semua bisa, premium dapat fitur lebih</option>
           </select>
         </div>
@@ -349,7 +432,6 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
         </div>
       </div>
 
-      <!-- INFO SEMUA -->
       <div id="aksesInfoRow" style="display:none;margin-bottom:16px;">
         <div class="box">
           <b>Gratis + Berbayar:</b> Semua user bisa mengerjakan tryout ini.
@@ -358,72 +440,16 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
         </div>
       </div>
 
-      <!-- ══ HARGA SECTION ══ -->
-      <div id="hargaSection" style="display:none;">
-        <div class="info-midtrans">
-          💳 <b>Pembayaran via Midtrans:</b> Harga yang kamu set di sini akan ditampilkan ke user saat mereka hendak mengerjakan tryout berbayar. Transaksi diproses otomatis melalui Midtrans (transfer bank, QRIS, e-wallet, kartu kredit, dll). Pastikan <b>Midtrans Merchant ID &amp; Server Key</b> sudah dikonfigurasi di Pengaturan.
-        </div>
-
-        <div class="harga-box">
-          <div class="harga-box-title">
-            💰 Pengaturan Harga
-            <span id="hargaAksesLabel">Berbayar Satuan</span>
-          </div>
-
-          <!-- Harga untuk akses "berbayar" (satuan) -->
-          <div id="hargaBayarSatuan">
-            <div class="form-row">
-              <div class="form-group">
-                <label>Harga Normal *</label>
-                <div class="input-rp">
-                  <span class="rp-prefix">Rp</span>
-                  <input type="number" id="f_harga" placeholder="0" min="0" step="1000">
-                </div>
-                <div class="harga-note">Harga yang ditampilkan ke user. Contoh: 25000 → Rp 25.000</div>
-              </div>
-              <div class="form-group">
-                <label>Harga Coret / Diskon <span style="font-weight:400;color:#94a3b8;">(opsional)</span></label>
-                <div class="input-rp">
-                  <span class="rp-prefix">Rp</span>
-                  <input type="number" id="f_harga_coret" placeholder="0" min="0" step="1000">
-                </div>
-                <div class="harga-note">Jika diisi, tampil sebagai harga dicoret di halaman user.</div>
-              </div>
-            </div>
-            <div class="form-group">
-              <label>Kode Promo / Voucher <span style="font-weight:400;color:#94a3b8;">(opsional)</span></label>
-              <input type="text" id="f_kode_promo" placeholder="Contoh: PEJUANG50 — kosongkan jika tidak ada">
-              <div class="harga-note">User bisa input kode ini di halaman pembayaran untuk mendapat diskon (fitur voucher harus aktif di Midtrans).</div>
-            </div>
-          </div>
-
-          <!-- Harga untuk akses "semua" (gratis + berbayar) -->
-          <div id="hargaBayarSemua" style="display:none;">
-            <div class="form-group">
-              <label>Harga Akses Premium Tryout Ini *</label>
-              <div class="input-rp">
-                <span class="rp-prefix">Rp</span>
-                <input type="number" id="f_harga_semua" placeholder="0" min="0" step="1000">
-              </div>
-              <div class="harga-note">Harga yang dibayar user non-premium untuk mendapat fitur premium pada tryout ini (pembahasan, PDF, analisis). User gratis tetap bisa kerjakan tanpa bayar.</div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-      <!-- ══ END HARGA SECTION ══ -->
-
-      <!-- Password akses gratis -->
       <div id="passwordAksesRow" class="form-group" style="display:none;">
-        <label>Password Akses Gratis — 6 digit angka <span style="font-weight:400;color:#94a3b8;">(opsional)</span></label>
+        <label>Password Akses Gratis — 6 digit angka (opsional)</label>
         <input type="text" id="f_password_akses" placeholder="Contoh: 123456 — kosongkan jika tidak perlu password" maxlength="6" pattern="[0-9]{6}" inputmode="numeric">
         <div style="font-size:12px;color:#64748b;margin-top:6px;line-height:1.6;">
-          Password ini akan diminta ke user (6 digit angka) saat memilih jalur <b>gratis</b>. Kosongkan jika ingin tryout gratis bisa diakses langsung tanpa password.
+          Password ini akan diminta ke user (6 digit angka) saat memilih jalur <b>gratis</b>. Kosongkan jika ingin tryout gratis ini bisa diakses langsung tanpa password.
         </div>
       </div>
 
       <div id="periodeInfoBox" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:14px 16px;margin-bottom:16px;font-size:12.5px;color:#1e40af;line-height:1.7;">
-        ⏰ <b>Otomatis jadi Premium setelah periode habis:</b> Jika <b>Tanggal Selesai</b> sudah lewat dan opsi "akses fleksibel" di bawah <u>tidak</u> dicentang, tryout gratis/gratis+berbayar ini akan otomatis hanya bisa diakses lewat <b>Premium</b>.
+        ⏰ <b>Otomatis jadi Premium setelah periode habis:</b> Jika <b>Tanggal Selesai</b> sudah lewat dan opsi "akses fleksibel" di bawah <u>tidak</u> dicentang, tryout gratis/gratis+berbayar ini akan otomatis hanya bisa diakses lewat <b>Premium</b> — user akan melihat keterangan "Periode gratis sudah berakhir, sekarang hanya bisa diakses Premium" di halaman mereka.
       </div>
 
       <div class="form-row">
@@ -487,139 +513,149 @@ display:flex;align-items:center;justify-content:center;transition:.2s;
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 
-/* Auth guard */
+/* ── Auth guard ── */
 const rawUser = localStorage.getItem('user');
 if (!rawUser) window.location.href = 'login.html';
 const user = JSON.parse(rawUser);
 if (user.role !== 'admin' && user.role !== 'super_admin') window.location.href = 'dashboard.html';
+
 const adminEmail = user.email;
 
-/* ── Sidebar ── */
-const sidebar        = document.getElementById('sidebar');
-const hamburger      = document.getElementById('hamburger');
-const overlay        = document.getElementById('overlay');
-const mainEl         = document.getElementById('main');
-const closeSidebarBtn= document.getElementById('closeSidebarBtn');
+/* =========================
+SIDEBAR TOGGLE (DESKTOP & MOBILE)
+========================= */
 
-function openSidebar(){ sidebar.classList.remove('closed'); hamburger.style.display='none'; if(window.innerWidth<=1000) overlay.classList.add('active'); else overlay.classList.remove('active'); mainEl.classList.remove('full'); }
-function closeSidebar(){ sidebar.classList.add('closed'); overlay.classList.remove('active'); mainEl.classList.add('full'); hamburger.style.display='flex'; }
+const sidebar        = document.getElementById('sidebar');
+const hamburger       = document.getElementById('hamburger');
+const overlay         = document.getElementById('overlay');
+const mainEl          = document.getElementById('main');
+const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+
+function openSidebar(){
+  sidebar.classList.remove('closed');
+  hamburger.style.display = 'none';
+  if (window.innerWidth <= 1000) overlay.classList.add('active');
+  else overlay.classList.remove('active');
+  mainEl.classList.remove('full');
+}
+function closeSidebar(){
+  sidebar.classList.add('closed');
+  overlay.classList.remove('active');
+  mainEl.classList.add('full');
+  hamburger.style.display = 'flex';
+}
 hamburger.addEventListener('click', openSidebar);
 closeSidebarBtn.addEventListener('click', closeSidebar);
 overlay.addEventListener('click', closeSidebar);
-function initSidebar(){ window.innerWidth<=1000 ? closeSidebar() : openSidebar(); }
+
+function initSidebar(){ window.innerWidth <= 1000 ? closeSidebar() : openSidebar(); }
 window.addEventListener('resize', initSidebar);
 initSidebar();
 
-/* ── State ── */
+/* =========================
+STATE
+========================= */
+
 let allTryout = [];
 
-/* ── Format rupiah ── */
-function formatRp(val) {
-  if (!val || val == 0) return 'Gratis';
-  return 'Rp ' + Number(val).toLocaleString('id-ID');
-}
+/* =========================
+LOAD TRYOUT — via /api/admin/tryout
+(server-side, divalidasi role admin —
+bukan lagi tulis langsung pakai anon key)
+========================= */
 
-/* ── Load ── */
 async function loadTryout() {
   try {
-    const res = await fetch('/api/admin/tryout', { headers: { 'x-admin-email': adminEmail } });
+    const res = await fetch('/api/admin/tryout', {
+      headers: { 'x-admin-email': adminEmail }
+    });
     const json = await res.json();
+
     if (!json.success) {
+      console.error(json.message);
       document.getElementById('tableBody').innerHTML =
-        '<tr><td colspan="9" style="text-align:center;padding:40px;color:#dc2626;">Gagal memuat: ' + json.message + '</td></tr>';
+        '<tr><td colspan="8" style="text-align:center;padding:40px;color:#dc2626;">Gagal memuat data: ' + json.message + '</td></tr>';
       return;
     }
+
     allTryout = json.data || [];
     document.getElementById('statHasil').textContent = json.totalHasil ?? 0;
+
     renderStats(allTryout);
     renderTable(allTryout);
-  } catch(e) { console.error(e); }
+  } catch (e) {
+    console.error('loadTryout error:', e);
+  }
 }
 
 function renderStats(rows) {
   document.getElementById('statTotal').textContent   = rows.length;
-  document.getElementById('statAktif').textContent   = rows.filter(r => r.status==='publish'||r.aktif).length;
-  document.getElementById('statPremium').textContent = rows.filter(r => r.akses==='premium'||r.akses==='berbayar'||r.akses==='semua'||r.is_premium).length;
+  document.getElementById('statAktif').textContent   = rows.filter(r => r.status === 'publish' || r.aktif).length;
+  document.getElementById('statPremium').textContent = rows.filter(r => r.akses === 'premium' || r.akses === 'semua' || r.is_premium).length;
 }
 
+/* ── Render tabel ── */
 function renderTable(rows) {
   const tbody = document.getElementById('tableBody');
   document.getElementById('jumlahLabel').textContent = rows.length + ' tryout';
 
   if (!rows.length) {
-    tbody.innerHTML = '<tr><td colspan="9"><div class="empty"><b>Belum ada tryout</b>Klik "+ Buat Tryout Baru" untuk menambahkan.</div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty"><b>Belum ada tryout</b>Klik "+ Buat Tryout Baru" untuk menambahkan.</div></td></tr>';
     return;
   }
 
   tbody.innerHTML = rows.map((r, i) => {
     let aksesBadge;
-    if (r.akses === 'berbayar') {
-      aksesBadge = '<span class="badge badge-purple">Berbayar Satuan</span>';
-    } else if (r.akses === 'premium' || r.is_premium) {
-      aksesBadge = '<span class="badge badge-blue">Premium</span>';
+    if (r.akses === 'premium' || r.is_premium) {
+      aksesBadge = '<span class="badge badge-blue">Berbayar</span>';
     } else if (r.akses === 'semua') {
       aksesBadge = '<span class="badge badge-orange">Gratis + Berbayar</span>';
     } else {
       aksesBadge = '<span class="badge badge-green">Gratis</span>';
     }
 
-    // Kolom harga
-    let hargaCell = '<span style="color:#94a3b8;font-size:12px;">—</span>';
-    if (r.akses === 'berbayar' && r.harga) {
-      hargaCell = '<div style="font-weight:700;color:#0f172a;font-size:13px;">' + formatRp(r.harga) + '</div>';
-      if (r.harga_coret) {
-        hargaCell += '<div style="font-size:11px;color:#94a3b8;text-decoration:line-through;">' + formatRp(r.harga_coret) + '</div>';
-      }
-    } else if (r.akses === 'semua' && r.harga_semua) {
-      hargaCell = '<div style="font-size:12px;color:#c2410c;font-weight:700;">+' + formatRp(r.harga_semua) + '</div><div style="font-size:10px;color:#94a3b8;">untuk fitur premium</div>';
-    } else if (r.akses === 'gratis') {
-      hargaCell = '<span class="badge badge-green" style="font-size:11px;">Gratis</span>';
-    } else if (r.akses === 'premium') {
-      hargaCell = '<span style="font-size:12px;color:#1d4ed8;font-weight:600;">Member Premium</span>';
-    }
-
-    const statusBadge = (r.status==='publish'||r.aktif)
+    const statusBadge = (r.status === 'publish' || r.aktif)
       ? '<span class="badge badge-green">Publish</span>'
       : '<span class="badge badge-gray">Draft</span>';
 
-    const durasi = r.durasi ? r.durasi+' mnt' : '—';
+    const durasi = r.durasi ? r.durasi + ' mnt' : '—';
+
     let tglPelaksanaan = '—';
     if (r.tanggal_mulai) {
       const dm = new Date(r.tanggal_mulai);
-      tglPelaksanaan = dm.getDate()+' '+BULAN[dm.getMonth()];
+      tglPelaksanaan = dm.getDate() + ' ' + BULAN[dm.getMonth()];
       if (r.tanggal_selesai) {
         const ds = new Date(r.tanggal_selesai);
-        tglPelaksanaan += ' – '+ds.getDate()+' '+BULAN[ds.getMonth()];
+        tglPelaksanaan += ' – ' + ds.getDate() + ' ' + BULAN[ds.getMonth()];
       }
     }
     if (r.bebas_waktu) tglPelaksanaan += '<br><span style="font-size:11px;color:#16a34a;">Fleksibel</span>';
 
     const banner = r.banner_url
-      ? '<img src="'+r.banner_url+'" style="width:48px;height:32px;object-fit:cover;border-radius:8px;margin-right:8px;vertical-align:middle;" onerror="this.style.display=\'none\'">'
+      ? '<img src="' + r.banner_url + '" style="width:48px;height:32px;object-fit:cover;border-radius:8px;margin-right:8px;vertical-align:middle;" onerror="this.style.display=\'none\'">'
       : '';
 
     const safeR = encodeURIComponent(JSON.stringify(r));
 
     return '<tr>' +
-      '<td style="color:#94a3b8;font-size:12px;">'+(i+1)+'</td>' +
-      '<td>'+banner+
-        '<div style="display:inline-block;vertical-align:middle;">'+
-        '<div style="font-weight:700;color:#0f172a;">'+(r.nama||'—')+'</div>'+
-        (r.deskripsi ? '<div style="font-size:11px;color:#94a3b8;margin-top:2px;">'+r.deskripsi.slice(0,50)+(r.deskripsi.length>50?'…':'')+'</div>' : '')+
+      '<td style="color:#94a3b8;font-size:12px;">' + (i+1) + '</td>' +
+      '<td>' + banner +
+        '<div style="display:inline-block;vertical-align:middle;">' +
+        '<div style="font-weight:700;color:#0f172a;">' + (r.nama||'—') + '</div>' +
+        (r.deskripsi ? '<div style="font-size:11px;color:#94a3b8;margin-top:2px;">' + r.deskripsi.slice(0,50) + (r.deskripsi.length>50?'…':'') + '</div>' : '') +
         '</div></td>' +
-      '<td>'+aksesBadge+'</td>' +
-      '<td>'+hargaCell+'</td>' +
-      '<td style="font-weight:600;">'+durasi+'</td>' +
+      '<td>' + aksesBadge + '</td>' +
+      '<td style="font-weight:600;">' + durasi + '</td>' +
       '<td style="font-size:12px;color:#64748b;font-weight:600;">TWK '+(r.passing_twk||65)+' / TIU '+(r.passing_tiu||80)+'<br>TKP '+(r.passing_tkp||166)+'</td>' +
-      '<td style="font-size:12px;color:#64748b;">'+tglPelaksanaan+'</td>' +
-      '<td>'+statusBadge+'</td>' +
-      '<td><div style="display:flex;gap:6px;flex-wrap:wrap;">'+
-        '<button class="act-btn act-edit" onclick=\'editTryout(decodeURIComponent("'+safeR+'"))\'>Edit</button>'+
-        '<button class="act-btn act-toggle" onclick="toggleStatus('+r.id+','+(!!( r.status==='publish'||r.aktif))+')">'+
-          ((r.status==='publish'||r.aktif)?'Draft':'Publish')+
-        '</button>'+
-        '<button class="act-btn act-del" onclick="deleteTryout('+r.id+')">Hapus</button>'+
-      '</div></td>'+
+      '<td style="font-size:12px;color:#64748b;">' + tglPelaksanaan + '</td>' +
+      '<td>' + statusBadge + '</td>' +
+      '<td><div style="display:flex;gap:6px;flex-wrap:wrap;">' +
+        '<button class="act-btn act-edit" onclick=\'editTryout(decodeURIComponent("' + safeR + '"))\'>Edit</button>' +
+        '<button class="act-btn act-toggle" onclick="toggleStatus(' + r.id + ',' + (!!(r.status==='publish'||r.aktif)) + ')">' +
+          ((r.status==='publish'||r.aktif) ? 'Draft' : 'Publish') +
+        '</button>' +
+        '<button class="act-btn act-del" onclick="deleteTryout(' + r.id + ')">Hapus</button>' +
+      '</div></td>' +
     '</tr>';
   }).join('');
 }
@@ -630,57 +666,43 @@ function filterTable() {
   const akses  = document.getElementById('filterAkses').value;
   const status = document.getElementById('filterStatus').value;
   const filtered = allTryout.filter(r => {
-    const nama  = (r.nama||'').toLowerCase();
+    const nama   = (r.nama||'').toLowerCase();
     const matchQ = !q || nama.includes(q);
     const matchA = !akses || r.akses === akses || (akses==='premium' && r.is_premium);
-    const matchS = !status || r.status===status || (status==='publish'&&r.aktif);
+    const matchS = !status || r.status === status || (status==='publish' && r.aktif);
     return matchQ && matchA && matchS;
   });
   renderTable(filtered);
 }
 
-/* ── Conditional fields berdasarkan akses ── */
-function onAksesChange() {
+/* ── Toggle conditional fields ── */
+function togglePasswordField() {
   const val = document.getElementById('f_akses').value;
-
-  // Info box "semua"
   document.getElementById('aksesInfoRow').style.display = val === 'semua' ? 'block' : 'none';
-
-  // Password gratis
   document.getElementById('passwordAksesRow').style.display = (val === 'gratis' || val === 'semua') ? 'block' : 'none';
-
-  // Harga section
-  const showHarga = val === 'berbayar' || val === 'semua';
-  document.getElementById('hargaSection').style.display = showHarga ? 'block' : 'none';
-
-  if (val === 'berbayar') {
-    document.getElementById('hargaAksesLabel').textContent = 'Berbayar Satuan';
-    document.getElementById('hargaBayarSatuan').style.display = 'block';
-    document.getElementById('hargaBayarSemua').style.display  = 'none';
-  } else if (val === 'semua') {
-    document.getElementById('hargaAksesLabel').textContent = 'Gratis + Berbayar';
-    document.getElementById('hargaBayarSatuan').style.display = 'none';
-    document.getElementById('hargaBayarSemua').style.display  = 'block';
-  }
 }
 
 function toggleBebasWaktu() {
   const cb = document.getElementById('f_bebas_waktu').checked;
   document.getElementById('f_tanggal_mulai').disabled  = cb;
   document.getElementById('f_tanggal_selesai').disabled = cb;
-  if (cb) { document.getElementById('f_tanggal_mulai').value=''; document.getElementById('f_tanggal_selesai').value=''; }
+  if (cb) {
+    document.getElementById('f_tanggal_mulai').value  = '';
+    document.getElementById('f_tanggal_selesai').value = '';
+  }
 }
 
 /* ── Banner preview ── */
 function previewBanner(input) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 2*1024*1024) { alert('Ukuran file maksimal 2MB.'); input.value=''; return; }
+  if (file.size > 2 * 1024 * 1024) { alert('Ukuran file maksimal 2MB.'); input.value=''; return; }
   const reader = new FileReader();
   reader.onload = e => {
     const img = document.getElementById('bannerPreview');
-    img.src = e.target.result; img.style.display='block';
-    document.getElementById('bannerLabel').style.display='none';
+    img.src = e.target.result;
+    img.style.display = 'block';
+    document.getElementById('bannerLabel').style.display = 'none';
   };
   reader.readAsDataURL(file);
 }
@@ -698,9 +720,10 @@ function openModal() {
   document.getElementById('f_passing_tkp').value = '166';
   document.getElementById('bannerPreview').style.display = 'none';
   document.getElementById('bannerLabel').style.display = 'block';
+  document.getElementById('aksesInfoRow').style.display = 'none';
   document.getElementById('f_tanggal_mulai').disabled  = false;
   document.getElementById('f_tanggal_selesai').disabled = false;
-  onAksesChange();
+  togglePasswordField();
   document.getElementById('modalBg').classList.add('show');
 }
 
@@ -724,39 +747,41 @@ function editTryout(encoded) {
   document.getElementById('f_gform_url').value      = r.gform_url || '';
   document.getElementById('f_password_akses').value = r.password_akses || '';
   document.getElementById('f_bebas_waktu').checked  = r.bebas_waktu || false;
-  document.getElementById('f_harga').value          = r.harga || '';
-  document.getElementById('f_harga_coret').value    = r.harga_coret || '';
-  document.getElementById('f_harga_semua').value    = r.harga_semua || '';
-  document.getElementById('f_kode_promo').value     = r.kode_promo || '';
-  if (r.tanggal_mulai)   document.getElementById('f_tanggal_mulai').value  = r.tanggal_mulai.slice(0,16);
+
+  if (r.tanggal_mulai)  document.getElementById('f_tanggal_mulai').value  = r.tanggal_mulai.slice(0,16);
   if (r.tanggal_selesai) document.getElementById('f_tanggal_selesai').value = r.tanggal_selesai.slice(0,16);
+
   if (r.banner_url) {
-    document.getElementById('bannerPreview').src = r.banner_url;
-    document.getElementById('bannerPreview').style.display = 'block';
+    const img = document.getElementById('bannerPreview');
+    img.src = r.banner_url;
+    img.style.display = 'block';
     document.getElementById('bannerLabel').style.display = 'none';
   } else {
     document.getElementById('bannerPreview').style.display = 'none';
     document.getElementById('bannerLabel').style.display = 'block';
   }
-  onAksesChange();
+
+  togglePasswordField();
   toggleBebasWaktu();
   document.getElementById('modalBg').classList.add('show');
 }
 
 function closeModal() { document.getElementById('modalBg').classList.remove('show'); }
-document.getElementById('modalBg').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+document.getElementById('modalBg').addEventListener('click', e => { if (e.target===e.currentTarget) closeModal(); });
 
-/* ── Upload banner ── */
+/* ── Upload banner ke Supabase Storage (langsung dari browser, bucket public) ── */
 async function uploadBanner(file) {
-  const ext = file.name.split('.').pop();
-  const fileName = 'banner_'+Date.now()+'.'+ext;
-  const { error } = await sb.storage.from('tryout-banners').upload(fileName, file, { cacheControl:'3600', upsert:false });
-  if (error) throw new Error('Upload gagal: '+error.message);
+  const ext      = file.name.split('.').pop();
+  const fileName = 'banner_' + Date.now() + '.' + ext;
+  const { error } = await sb.storage
+    .from('tryout-banners')
+    .upload(fileName, file, { cacheControl: '3600', upsert: false });
+  if (error) throw new Error('Upload gagal: ' + error.message);
   const { data: urlData } = sb.storage.from('tryout-banners').getPublicUrl(fileName);
   return urlData.publicUrl;
 }
 
-/* ── Simpan ── */
+/* ── Simpan tryout — via /api/admin/tryout (POST=buat, PATCH=edit) ── */
 async function saveTryout(e) {
   e.preventDefault();
   const btn = document.getElementById('saveBtn');
@@ -768,7 +793,10 @@ async function saveTryout(e) {
 
     let bannerUrl = document.getElementById('existingBanner').value || null;
     const bannerFile = document.getElementById('f_banner').files[0];
-    if (bannerFile) { btn.textContent = 'Upload banner...'; bannerUrl = await uploadBanner(bannerFile); }
+    if (bannerFile) {
+      btn.textContent = 'Upload banner...';
+      bannerUrl = await uploadBanner(bannerFile);
+    }
 
     const bebasWaktu = document.getElementById('f_bebas_waktu').checked;
 
@@ -792,59 +820,71 @@ async function saveTryout(e) {
       gform_url:       document.getElementById('f_gform_url').value || null,
       password_akses:  document.getElementById('f_password_akses').value.trim() || null,
       banner_url:      bannerUrl,
-      // Harga Midtrans
-      harga:           aksesVal === 'berbayar' ? (parseInt(document.getElementById('f_harga').value) || 0) : null,
-      harga_coret:     aksesVal === 'berbayar' ? (parseInt(document.getElementById('f_harga_coret').value) || null) : null,
-      harga_semua:     aksesVal === 'semua'    ? (parseInt(document.getElementById('f_harga_semua').value) || null) : null,
-      kode_promo:      aksesVal === 'berbayar' ? (document.getElementById('f_kode_promo').value.trim() || null) : null,
     };
 
     btn.textContent = 'Menyimpan...';
+
     const res = await fetch('/api/admin/tryout', {
       method: id ? 'PATCH' : 'POST',
-      headers: { 'Content-Type':'application/json', 'x-admin-email': adminEmail },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-admin-email': adminEmail
+      },
       body: JSON.stringify(id ? { id, ...payload } : payload)
     });
+
     const json = await res.json();
     if (!json.success) throw new Error(json.message);
 
     alert(id ? 'Tryout berhasil diperbarui!' : 'Tryout berhasil dibuat!');
     closeModal();
     loadTryout();
-  } catch(err) {
-    alert('Gagal: '+err.message);
+
+  } catch (err) {
+    alert('Gagal: ' + err.message);
   } finally {
     btn.disabled = false; btn.textContent = 'Simpan Tryout';
   }
 }
 
-/* ── Toggle status ── */
+/* ── Toggle publish/draft — via PATCH /api/admin/tryout ── */
 async function toggleStatus(id, isPublish) {
   try {
     const res = await fetch('/api/admin/tryout', {
       method: 'PATCH',
-      headers: { 'Content-Type':'application/json', 'x-admin-email': adminEmail },
-      body: JSON.stringify({ id, status: isPublish ? 'draft' : 'publish', aktif: !isPublish })
+      headers: { 'Content-Type': 'application/json', 'x-admin-email': adminEmail },
+      body: JSON.stringify({
+        id,
+        status: isPublish ? 'draft' : 'publish',
+        aktif: !isPublish
+      })
     });
     const json = await res.json();
-    if (!json.success) { alert('Gagal: '+json.message); return; }
+    if (!json.success) { alert('Gagal: ' + json.message); return; }
     loadTryout();
-  } catch(e) { alert('Gagal mengubah status.'); }
+  } catch (e) {
+    alert('Gagal mengubah status.');
+  }
 }
 
-/* ── Hapus ── */
+/* ── Hapus — via DELETE /api/admin/tryout?id= ── */
 async function deleteTryout(id) {
   if (!confirm('Yakin hapus tryout ini?')) return;
   try {
-    const res = await fetch('/api/admin/tryout?id='+id, { method:'DELETE', headers:{'x-admin-email':adminEmail} });
+    const res = await fetch('/api/admin/tryout?id=' + id, {
+      method: 'DELETE',
+      headers: { 'x-admin-email': adminEmail }
+    });
     const json = await res.json();
-    if (!json.success) { alert('Gagal: '+json.message); return; }
+    if (!json.success) { alert('Gagal: ' + json.message); return; }
     loadTryout();
-  } catch(e) { alert('Gagal menghapus tryout.'); }
+  } catch (e) {
+    alert('Gagal menghapus tryout.');
+  }
 }
 
 /* ── Logout ── */
-function logout() { if(confirm('Yakin keluar?')){ localStorage.removeItem('user'); window.location.href='login.html'; } }
+function logout() { if(confirm('Yakin keluar?')) { localStorage.removeItem('user'); window.location.href='login.html'; } }
 
 /* ── Init ── */
 loadTryout();
