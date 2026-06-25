@@ -18,13 +18,11 @@ body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding
     overflow:hidden;
     box-shadow:0 35px 80px rgba(0,0,0,.20);
 }
-
 .right-side{
     padding:65px 80px;
     overflow-y:auto;
     max-height:100vh;
 }
-
 .logo-title{
     font-size:38px;
     font-weight:800;
@@ -34,14 +32,12 @@ body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding
     margin-bottom:8px;
     line-height:1.1;
 }
-
 .logo-sub{
     font-size:15px;
     color:#64748b;
     text-align:center;
     margin-bottom:35px;
 }
-
 .form-title{
     text-align:center;
     font-size:34px;
@@ -49,18 +45,15 @@ body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding
     color:#14274e;
     margin-bottom:10px;
 }
-
 .form-subtitle{
     text-align:center;
     color:#64748b;
     font-size:15px;
     margin-bottom:40px;
 }
-
 .form-group{
     margin-bottom:20px;
 }
-
 .form-group label{
     display:block;
     font-weight:700;
@@ -68,7 +61,6 @@ body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding
     color:#14274e;
     font-size:14px;
 }
-
 .form-group input,
 .form-group select{
     width:100%;
@@ -79,7 +71,6 @@ body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding
     outline:none;
     transition:.2s;
 }
-
 .btn-register{
     width:100%;
     padding:18px;
@@ -93,46 +84,27 @@ body{background:linear-gradient(135deg,#14274e,#1f3f7a);min-height:100vh;padding
     margin-top:15px;
     transition:.3s;
 }
-
 .divider{
     border:none;
     border-top:1px solid #f1f5f9;
     margin:28px 0;
 }
-
 .row{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:18px;
 }
-
 .row3{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
     gap:18px;
 }
-
 @media(max-width:768px){
-    body{
-        padding:15px;
-    }
-
-    .right-side{
-        padding:35px 25px;
-    }
-
-    .logo-title{
-        font-size:28px;
-    }
-
-    .form-title{
-        font-size:28px;
-    }
-
-    .row,
-    .row3{
-        grid-template-columns:1fr;
-    }
+    body{padding:15px;}
+    .right-side{padding:35px 25px;}
+    .logo-title{font-size:28px;}
+    .form-title{font-size:28px;}
+    .row,.row3{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -389,13 +361,8 @@ document.getElementById("registerForm").addEventListener("submit", async functio
       return;
     }
 
-    if (!data.otp_sent) {
-      // Akun sudah dibuat, OTP gagal terkirim -- tetap arahkan ke
-      // halaman OTP, di sana ada tombol "Kirim Ulang OTP".
-      alert(data.message || "Akun dibuat, tapi OTP gagal terkirim. Coba kirim ulang di halaman berikutnya.");
-    }
-
-    window.location.href = "otp.html?email=" + encodeURIComponent(data.email || email);
+    // Registrasi berhasil — langsung ke dashboard tanpa OTP
+    window.location.href = "dashboard.html";
 
   } catch (err) {
     console.error(err);
