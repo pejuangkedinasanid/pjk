@@ -19,12 +19,12 @@ export async function PATCH(
     const { id } = await context.params;
     const body = await req.json();
 
-    const allowedFields = ["judul", "deskripsi", "akses", "harga", "pdf_url", "thumbnail_url", "status"];
+    const allowedFields = ["judul", "deskripsi", "akses", "harga", "pdf_url", "banner_url", "status"];
     const updateData: Record<string, any> = {};
     for (const key of allowedFields) {
       if (body[key] !== undefined) updateData[key] = body[key];
     }
-
+    
     if (updateData.akses === "gratis") updateData.harga = 0;
 
     const { data, error } = await supabase

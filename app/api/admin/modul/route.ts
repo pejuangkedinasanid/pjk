@@ -1,7 +1,7 @@
 // FILE: app/api/admin/modul/route.ts
 // GET  /api/admin/modul              -> daftar modul + statistik per modul
 // POST /api/admin/modul              -> buat modul baru
-// Body POST: { judul, deskripsi, akses, harga, pdf_url, thumbnail_url, status }
+// Body POST: { judul, deskripsi, akses, harga, pdf_url, banner_url, status }
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -55,7 +55,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { judul, deskripsi, akses, harga, pdf_url, thumbnail_url, status } = body;
+    const { judul, deskripsi, akses, harga, pdf_url, banner_url, status } = body;
 
     if (!judul || !pdf_url) {
       return NextResponse.json(
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
         akses: akses === "berbayar" ? "berbayar" : "gratis",
         harga: akses === "berbayar" ? harga : 0,
         pdf_url,
-        thumbnail_url: thumbnail_url || null,
+        banner_url: banner_url || null,
         status: status === "draft" ? "draft" : "publish",
       })
       .select()

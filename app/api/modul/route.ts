@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 
     const { data: modulRows, error } = await supabase
       .from("modul")
-      .select("id, judul, deskripsi, akses, harga, thumbnail_url, created_at")
+      .select("id, judul, deskripsi, akses, harga, banner_url, created_at")
       .eq("status", "publish")
       .order("created_at", { ascending: false });
 

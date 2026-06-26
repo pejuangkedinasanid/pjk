@@ -30,6 +30,8 @@ const MIDTRANS_BASE_URL = process.env.MIDTRANS_IS_PRODUCTION === "true"
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
+
+    console.log("BODY:", body);
     const { email, paket_jumlah, modul_id } = body;
     // Default 'kuota' supaya premium.html yang lama (tidak kirim field
     // 'tipe' sama sekali) tetap jalan tanpa perlu diubah.
@@ -158,7 +160,8 @@ export async function POST(req: NextRequest) {
     });
 
     const midtransJson = await midtransRes.json();
-
+    console.log("MIDTRANS STATUS:", midtransRes.status);
+    console.log("MIDTRANS RESPONSE:", JSON.stringify(midtransJson, null, 2));
     if (!midtransRes.ok || !midtransJson.token) {
       console.error("Midtrans error:", midtransJson);
       return NextResponse.json(
