@@ -98,11 +98,12 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
     <a href="tryout-tersedia.html">Tryout Tersedia</a>
     <a href="tryout-saya.html">Tryout Saya</a>
     <div class="menu-group">Belajar</div>
-    <a href="materi.html" class="active">Modul</a>
-    <a href="video.html">Video Latihan Soal</a>
+    <a href="latihan.html">Bank Soal</a>
+    <a href="materi.html" class="active">Materi Belajar</a>
+    <a href="video.html">Video Pembahasan</a>
     <div class="menu-group">Kompetisi</div>
-    <a href="leaderboard.html">Leaderboard</a>
-    <a href="analisis.html">Analisis Perkembangan</a>
+    <a href="leaderboard.html">Ranking Nasional</a>
+    <a href="target.html">Target Kedinasan</a>
     <div class="menu-group">Akun</div>
     <a href="premium.html" class="menu-premium">&#11088; Premium</a>
     <a href="profil.html">Profil Saya</a>
@@ -234,16 +235,29 @@ function bukaModalBayar(modulId) {
   beliModul(m);
 }
 
-/* ── MIDTRANS (sama seperti di premium.html) ── */
+/* ── MIDTRANS (sama seperti di premium.html) ──
+   PERKUAT: sebelumnya kalau config.js gagal dimuat (misal kena bug
+   duplicate declaration seperti kemarin), kode ini diam-diam jatuh
+   ke fallback SANDBOX tanpa kasih tahu siapa-siapa -- itu sumber
+   masalah "kok masih ke sandbox" yang sempat bikin bingung. Sekarang:
+   - default fallback URL diganti ke PRODUCTION (bukan sandbox lagi)
+   - kalau MIDTRANS_CLIENT_KEY tidak terbaca sama sekali, langsung
+     gagal dengan pesan jelas, bukan lanjut diam-diam pakai key kosong */
 let snapReady = false;
 function loadMidtransSnap() {
   return new Promise((resolve, reject) => {
     if (snapReady && window.snap) { resolve(); return; }
+
+    if (typeof MIDTRANS_CLIENT_KEY === "undefined" || !MIDTRANS_CLIENT_KEY) {
+      console.error("MIDTRANS_CLIENT_KEY tidak terbaca -- cek config.js (gagal dimuat / duplicate <script> / syntax error).");
+      reject(new Error("Konfigurasi pembayaran belum siap. Coba refresh halaman ini, kalau masih gagal hubungi admin."));
+      return;
+    }
+
     const script = document.createElement("script");
     script.src = (typeof MIDTRANS_SNAP_URL !== "undefined" && MIDTRANS_SNAP_URL) ||
-      "https://app.sandbox.midtrans.com/snap/snap.js";
-    script.setAttribute("data-client-key",
-      (typeof MIDTRANS_CLIENT_KEY !== "undefined" && MIDTRANS_CLIENT_KEY) || "");
+      "https://app.midtrans.com/snap/snap.js"; // default PRODUCTION, bukan sandbox lagi
+    script.setAttribute("data-client-key", MIDTRANS_CLIENT_KEY);
     script.onload = () => { snapReady = true; resolve(); };
     script.onerror = reject;
     document.body.appendChild(script);
@@ -281,7 +295,7 @@ async function beliModul(modul) {
     });
   } catch (err) {
     console.error(err);
-    alert("Gagal memulai pembayaran.");
+    alert(err.message || "Gagal memulai pembayaran.");
   }
 }
 
