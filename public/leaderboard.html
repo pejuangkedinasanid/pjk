@@ -208,12 +208,110 @@ body::after{content:"";position:fixed;bottom:-200px;left:-200px;width:500px;heig
 
     <div class="filter-group">
       <div class="filter-label">Provinsi</div>
-      <input class="filter-input" type="text" id="filterProvinsi" placeholder="Cari provinsi..." oninput="debounceFilter()">
+      <select class="filter-select" id="filterProvinsi" onchange="onFilterChange()">
+        <option value="">Semua Provinsi</option>
+        <option>Aceh</option>
+        <option>Bali</option>
+        <option>Banten</option>
+        <option>Bengkulu</option>
+        <option>DI Yogyakarta</option>
+        <option>DKI Jakarta</option>
+        <option>Gorontalo</option>
+        <option>Jambi</option>
+        <option>Jawa Barat</option>
+        <option>Jawa Tengah</option>
+        <option>Jawa Timur</option>
+        <option>Kalimantan Barat</option>
+        <option>Kalimantan Selatan</option>
+        <option>Kalimantan Tengah</option>
+        <option>Kalimantan Timur</option>
+        <option>Kalimantan Utara</option>
+        <option>Kepulauan Bangka Belitung</option>
+        <option>Kepulauan Riau</option>
+        <option>Lampung</option>
+        <option>Maluku</option>
+        <option>Maluku Utara</option>
+        <option>Nusa Tenggara Barat</option>
+        <option>Nusa Tenggara Timur</option>
+        <option>Papua</option>
+        <option>Papua Barat</option>
+        <option>Papua Barat Daya</option>
+        <option>Papua Pegunungan</option>
+        <option>Papua Selatan</option>
+        <option>Papua Tengah</option>
+        <option>Riau</option>
+        <option>Sulawesi Barat</option>
+        <option>Sulawesi Selatan</option>
+        <option>Sulawesi Tengah</option>
+        <option>Sulawesi Tenggara</option>
+        <option>Sulawesi Utara</option>
+        <option>Sumatera Barat</option>
+        <option>Sumatera Selatan</option>
+        <option>Sumatera Utara</option>
+      </select>
     </div>
 
     <div class="filter-group">
       <div class="filter-label">Sekolah Kedinasan</div>
-      <input class="filter-input" type="text" id="filterSekolah" placeholder="Cari sekolah..." oninput="debounceFilter()">
+      <select class="filter-select" id="filterSekolah" onchange="onFilterChange()">
+        <option value="">Semua Sekolah</option>
+        <optgroup label="— Kementerian Keuangan —">
+          <option value="PKN STAN">PKN STAN (Politeknik Keuangan Negara STAN)</option>
+        </optgroup>
+        <optgroup label="— Kementerian Dalam Negeri —">
+          <option value="IPDN">IPDN (Institut Pemerintahan Dalam Negeri)</option>
+        </optgroup>
+        <optgroup label="— Badan Intelijen Negara —">
+          <option value="STIN">STIN (Sekolah Tinggi Intelijen Negara)</option>
+        </optgroup>
+        <optgroup label="— BSSN —">
+          <option value="Poltek SSN">Politeknik Siber dan Sandi Negara (Poltek SSN)</option>
+        </optgroup>
+        <optgroup label="— BMKG —">
+          <option value="STMKG">STMKG (Sekolah Tinggi Meteorologi Klimatologi dan Geofisika)</option>
+        </optgroup>
+        <optgroup label="— Kementerian Hukum —">
+          <option value="Poltekim">Poltekim (Politeknik Imigrasi)</option>
+          <option value="Poltekip">Poltekip (Politeknik Ilmu Pemasyarakatan)</option>
+        </optgroup>
+        <optgroup label="— Kementerian Perhubungan —">
+          <option value="STTD">STTD (Sekolah Tinggi Transportasi Darat)</option>
+          <option value="STIP">STIP (Sekolah Tinggi Ilmu Pelayaran)</option>
+          <option value="PKTJ">PKTJ (Politeknik Keselamatan Transportasi Jalan)</option>
+          <option value="PIP Semarang">PIP Semarang (Politeknik Ilmu Pelayaran Semarang)</option>
+          <option value="PIP Makassar">PIP Makassar (Politeknik Ilmu Pelayaran Makassar)</option>
+          <option value="Poltekpel Surabaya">Poltekpel Surabaya</option>
+          <option value="Poltekpel Barombong">Poltekpel Barombong</option>
+          <option value="Poltekpel Banten">Poltekpel Banten</option>
+          <option value="Poltekpel Sorong">Poltekpel Sorong</option>
+          <option value="Politeknik Penerbangan Indonesia Curug">Politeknik Penerbangan Indonesia Curug</option>
+          <option value="Politeknik Penerbangan Makassar">Politeknik Penerbangan Makassar</option>
+          <option value="Politeknik Penerbangan Jayapura">Politeknik Penerbangan Jayapura</option>
+          <option value="Politeknik Penerbangan Surabaya">Politeknik Penerbangan Surabaya</option>
+          <option value="Politeknik Penerbangan Medan">Politeknik Penerbangan Medan</option>
+          <option value="Politeknik Perkeretaapian Indonesia Madiun">Politeknik Perkeretaapian Indonesia Madiun</option>
+        </optgroup>
+        <optgroup label="— BPS —">
+          <option value="Politeknik Statistika STIS">Politeknik Statistika STIS</option>
+        </optgroup>
+        <optgroup label="— Kementerian ATR/BPN —">
+          <option value="STPN">STPN (Sekolah Tinggi Pertanahan Nasional)</option>
+        </optgroup>
+        <optgroup label="— TNI —">
+          <option value="AKMIL">AKMIL (Akademi Militer)</option>
+          <option value="AAL">AAL (Akademi Angkatan Laut)</option>
+          <option value="AAU">AAU (Akademi Angkatan Udara)</option>
+          <option value="AKABRI">Sekolah Calon Perwira TNI</option>
+        </optgroup>
+        <optgroup label="— POLRI —">
+          <option value="AKPOL">AKPOL (Akademi Kepolisian)</option>
+          <option value="SIPSS">SIPSS (Sekolah Inspektur Polisi Sumber Sarjana)</option>
+          <option value="BINTARA POLRI">Bintara Polri</option>
+        </optgroup>
+        <optgroup label="— Lainnya —">
+          <option value="STIN Lainnya">Sekolah Kedinasan Lainnya</option>
+        </optgroup>
+      </select>
     </div>
   </div>
 
@@ -261,7 +359,6 @@ let currentTotal   = 0;
 let userGlobalRank = 0;
 let userTryoutRank = 0;
 let userData       = null;
-let debounceTimer  = null;
 const LIMIT        = 10;
 
 /* ── INIT ── */
@@ -497,11 +594,6 @@ function setType(type, btn) {
 }
 
 function onFilterChange() { currentPage = 1; load(); }
-
-function debounceFilter() {
-  if (debounceTimer) clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => { currentPage = 1; load(); }, 500);
-}
 
 /* ── SIDEBAR ── */
 const sidebar   = document.getElementById("sidebar");
