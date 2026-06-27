@@ -228,7 +228,7 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
   <div class="modal">
     <button class="modal-close" onclick="closeModal('modalSemua')">&#x2715;</button>
     <div class="modal-title" id="modalSemuaTitle">Pilih Cara Akses</div>
-    <div class="modal-desc">Tryout ini bisa dikerjakan gratis (butuh password) atau dengan kuota premium (langsung akses + pembahasan lengkap).</div>
+    <div class="modal-desc" id="modalSemuaDesc">Tryout ini bisa dikerjakan gratis (butuh password) atau dengan kuota premium (langsung akses + pembahasan lengkap).</div>
     <div class="modal-actions" id="modalSemuaActions"></div>
   </div>
 </div>
@@ -373,8 +373,13 @@ function renderCards(rows) {
         btnAction = "upgrade";
       }
     } else if (akses === "semua") {
-      if (sudahGratis && !sudahPremium && !isUserPremium) {
-        // Sudah habis kesempatan gratis, dan belum premium -> langsung upgrade
+      if (sudahPremium) {
+        // Sudah pernah pakai jalur premium -> tidak perlu modal pilihan lagi,
+        // langsung tawarkan "kerjakan lagi" lewat jalur premium (tanpa kuota).
+        btnLabel  = "&#11088; Kerjakan Lagi (Tanpa Kuota)";
+        btnCls    = "blue";
+        btnAction = "modal-premium";
+      } else if (sudahGratis && !isUserPremium) {
         btnLabel  = "Upgrade ke Premium untuk Mengerjakan Berkali-kali";
         btnCls    = "neutral";
         btnAction = "upgrade";
@@ -424,6 +429,14 @@ function handleStart(id, action) {
 }
 
 function bukaModalPassword(row) {
+  // Lapis pertahanan utama: kalau row ini sudah pernah diakses lewat
+  // jalur PREMIUM, jalur gratis ditutup total -- user cukup lanjut
+  // mengerjakan ulang lewat jalur premium (tanpa potong kuota lagi).
+  if (row.sudah_premium) {
+    bukaModalPremium(row);
+    return;
+  }
+
   // Lapis pertahanan tambahan: kalau row ini ternyata sudah pernah
   // diselesaikan secara gratis (misal data sempat usang di klien),
   // jangan tampilkan modal password sama sekali.
@@ -584,34 +597,46 @@ function konfirmasiPakaKuota() {
 function bukaModalSemua(row) {
   document.getElementById("modalSemuaTitle").textContent = row.nama || "Pilih Cara Akses";
 
-  const el = document.getElementById("modalSemuaActions");
-  const labelPremium = row.sudah_premium
-    ? "&#11088; Kerjakan Lagi (Tanpa Kuota)"
-    : "&#11088; Akses Premium (sisa " + kuotaUser + " kuota)";
-
+  const el      = document.getElementById("modalSemuaActions");
+  const descEl  = document.getElementById("modalSemuaDesc");
   let html = "";
 
-  if (isUserPremium || row.sudah_premium) {
+  if (row.sudah_premium) {
+    // ===== SUDAH PERNAH PAKAI JALUR PREMIUM =====
+    // Jalur gratis ditutup total. User cukup lanjut mengerjakan ulang
+    // lewat jalur premium tanpa potong kuota tambahan.
+    descEl.textContent = "Kamu sudah membuka tryout ini dengan Premium. Lanjutkan mengerjakan kapan saja tanpa potong kuota tambahan.";
+
     html += '<button class="modal-btn modal-btn-premium" onclick="closeModal(\'modalSemua\');bukaModalPremium(activeTryout)">' +
-      labelPremium +
+      '&#11088; Kerjakan Lagi (Tanpa Kuota)' +
     '</button>';
-  }
-
-  if (row.sudah_gratis) {
-    html += '<div class="modal-note">Kamu sudah pernah mengerjakan tryout ini secara gratis. Upgrade ke Premium untuk mengerjakan berkali-kali.</div>';
-    if (!isUserPremium && !row.sudah_premium) {
-      html += '<button class="modal-btn modal-btn-gratis" onclick="window.location.href=\'premium.html\'">Upgrade ke Premium</button>';
-    }
+    html += '<div class="modal-note">Opsi gratis tidak tersedia lagi karena tryout ini sudah pernah diakses dengan Premium.</div>';
   } else {
-    html += '<button class="modal-btn modal-btn-gratis" onclick="closeModal(\'modalSemua\');bukaModalPassword(activeTryout)">' +
-      'Kerjakan Gratis (butuh password)' +
-    '</button>';
-    if (!isUserPremium && !row.sudah_premium) {
-      html += '<button class="modal-btn modal-btn-premium" onclick="window.location.href=\'premium.html\'">&#11088; Silakan Upgrade</button>';
-    }
-  }
+    // ===== BELUM PERNAH PAKAI JALUR PREMIUM =====
+    descEl.textContent = "Tryout ini bisa dikerjakan gratis (butuh password) atau dengan kuota premium (langsung akses + pembahasan lengkap).";
 
-  html += '<div class="modal-note">Mode premium: pembahasan + PDF + analisis nilai mendalam</div>';
+    if (isUserPremium) {
+      html += '<button class="modal-btn modal-btn-premium" onclick="closeModal(\'modalSemua\');bukaModalPremium(activeTryout)">' +
+        '&#11088; Akses Premium (sisa ' + kuotaUser + ' kuota)' +
+      '</button>';
+    }
+
+    if (row.sudah_gratis) {
+      html += '<div class="modal-note">Kamu sudah pernah mengerjakan tryout ini secara gratis. Upgrade ke Premium untuk mengerjakan berkali-kali.</div>';
+      if (!isUserPremium) {
+        html += '<button class="modal-btn modal-btn-gratis" onclick="window.location.href=\'premium.html\'">Upgrade ke Premium</button>';
+      }
+    } else {
+      html += '<button class="modal-btn modal-btn-gratis" onclick="closeModal(\'modalSemua\');bukaModalPassword(activeTryout)">' +
+        'Kerjakan Gratis (butuh password)' +
+      '</button>';
+      if (!isUserPremium) {
+        html += '<button class="modal-btn modal-btn-premium" onclick="window.location.href=\'premium.html\'">&#11088; Silakan Upgrade</button>';
+      }
+    }
+
+    html += '<div class="modal-note">Mode premium: pembahasan + PDF + analisis nilai mendalam</div>';
+  }
 
   el.innerHTML = html;
   document.getElementById("modalSemua").classList.add("show");

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Riwayat Tryout | Pejuang Kedinasan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="/vendor/chart.umd.min.js"></script>
+<style>
+:root{--navy:#0f172a;--navy2:#1e293b;--orange:#f97316;--orange2:#fb923c;--blue:#2563eb;--green:#16a34a;--purple:#7c3aed;--bg:#f5f7fb;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--greenbg:#dcfce7;--greentext:#166534;--redbg:#fee2e2;--redtext:#991b1b;--shadow:0 20px 50px rgba(15,23,42,.08);}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Open Sans',sans-serif;}
+html,body{height:100%;}
+body{background:var(--bg);min-height:100vh;}
+
+.topbar{background:linear-gradient(135deg,#0f172a,#1e293b);color:white;padding:16px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;box-shadow:0 8px 20px rgba(15,23,42,.15);}
+.brand-title{font-weight:800;font-size:16px;letter-spacing:.3px;}
+.topbar-tryout{font-size:13px;font-weight:700;background:rgba(255,255,255,.1);padding:9px 16px;border-radius:12px;max-width:320px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+
+.wrap{max-width:980px;margin:0 auto;padding:32px 20px 60px;}
+
+.loading-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;color:var(--muted);gap:14px;}
+.spinner{width:40px;height:40px;border-radius:50%;border:3px solid #e2e8f0;border-top-color:var(--orange);animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.page-header{margin-bottom:22px;}
+.eyebrow{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
+.page-title{font-size:24px;font-weight:800;color:var(--navy);}
+
+.stat-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+@media(max-width:700px){.stat-bar{grid-template-columns:1fr;}}
+.stat-card{background:white;border-radius:20px;padding:20px 22px;box-shadow:var(--shadow);}
+.stat-label{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+.stat-value{font-size:30px;font-weight:800;color:var(--navy);line-height:1;}
+.stat-sub{font-size:12px;color:var(--muted);margin-top:4px;}
+
+.section-card{background:white;border-radius:24px;padding:24px;box-shadow:var(--shadow);margin-bottom:22px;}
+.section-title{font-size:14px;font-weight:800;color:var(--navy);text-transform:uppercase;letter-spacing:.5px;margin-bottom:16px;}
+
+/* DAFTAR PERCOBAAN */
+.attempt-row{display:flex;align-items:center;gap:14px;padding:16px;border-radius:16px;background:#f8fafc;border:1px solid var(--border);margin-bottom:10px;flex-wrap:wrap;}
+.attempt-badge{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.attempt-info{flex:1;min-width:160px;}
+.attempt-tanggal{font-size:12px;color:var(--muted);font-weight:600;}
+.attempt-scores{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--text);margin-top:4px;}
+.attempt-scores b{color:var(--navy);}
+.attempt-status{display:inline-block;padding:6px 14px;border-radius:999px;font-size:11px;font-weight:800;white-space:nowrap;}
+.attempt-status.lulus{background:var(--greenbg);color:var(--greentext);}
+.attempt-status.tidak{background:var(--redbg);color:var(--redtext);}
+.btn-detail{padding:11px 18px;border-radius:12px;border:2px solid var(--border);background:white;color:var(--navy);font-weight:700;font-size:13px;text-decoration:none;white-space:nowrap;transition:.2s;font-family:inherit;}
+.btn-detail:hover{border-color:var(--navy);background:#f0f5ff;}
+
+/* GRAFIK */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:760px){.chart-grid{grid-template-columns:1fr;}}
+.chart-box{background:#f8fafc;border:1px solid var(--border);border-radius:18px;padding:16px 16px 8px;}
+.chart-box-title{font-size:12.5px;font-weight:800;color:var(--navy);margin-bottom:10px;letter-spacing:.3px;}
+.chart-canvas-wrap{position:relative;height:220px;}
+
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty-state b{display:block;font-size:18px;color:var(--navy);margin-bottom:8px;}
+
+.upsell-box{margin-top:18px;background:linear-gradient(135deg,#fff7ed,#fff1e0);border:1px solid #fed7aa;border-radius:18px;padding:22px;text-align:center;}
+.upsell-icon{font-size:30px;margin-bottom:10px;}
+.upsell-text{font-size:13.5px;color:#9a3412;line-height:1.7;margin-bottom:16px;}
+.upsell-text b{color:#c2410c;}
+.btn-upsell{display:inline-block;padding:13px 26px;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:800;font-size:14px;text-decoration:none;transition:.2s;}
+.btn-upsell:hover{opacity:.92;}
+
+.link-secondary{display:inline-block;padding:14px 22px;border-radius:14px;background:#f1f5f9;color:var(--navy);font-weight:700;font-size:14px;text-decoration:none;transition:.2s;}
+.link-secondary:hover{background:#e2e8f0;}
+</style>
+</head>
+<body>
+
+<div class="loading-wrap" id="loadingWrap">
+  <div class="spinner"></div>
+  <div>Memuat riwayat tryout...</div>
+</div>
+
+<div id="riwayatWrap" style="display:none;">
+
+  <div class="topbar">
+    <div class="brand-title">PEJUANG KEDINASAN</div>
+    <div class="topbar-tryout" id="topbarTryout">Riwayat Tryout</div>
+  </div>
+
+  <div class="wrap">
+
+    <div class="page-header">
+      <div class="eyebrow">Riwayat Pengerjaan</div>
+      <div class="page-title" id="namaTryout">Memuat...</div>
+    </div>
+
+    <div class="stat-bar" id="statBar">
+      <div class="stat-card">
+        <div class="stat-label">Jumlah Percobaan</div>
+        <div class="stat-value" id="statJumlah">0</div>
+        <div class="stat-sub">total sesi diselesaikan</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Nilai Terbaik</div>
+        <div class="stat-value" id="statTerbaik">0</div>
+        <div class="stat-sub" id="statTerbaikSub">-</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rata-rata Nilai</div>
+        <div class="stat-value" id="statRata">0</div>
+        <div class="stat-sub">dari semua percobaan</div>
+      </div>
+    </div>
+
+    <!-- ===== TAMPILAN AKUN GRATIS: cuma percobaan pertama + upsell premium ===== -->
+    <div class="section-card" id="sectionGratis" style="display:none;">
+      <div class="section-title">Hasil Percobaan Pertama</div>
+      <div id="attemptGratis"></div>
+
+      <div class="upsell-box">
+        <div class="upsell-icon">&#11088;</div>
+        <div class="upsell-text">
+          <b>Tryout ini diakses secara gratis</b>, jadi hanya hasil percobaan pertama yang bisa dilihat.<br>
+          Kalau kamu ingin mengerjakan tryout ini <b>berkali-kali</b> dan melihat <b>progres perkembangan nilai</b> &mdash; lengkap dengan riwayat semua percobaan dan grafiknya &mdash; upgrade ke <b>Premium</b> dulu, ya.
+        </div>
+        <a class="btn-upsell" href="premium.html">&#11088; Upgrade ke Premium</a>
+      </div>
+    </div>
+
+    <!-- ===== TAMPILAN AKUN PREMIUM: daftar lengkap percobaan + grafik ===== -->
+    <div class="section-card" id="sectionDaftar">
+      <div class="section-title">Daftar Percobaan</div>
+      <div id="attemptList"></div>
+    </div>
+
+    <div class="section-card" id="sectionGrafik">
+      <div class="section-title">Grafik Perkembangan Nilai</div>
+      <div class="chart-grid">
+        <div class="chart-box">
+          <div class="chart-box-title">Total Nilai</div>
+          <div class="chart-canvas-wrap"><canvas id="chartTotal"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-box-title">TWK</div>
+          <div class="chart-canvas-wrap"><canvas id="chartTwk"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-box-title">TIU</div>
+          <div class="chart-canvas-wrap"><canvas id="chartTiu"></canvas></div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-box-title">TKP</div>
+          <div class="chart-canvas-wrap"><canvas id="chartTkp"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <a class="link-secondary" href="tryout-saya.html">&larr; Kembali ke Tryout Saya</a>
+
+  </div>
+
+</div>
+
+<script>
+const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+const rawUser = localStorage.getItem("user");
+if (!rawUser) window.location.href = "login.html";
+const user = JSON.parse(rawUser);
+
+const params   = new URLSearchParams(window.location.search);
+const tryoutId = params.get("id");
+if (!tryoutId) window.location.href = "tryout-saya.html";
+
+let tryoutMeta  = null;
+let riwayatRows = []; // urut dari percobaan pertama -> terakhir
+let pgData      = { twk: null, tiu: null, tkp: null };
+let chartInstances = [];
+
+function fmtTanggal(dateStr) {
+  if (!dateStr) return "-";
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return "-";
+  const jam = String(d.getHours()).padStart(2,"0");
+  const menit = String(d.getMinutes()).padStart(2,"0");
+  return d.getDate() + " " + BULAN[d.getMonth()] + " " + d.getFullYear() + ", " + jam + ":" + menit;
+}
+
+function ambilTotal(row) { return row.nilai_total ?? row.nilai ?? 0; }
+function ambilTwk(row)   { return row.nilai_twk ?? 0; }
+function ambilTiu(row)   { return row.nilai_tiu ?? 0; }
+function ambilTkp(row)   { return row.nilai_tkp ?? 0; }
+
+async function loadTryoutMeta() {
+  try {
+    const res  = await fetch("/api/tryout/akses?email=" + encodeURIComponent(user.email));
+    const json = await res.json();
+    const rows = json.data || [];
+    tryoutMeta = rows.find(r => String(r.tryout_id) === String(tryoutId)) || null;
+  } catch (e) { console.error("loadTryoutMeta:", e); }
+}
+
+async function loadRiwayat() {
+  try {
+    const res  = await fetch("/api/tryout/riwayat?email=" + encodeURIComponent(user.email));
+    const json = await res.json();
+    const all  = json.data || [];
+    let rows = all.filter(h => String(h.tryout_id) === String(tryoutId) && h.selesai);
+    // Urutkan dari percobaan PERTAMA (paling lama) -> TERAKHIR (paling baru)
+    rows.sort((a, b) => new Date(a.created_at || a.dibuka_at || 0) - new Date(b.created_at || b.dibuka_at || 0));
+    riwayatRows = rows;
+  } catch (e) { console.error("loadRiwayat:", e); }
+}
+
+// Passing grade biasanya melekat pada tryout itu sendiri (bukan per-percobaan).
+// Diambil dari endpoint hasil percobaan terakhir, lalu dipakai untuk semua baris.
+async function loadPassingGrade() {
+  if (!riwayatRows.length) return;
+  const last = riwayatRows[riwayatRows.length - 1];
+  try {
+    const url = "/api/tryout/hasil?email=" + encodeURIComponent(user.email) +
+      "&tryout_id=" + tryoutId + (last.id ? "&hasil_id=" + encodeURIComponent(last.id) : "");
+    const res  = await fetch(url);
+    const json = await res.json();
+    if (json.success && json.data) {
+      pgData.twk = json.data.pg_twk ?? null;
+      pgData.tiu = json.data.pg_tiu ?? null;
+      pgData.tkp = json.data.pg_tkp ?? null;
+      if (!tryoutMeta) tryoutMeta = { nama: json.data.nama };
+    }
+  } catch (e) { console.error("loadPassingGrade:", e); }
+}
+
+function hitungLulus(nilai, pg) {
+  if (pg === null || pg === undefined) return null;
+  return Number(nilai) >= Number(pg);
+}
+
+function renderStat() {
+  const totals = riwayatRows.map(ambilTotal);
+  document.getElementById("statJumlah").textContent = riwayatRows.length;
+
+  if (totals.length) {
+    const terbaik = Math.max(...totals);
+    const rata = Math.round((totals.reduce((a,b)=>a+b,0) / totals.length) * 10) / 10;
+    const idxTerbaik = totals.lastIndexOf(terbaik);
+    document.getElementById("statTerbaik").textContent = terbaik;
+    document.getElementById("statTerbaikSub").textContent = "Percobaan ke-" + (idxTerbaik + 1);
+    document.getElementById("statRata").textContent = rata;
+  }
+}
+
+function buatAttemptRowHtml(row, no) {
+  const total    = ambilTotal(row);
+  const twk      = ambilTwk(row);
+  const tiu      = ambilTiu(row);
+  const tkp      = ambilTkp(row);
+  const tanggal  = fmtTanggal(row.created_at || row.dibuka_at);
+
+  const lulusTwk = hitungLulus(twk, pgData.twk);
+  const lulusTiu = hitungLulus(tiu, pgData.tiu);
+  const lulusTkp = hitungLulus(tkp, pgData.tkp);
+  let statusHtml = "";
+  if (lulusTwk !== null && lulusTiu !== null && lulusTkp !== null) {
+    const lulusSemua = lulusTwk && lulusTiu && lulusTkp;
+    statusHtml = '<span class="attempt-status ' + (lulusSemua ? "lulus" : "tidak") + '">' +
+      (lulusSemua ? "Lulus PG" : "Tidak Lulus PG") + '</span>';
+  }
+
+  const detailUrl = "hasil-tryout.html?id=" + tryoutId + (row.id ? "&hasil_id=" + encodeURIComponent(row.id) : "");
+
+  return '<div class="attempt-row">' +
+    '<div class="attempt-badge">#' + no + '</div>' +
+    '<div class="attempt-info">' +
+      '<div class="attempt-tanggal">' + tanggal + '</div>' +
+      '<div class="attempt-scores">' +
+        '<span>Total: <b>' + total + '</b></span>' +
+        '<span>TWK: <b>' + twk + '</b></span>' +
+        '<span>TIU: <b>' + tiu + '</b></span>' +
+        '<span>TKP: <b>' + tkp + '</b></span>' +
+      '</div>' +
+    '</div>' +
+    statusHtml +
+    '<a class="btn-detail" href="' + detailUrl + '">Lihat Detail</a>' +
+  '</div>';
+}
+
+function renderAttemptList() {
+  const wrap = document.getElementById("attemptList");
+
+  if (!riwayatRows.length) {
+    wrap.innerHTML = '<div class="empty-state"><b>Belum ada percobaan selesai</b>Riwayat akan muncul setelah kamu menyelesaikan tryout ini.</div>';
+    return;
+  }
+
+  wrap.innerHTML = riwayatRows.map((row, idx) => buatAttemptRowHtml(row, idx + 1)).join("");
+}
+
+// Tampilan akun GRATIS -- cuma percobaan pertama yang ditampilkan.
+function renderAttemptGratis() {
+  const wrap = document.getElementById("attemptGratis");
+
+  if (!riwayatRows.length) {
+    wrap.innerHTML = '<div class="empty-state"><b>Belum ada percobaan selesai</b>Riwayat akan muncul setelah kamu menyelesaikan tryout ini.</div>';
+    return;
+  }
+
+  // riwayatRows sudah urut dari yang PERTAMA -> TERAKHIR, jadi index 0 = percobaan pertama.
+  wrap.innerHTML = buatAttemptRowHtml(riwayatRows[0], 1);
+}
+
+function destroyCharts() {
+  chartInstances.forEach(c => c.destroy());
+  chartInstances = [];
+}
+
+function buatChartGaris(canvasId, label, data, warna, pg) {
+  const ctx = document.getElementById(canvasId).getContext("2d");
+  const labels = riwayatRows.map((_, i) => "Percobaan " + (i + 1));
+
+  const datasets = [{
+    label: label,
+    data: data,
+    borderColor: warna,
+    backgroundColor: warna + "22",
+    fill: true,
+    tension: .3,
+    pointRadius: 5,
+    pointBackgroundColor: warna,
+    pointBorderColor: "#fff",
+    pointBorderWidth: 2,
+    borderWidth: 2.5,
+  }];
+
+  if (pg !== null && pg !== undefined) {
+    datasets.push({
+      label: "Passing Grade",
+      data: labels.map(() => pg),
+      borderColor: "#94a3b8",
+      borderDash: [6, 5],
+      pointRadius: 0,
+      borderWidth: 1.5,
+      fill: false,
+    });
+  }
+
+  const chart = new Chart(ctx, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: pg !== null && pg !== undefined, position: "bottom", labels: { boxWidth: 12, font: { size: 11 } } }
+      },
+      scales: {
+        y: { beginAtZero: true, ticks: { font: { size: 11 } } },
+        x: { ticks: { font: { size: 11 } } }
+      }
+    }
+  });
+  chartInstances.push(chart);
+}
+
+function tampilkanGrafikError(pesan) {
+  const grafikGrid = document.querySelector(".chart-grid");
+  if (grafikGrid) {
+    grafikGrid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;">' +
+      '<b>Grafik tidak dapat dimuat</b>' + pesan +
+    '</div>';
+  }
+}
+
+function renderCharts() {
+  if (!riwayatRows.length) return;
+
+  // Chart.js dimuat dari CDN -- kalau gagal (mis. diblokir oleh pemblokir
+  // pelacakan/ad-blocker browser, atau koneksi internet bermasalah), jangan
+  // sampai itu menghentikan/merusak tampilan daftar percobaan di atasnya.
+  if (typeof Chart === "undefined") {
+    console.warn("Chart.js tidak termuat -- grafik dilewati, sisa halaman tetap ditampilkan.");
+    tampilkanGrafikError("Skrip grafik (Chart.js) gagal dimuat dari CDN. Coba refresh halaman, atau matikan sementara pemblokir pelacakan/ad-blocker untuk domain cdnjs.cloudflare.com.");
+    return;
+  }
+
+  try {
+    destroyCharts();
+    buatChartGaris("chartTotal", "Total Nilai", riwayatRows.map(ambilTotal), "#f97316", null);
+    buatChartGaris("chartTwk",   "TWK",         riwayatRows.map(ambilTwk),   "#2563eb", pgData.twk);
+    buatChartGaris("chartTiu",   "TIU",         riwayatRows.map(ambilTiu),   "#16a34a", pgData.tiu);
+    buatChartGaris("chartTkp",   "TKP",         riwayatRows.map(ambilTkp),   "#7c3aed", pgData.tkp);
+  } catch (err) {
+    console.error("renderCharts error:", err);
+    tampilkanGrafikError("Terjadi kesalahan saat menggambar grafik. Daftar percobaan di atas tetap bisa dilihat seperti biasa.");
+  }
+}
+
+function render() {
+  const namaDariRiwayat = riwayatRows.length ? riwayatRows[riwayatRows.length - 1].nama_tryout : null;
+  const nama = (tryoutMeta && tryoutMeta.nama) || namaDariRiwayat || "Tryout";
+  document.getElementById("namaTryout").textContent  = nama;
+  document.getElementById("topbarTryout").textContent = nama;
+
+  // Sumber kebenaran mode akses: tryoutMeta.mode dari /api/tryout/akses,
+  // yang sudah mengutamakan 'premium' kalau user pernah unlock lewat dua jalur.
+  const modeAkses = (tryoutMeta && tryoutMeta.mode) || "gratis";
+  const isPremiumAccess = modeAkses === "premium";
+
+  const sectionGratis = document.getElementById("sectionGratis");
+  const sectionDaftar = document.getElementById("sectionDaftar");
+  const sectionGrafik = document.getElementById("sectionGrafik");
+  const statBar       = document.getElementById("statBar");
+
+  if (isPremiumAccess) {
+    // ===== AKUN/AKSES PREMIUM: tampilan lengkap =====
+    sectionGratis.style.display = "none";
+    sectionDaftar.style.display = "block";
+    sectionGrafik.style.display = "block";
+    statBar.style.display       = "grid";
+
+    renderStat();
+    renderAttemptList();
+    renderCharts(); // dijaga oleh try/catch sendiri di atas -- tidak akan menjatuhkan render() lainnya
+  } else {
+    // ===== AKUN/AKSES GRATIS: cuma percobaan pertama + upsell premium =====
+    sectionGratis.style.display = "block";
+    sectionDaftar.style.display = "none";
+    sectionGrafik.style.display = "none";
+    statBar.style.display       = "none";
+
+    renderAttemptGratis();
+  }
+}
+
+async function init() {
+  try {
+    await Promise.all([loadTryoutMeta(), loadRiwayat()]);
+    await loadPassingGrade();
+    render();
+  } catch (err) {
+    // Hanya kegagalan FATAL (gagal ambil data riwayat itu sendiri) yang
+    // sampai ke sini -- ditampilkan inline, tanpa alert() yang blocking.
+    console.error(err);
+    document.getElementById("riwayatWrap").innerHTML =
+      '<div class="wrap"><div class="empty-state">' +
+        '<b>Gagal memuat riwayat tryout</b>Terjadi kesalahan saat mengambil data. Coba refresh halaman ini beberapa saat lagi.' +
+      '</div></div>';
+  } finally {
+    document.getElementById("loadingWrap").style.display = "none";
+    document.getElementById("riwayatWrap").style.display = "block";
+  }
+}
+
+init();
+</script>
+</body>
+</html>

@@ -28,7 +28,7 @@ body{background:var(--bg);min-height:100vh;}
 .summary-eyebrow{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
 .summary-nama{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:22px;}
 
-.total-score{font-size:54px;font-weight:800;color:var(--orange);line-height:1;}
+.total-score{font-size:54px;font-weight:800;color:var(--navy);line-height:1;}
 .total-label{font-size:13px;color:var(--muted);margin-top:4px;margin-bottom:16px;}
 
 .status-pill{display:inline-block;padding:9px 20px;border-radius:999px;font-size:13px;font-weight:800;letter-spacing:.3px;}
@@ -64,8 +64,13 @@ body{background:var(--bg);min-height:100vh;}
 .btn-pdf.locked{background:#f1f5f9;color:var(--muted);border:1px solid var(--border);}
 .btn-pdf.locked:hover{background:#e2e8f0;}
 
-.btn-leaderboard{width:100%;padding:16px;border:none;border-radius:14px;background:var(--navy);color:white;font-weight:700;font-size:14px;cursor:pointer;text-align:center;text-decoration:none;display:block;transition:.2s;}
+.btn-leaderboard{width:100%;padding:16px;border:none;border-radius:14px;background:var(--navy);color:white;font-weight:700;font-size:14px;cursor:pointer;text-align:center;text-decoration:none;display:block;transition:.2s;font-family:inherit;}
 .btn-leaderboard:hover{opacity:.9;}
+
+.btn-ulang{width:100%;padding:16px;border:none;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:700;font-size:14px;cursor:pointer;text-align:center;text-decoration:none;display:block;transition:.2s;font-family:inherit;}
+.btn-ulang:hover{opacity:.92;}
+.btn-ulang.locked{background:#f1f5f9;color:var(--muted);border:1px solid var(--border);}
+.btn-ulang.locked:hover{background:#e2e8f0;}
 
 .note-gratis{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:12px 14px;font-size:12.5px;color:#9a3412;line-height:1.6;margin-top:4px;}
 .note-gratis b{color:#c2410c;}
@@ -151,6 +156,9 @@ body{background:var(--bg);min-height:100vh;}
     <div class="action-card">
       <div class="action-title">Lainnya</div>
       <div class="secondary-links">
+        <button class="btn-ulang" id="btnUlang" onclick="handleKerjakanUlang()">
+          <span id="btnUlangLabel">&#11088; Kerjakan Ulang</span>
+        </button>
         <a class="btn-leaderboard" href="leaderboard.html">Lihat Ranking Leaderboard</a>
         <a class="link-secondary" href="tryout-tersedia.html">Kembali ke Tryout Tersedia</a>
         <a class="link-secondary" href="dashboard.html">Ke Dashboard</a>
@@ -164,8 +172,8 @@ body{background:var(--bg);min-height:100vh;}
 <!-- MODAL UPGRADE (untuk akun gratis) -->
 <div class="modal-bg" id="modalUpgrade">
   <div class="modal">
-    <div class="modal-title">Pembahasan PDF Terkunci</div>
-    <div class="modal-desc">Fitur download pembahasan PDF hanya tersedia untuk pengguna Premium. Upgrade sekarang untuk mendapatkan pembahasan lengkap setiap soal.</div>
+    <div class="modal-title" id="modalUpgradeTitle">Pembahasan PDF Terkunci</div>
+    <div class="modal-desc" id="modalUpgradeDesc">Fitur download pembahasan PDF hanya tersedia untuk pengguna Premium. Upgrade sekarang untuk mendapatkan pembahasan lengkap setiap soal.</div>
     <div class="modal-actions">
       <button class="modal-btn modal-btn-primary" onclick="window.location.href='premium.html'">Upgrade ke Premium</button>
       <button class="modal-btn modal-btn-secondary" onclick="closeModal('modalUpgrade')">Nanti Saja</button>
@@ -286,6 +294,34 @@ function render() {
     btnPdfLabel.textContent = "Download Pembahasan PDF (Premium)";
     noteGratis.style.display = "block";
   }
+
+  // Tombol Kerjakan Ulang -> hanya bisa langsung dipakai akun Premium.
+  // Akun Gratis tetap melihat tombolnya, tapi diarahkan untuk upgrade dulu.
+  const btnUlang = document.getElementById("btnUlang");
+  const btnUlangLabel = document.getElementById("btnUlangLabel");
+
+  if (aksesPremium) {
+    btnUlang.classList.remove("locked");
+    btnUlangLabel.innerHTML = "&#11088; Kerjakan Ulang (Tanpa Kuota)";
+  } else {
+    btnUlang.classList.add("locked");
+    btnUlangLabel.innerHTML = "&#11088; Kerjakan Ulang (Khusus Premium)";
+  }
+}
+
+function openUpgradeModal(context) {
+  const titleEl = document.getElementById("modalUpgradeTitle");
+  const descEl  = document.getElementById("modalUpgradeDesc");
+
+  if (context === "ulang") {
+    titleEl.textContent = "Kerjakan Ulang Khusus Premium";
+    descEl.textContent  = "Mengerjakan ulang tryout ini hanya tersedia untuk pengguna Premium. Upgrade sekarang supaya kamu bisa mengerjakan tryout ini berkali-kali tanpa potong kuota tambahan.";
+  } else {
+    titleEl.textContent = "Pembahasan PDF Terkunci";
+    descEl.textContent  = "Fitur download pembahasan PDF hanya tersedia untuk pengguna Premium. Upgrade sekarang untuk mendapatkan pembahasan lengkap setiap soal.";
+  }
+
+  document.getElementById("modalUpgrade").classList.add("show");
 }
 
 function handleDownloadPdf() {
@@ -297,7 +333,17 @@ function handleDownloadPdf() {
     alert("PDF pembahasan untuk tryout ini belum diunggah oleh admin.");
     return;
   }
-  document.getElementById("modalUpgrade").classList.add("show");
+  openUpgradeModal("pdf");
+}
+
+function handleKerjakanUlang() {
+  if (aksesPremium) {
+    // Langsung kirim ke halaman pengerjaan dengan mode premium,
+    // tanpa potong kuota tambahan (konsisten dengan logika di tryout-tersedia.html).
+    window.location.href = "kerjakan-tryout.html?id=" + tryoutId + "&mode=premium";
+    return;
+  }
+  openUpgradeModal("ulang");
 }
 
 document.getElementById("modalUpgrade").addEventListener("click", e => {
