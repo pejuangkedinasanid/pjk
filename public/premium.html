@@ -733,11 +733,135 @@ color:var(--muted);
 
 line-height:1.8;
 
+margin-bottom:18px;
+
 }
 
 .info-box b{
 
 color:var(--navy);
+
+}
+
+/* =========================
+KARTU BANTUAN ADMIN
+(pembayaran manual via WhatsApp)
+========================= */
+
+.admin-help-card{
+
+background:
+linear-gradient(135deg,#0f172a,#1e293b);
+
+border-radius:20px;
+
+padding:26px 28px;
+
+box-shadow:var(--shadow);
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+color:white;
+
+}
+
+.admin-help-left{
+
+display:flex;
+
+align-items:center;
+
+gap:16px;
+
+}
+
+.admin-help-icon{
+
+width:50px;
+
+height:50px;
+
+border-radius:14px;
+
+background:rgba(255,255,255,.1);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:24px;
+
+flex-shrink:0;
+
+}
+
+.admin-help-title{
+
+font-size:15px;
+
+font-weight:800;
+
+margin-bottom:5px;
+
+}
+
+.admin-help-desc{
+
+font-size:13px;
+
+opacity:.8;
+
+line-height:1.7;
+
+max-width:480px;
+
+}
+
+.btn-whatsapp{
+
+display:inline-flex;
+
+align-items:center;
+
+gap:8px;
+
+padding:13px 22px;
+
+border:none;
+
+border-radius:14px;
+
+font-weight:700;
+
+font-size:14px;
+
+cursor:pointer;
+
+color:white;
+
+background:#22c55e;
+
+text-decoration:none;
+
+white-space:nowrap;
+
+transition:.2s;
+
+}
+
+.btn-whatsapp:hover{
+
+background:#16a34a;
 
 }
 
@@ -1024,6 +1148,16 @@ padding:20px;
 font-size:30px;
 }
 
+.admin-help-card{
+flex-direction:column;
+text-align:center;
+}
+
+.admin-help-left{
+flex-direction:column;
+text-align:center;
+}
+
 }
 
 </style>
@@ -1183,6 +1317,22 @@ Pilih Paket Kuota
 💳 Pembayaran diproses aman lewat <b>Midtrans</b> (bisa QRIS, transfer bank, e-wallet, dan kartu kredit). Kuota & status Premium akan ter-update otomatis begitu pembayaran terkonfirmasi — biasanya beberapa detik setelah kamu menyelesaikan pembayaran.
 </div>
 
+<!-- BANTUAN ADMIN: PEMBAYARAN MANUAL -->
+<div class="admin-help-card">
+  <div class="admin-help-left">
+    <div class="admin-help-icon">&#128172;</div>
+    <div>
+      <div class="admin-help-title">Tidak bisa bayar lewat website?</div>
+      <div class="admin-help-desc">
+        Kalau kamu mengalami kendala saat melakukan pembayaran di atas (QRIS/transfer/e-wallet gagal, dsb), tenang — hubungi admin kami lewat WhatsApp untuk <b style="color:white;">pendaftaran Premium secara manual</b>. Admin akan membantu proses pembayaran dan aktivasi kuota kamu secara langsung.
+      </div>
+    </div>
+  </div>
+  <a class="btn-whatsapp" id="btnWaAdmin" href="#" target="_blank" rel="noopener">
+    &#128241; Hubungi Admin via WhatsApp
+  </a>
+</div>
+
 </div>
 <!-- END MAIN -->
 
@@ -1216,6 +1366,32 @@ AUTH GUARD
 const rawUser = localStorage.getItem("user");
 if (!rawUser) { window.location.href = "login.html"; }
 const user = JSON.parse(rawUser);
+
+/* =========================
+NOMOR WHATSAPP ADMIN
+GANTI nomor di bawah ini dengan nomor
+WhatsApp admin yang sebenarnya (format:
+62 diikuti nomor tanpa angka 0 di depan,
+tanpa spasi/tanda baca). Bisa juga
+dioverride lewat config.js dengan
+mendefinisikan variabel ADMIN_WHATSAPP.
+========================= */
+
+const ADMIN_WHATSAPP_DEFAULT = "6282372147249"; // TODO: ganti dengan nomor WhatsApp admin asli
+
+function setupWhatsAppLink(){
+  const nomor = (typeof ADMIN_WHATSAPP !== "undefined" && ADMIN_WHATSAPP) || ADMIN_WHATSAPP_DEFAULT;
+
+  const pesan = encodeURIComponent(
+    "Halo Admin Pejuang Kedinasan, saya ingin mendaftar Premium secara manual karena tidak bisa melakukan pembayaran lewat website.\n\n" +
+    "Nama: " + (user.nama || user.username || "-") + "\n" +
+    "Email: " + (user.email || "-")
+  );
+
+  document.getElementById("btnWaAdmin").href = "https://wa.me/" + nomor + "?text=" + pesan;
+}
+
+setupWhatsAppLink();
 
 /* =========================
 SIDEBAR TOGGLE (DESKTOP & MOBILE)
