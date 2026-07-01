@@ -94,11 +94,7 @@ body{min-height:100vh;background:linear-gradient(135deg,#14274e,#1f3f7a);display
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="config.js"></script>
 <script>
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 function showMsg(text, type) {
   const el = document.getElementById("msg");
   el.textContent = text;
@@ -115,27 +111,32 @@ async function login(event) {
   const password = document.getElementById("password").value;
 
   try {
-    const { data, error } = await supabaseClient
-      .from("users")
-      .select("*")
-      .eq("email", email)
-      .eq("password", password)
-      .single();
+    // PERUBAHAN UTAMA: login sekarang lewat API route di server,
+    // BUKAN query langsung ke Supabase dari browser. Password
+    // tidak pernah dibandingkan atau dibaca di sisi client lagi.
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
 
-    if (error || !data) {
-      showMsg(" Email atau password salah.", "error");
+    const result = await res.json();
+
+    if (!res.ok || !result.success) {
+      showMsg(result.message || "Email atau password salah.", "error");
       btn.disabled = false;
       btn.textContent = "Masuk Sekarang";
       return;
     }
 
-    // Simpan data user ke localStorage
-    localStorage.setItem("user", JSON.stringify(data));
+    // Hanya simpan data non-sensitif yang dikembalikan server
+    // (server sudah memastikan tidak ada field password di sini).
+    localStorage.setItem("user", JSON.stringify(result.user));
 
-    showMsg(" Login berhasil! Mengalihkan...", "success");
+    showMsg("Login berhasil! Mengalihkan...", "success");
 
     setTimeout(() => {
-      if (data.role === "admin" || data.role === "super_admin") {
+      if (result.user.role === "admin" || result.user.role === "super_admin") {
         window.location.href = "admin-dashboard.html";
       } else {
         window.location.href = "dashboard.html";

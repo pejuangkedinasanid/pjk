@@ -3,23 +3,21 @@
 // Body: { nama, username, email, password, whatsapp, instagram,
 //         provinsi, tahun_seleksi, sekolah_kedinasan, source }
 //
-// MENGGANTIKAN insert langsung dari browser (anon key) di register.html.
-// Akar masalah "Akun dibuat, tapi gagal kirim OTP: Email tidak
-// ditemukan" kemungkinan besar karena INSERT dari browser (anon key,
-// project A / RLS) dan pengecekan email di /api/otp/send (service
-// role, project B) tidak konsisten satu sama lain.
+// PERUBAHAN dari versi sebelumnya:
+// - Password sekarang di-hash (bcrypt via pgcrypto) di dalam database
+//   lewat fungsi register_user(), BUKAN disimpan apa adanya lagi.
+// - Cek-duplikat-email + insert sekarang ATOMIC dalam satu fungsi SQL
+//   (menghindari race condition dua pendaftaran email sama yang
+//   nyaris bersamaan lolos berdua).
+// - Pola service role key & alur kirim OTP TETAP SAMA seperti
+//   sebelumnya, tidak ada perubahan di situ.
 //
-// Dengan memindahkan INSERT ke sini, route ini dan /api/otp/send
-// SELALU memakai persis kredensial yang sama (NEXT_PUBLIC_SUPABASE_URL
-// + SUPABASE_SERVICE_ROLE_KEY dari environment server) -- jadi user
-// yang baru di-insert PASTI ketemu saat OTP dikirim, sekaligus tidak
-// lagi tergantung/terbentur RLS sama sekali (service role bypass RLS).
-//
-// CATATAN: password TETAP disimpan apa adanya (tidak di-hash) di sini,
-// supaya tidak merusak kompatibilitas dengan login.html yang mungkin
-// masih membandingkan plain text. Hashing password sebaiknya dibenahi
-// bersamaan dengan login.html -- beri tahu saya kalau mau sekalian
-// dibenarkan.
+// PENTING: pastikan 01_setup_auth_functions.sql dan
+// 02_update_register_function.sql sudah dijalankan di database
+// sebelum deploy perubahan ini, dan login.html sudah diganti ke
+// versi baru yang lewat /api/auth/login -- kalau tidak, user lama
+// yang loginnya masih pakai cara lama akan gagal karena passwordnya
+// sudah ter-hash.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -65,55 +63,44 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ── 1. Cek email sudah terdaftar atau belum ──
-    const { data: existing, error: errCek } = await supabase
-      .from("users")
-      .select("id")
-      .eq("email", emailLower)
-      .maybeSingle();
+    // ── Cek-duplikat + insert dilakukan ATOMIC di dalam fungsi SQL,
+    //    password di-hash di sana juga (crypt + gen_salt('bf')) ──
+    const { data, error } = await supabase.rpc("register_user", {
+      p_nama: nama,
+      p_username: username,
+      p_email: emailLower,
+      p_password: password,
+      p_whatsapp: whatsapp || null,
+      p_instagram: instagram || null,
+      p_provinsi: provinsi || null,
+      p_tahun_seleksi: tahun_seleksi || null,
+      p_sekolah_kedinasan: sekolah_kedinasan || null,
+      p_source: source || null,
+    });
 
-    if (errCek) {
-      return NextResponse.json({ success: false, message: errCek.message }, { status: 500 });
-    }
-
-    if (existing) {
+    if (error) {
+      if (error.message?.includes("EMAIL_TAKEN")) {
+        return NextResponse.json(
+          { success: false, message: "Email sudah terdaftar. Silakan login." },
+          { status: 409 }
+        );
+      }
+      console.error("Register RPC error:", error);
       return NextResponse.json(
-        { success: false, message: "Email sudah terdaftar. Silakan login." },
-        { status: 409 }
-      );
-    }
-
-    // ── 2. Insert user baru ──
-    const { data: inserted, error: errInsert } = await supabase
-      .from("users")
-      .insert({
-        nama,
-        username,
-        email: emailLower,
-        password, // lihat catatan di atas soal hashing
-        whatsapp: whatsapp || null,
-        instagram: instagram || null,
-        provinsi: provinsi || null,
-        tahun_seleksi: tahun_seleksi || null,
-        sekolah_kedinasan: sekolah_kedinasan || null,
-        source: source || null,
-        role: "peserta",
-        is_verified: false,
-        created_at: new Date().toISOString(),
-      })
-      .select("id, email")
-      .single();
-
-    if (errInsert) {
-      console.error("Insert user error:", errInsert);
-      return NextResponse.json(
-        { success: false, message: "Gagal membuat akun: " + errInsert.message },
+        { success: false, message: "Gagal membuat akun: " + error.message },
         { status: 500 }
       );
     }
 
-    // ── 3. Kirim OTP -- panggil /api/otp/send di server yang sama,
-    //        kredensial Supabase-nya otomatis konsisten ──
+    const inserted = data?.[0];
+    if (!inserted) {
+      return NextResponse.json(
+        { success: false, message: "Gagal membuat akun." },
+        { status: 500 }
+      );
+    }
+
+    // ── Kirim OTP -- sama persis seperti sebelumnya ──
     try {
       const otpRes = await fetch(new URL("/api/otp/send", req.url), {
         method: "POST",
@@ -123,9 +110,6 @@ export async function POST(req: NextRequest) {
       const otpJson = await otpRes.json();
 
       if (!otpJson.success) {
-        // Akun sudah dibuat, cuma OTP yang gagal -- tetap kasih tahu
-        // klien sukses=true biar bisa redirect ke halaman OTP dan
-        // pakai tombol "Kirim Ulang OTP" di sana.
         return NextResponse.json({
           success: true,
           otp_sent: false,
