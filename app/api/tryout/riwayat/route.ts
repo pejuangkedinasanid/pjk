@@ -1,18 +1,13 @@
 // FILE: app/api/tryout/riwayat/route.ts
-// GET /api/tryout/riwayat?email=...
+// GET /api/tryout/riwayat
 //
-// Mengambil seluruh riwayat hasil_tryout milik satu user (semua
-// percobaan, bukan cuma yang is_first_attempt), diurutkan dari yang
-// terbaru. Dipakai tryout-saya.html untuk menentukan status
-// "Selesai" / "Belum Dikerjakan" per tryout dan menampilkan nilai
-// percobaan terbaru.
-//
-// Dipindah ke server (service role) karena query ini sebelumnya
-// dilakukan langsung dari browser pakai anon key, yang kemungkinan
-// kena RLS (hasil_tryout berisi data per-user yang sensitif).
+// PERUBAHAN: email diambil dari session cookie, bukan query string.
+// Ini mencegah siapa pun melihat riwayat nilai tryout milik user lain
+// hanya dengan mengganti nilai ?email= di URL.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { getSessionUser } from "@/lib/session";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -21,20 +16,19 @@ const supabase = createClient(
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const email = searchParams.get("email");
+    const session = getSessionUser(req);
 
-    if (!email) {
+    if (!session) {
       return NextResponse.json(
-        { success: false, message: "Email wajib diisi." },
-        { status: 400 }
+        { success: false, message: "Sesi tidak valid, silakan login ulang." },
+        { status: 401 }
       );
     }
 
     const { data, error } = await supabase
       .from("hasil_tryout")
       .select("id, tryout_id, nama_tryout, nilai, nilai_twk, nilai_tiu, nilai_tkp, durasi_menit, mode, selesai, is_first_attempt, created_at")
-      .eq("email", email)
+      .eq("email", session.email)
       .order("created_at", { ascending: false });
 
     if (error) {

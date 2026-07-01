@@ -17,8 +17,6 @@ html{scroll-behavior:smooth;}
 body{background:linear-gradient(180deg,#eef2ff 0%,#f8fafc 45%,#ffffff 100%);display:flex;min-height:100vh;overflow-x:hidden;position:relative;}
 body::before{content:"";position:fixed;top:-250px;right:-250px;width:550px;height:550px;border-radius:50%;background:rgba(249,115,22,.12);filter:blur(90px);pointer-events:none;}
 body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;height:500px;border-radius:50%;background:rgba(37,99,235,.10);filter:blur(90px);pointer-events:none;}
-
-/* ── SIDEBAR ── */
 .sidebar{width:290px;background:linear-gradient(180deg,#0f172a,#1e293b);position:fixed;left:0;top:0;bottom:0;color:white;z-index:100;overflow-y:auto;display:flex;flex-direction:column;box-shadow:10px 0 40px rgba(0,0,0,.15);transform:translateX(0);transition:.3s;}
 .sidebar.closed{transform:translateX(-290px);}
 .sidebar-header{padding:30px 25px;border-bottom:1px solid rgba(255,255,255,.08);}
@@ -33,18 +31,12 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
 .sidebar-footer{padding:20px;border-top:1px solid rgba(255,255,255,.08);}
 .logout-btn{width:100%;padding:14px;border:none;border-radius:16px;background:rgba(255,255,255,.08);color:white;font-weight:700;cursor:pointer;transition:.3s;}
 .logout-btn:hover{background:rgba(255,255,255,.15);}
-
-/* ── HAMBURGER ── */
 .hamburger{display:flex;position:fixed;top:15px;left:15px;width:48px;height:48px;border:none;border-radius:14px;background:var(--navy);color:white;font-size:20px;cursor:pointer;z-index:200;align-items:center;justify-content:center;transition:.3s;}
 .hamburger.inside{left:227px;}
 .overlay{display:none;}
 .overlay.active{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:90;}
-
-/* ── MAIN ── */
 .main{margin-left:290px;width:100%;padding:30px;position:relative;z-index:2;transition:.3s;}
 .main.full{margin-left:0;}
-
-/* ── HERO ── */
 .hero-dashboard{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:30px;padding:40px;display:flex;justify-content:space-between;align-items:center;gap:30px;margin-bottom:25px;overflow:hidden;position:relative;color:white;box-shadow:0 25px 60px rgba(15,23,42,.2);}
 .hero-dashboard::before{content:"";position:absolute;top:-120px;right:-120px;width:350px;height:350px;border-radius:50%;background:rgba(249,115,22,.15);}
 .hero-left{flex:1;position:relative;z-index:2;}
@@ -62,8 +54,6 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
 .account-badge{font-size:11px;font-weight:800;letter-spacing:1px;margin-bottom:15px;}
 .account-card h2{font-size:36px;font-weight:900;margin-bottom:10px;}
 .quota-box{margin-top:15px;padding:12px;border-radius:12px;background:rgba(255,255,255,.15);text-align:center;font-weight:700;font-size:13px;}
-
-/* ── TRYOUT TERBARU ── */
 .section-title{font-size:22px;font-weight:800;color:var(--navy);margin-bottom:18px;}
 .latest-section{margin-bottom:25px;}
 .latest-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
@@ -76,21 +66,15 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
 .latest-btn{padding:12px 18px;border:none;border-radius:14px;background:linear-gradient(135deg,#f97316,#fb923c);color:white;font-weight:700;cursor:pointer;font-size:13px;transition:.2s;width:100%;}
 .latest-btn:hover{opacity:.9;}
 .latest-btn.disabled{background:#e2e8f0;color:#94a3b8;cursor:default;}
-
-/* ── STATS ── */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:25px;}
 .stat-card{background:white;padding:25px;border-radius:24px;box-shadow:var(--shadow);transition:.3s;}
 .stat-card:hover{transform:translateY(-5px);}
 .stat-title{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:10px;}
 .stat-value{font-size:38px;font-weight:800;color:var(--navy);}
 .stat-desc{font-size:13px;margin-top:8px;color:var(--muted);}
-
-/* ── CONTENT GRID ── */
 .content-grid{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-top:25px;}
 .card{background:white;border-radius:24px;padding:25px;box-shadow:var(--shadow);}
 .card-title{font-size:20px;font-weight:800;color:var(--navy);margin-bottom:20px;}
-
-/* ── RIWAYAT ── */
 .riwayat-table{width:100%;border-collapse:collapse;}
 .riwayat-table th{text-align:left;padding:12px 14px;font-size:12px;color:var(--muted);border-bottom:1px solid #e2e8f0;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
 .riwayat-table td{padding:13px 14px;border-bottom:1px solid #f1f5f9;font-size:13px;vertical-align:middle;}
@@ -99,18 +83,12 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
 .mode-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:10px;font-weight:700;}
 .mode-premium{background:#dbeafe;color:#1d4ed8;}
 .mode-gratis{background:#f1f5f9;color:#64748b;}
-
-/* ── NOTIFIKASI ── */
 .notif-item{padding:14px;border-radius:16px;background:#f8fafc;margin-bottom:10px;transition:.25s;}
 .notif-item:hover{background:#f1f5f9;}
 .notif-date{font-size:12px;color:var(--muted);margin-top:6px;}
-
-/* ── SPINNER ── */
 .spinner-wrap{text-align:center;padding:40px;color:var(--muted);}
 .spinner{width:32px;height:32px;border-radius:50%;border:3px solid #e2e8f0;border-top-color:var(--orange);animation:spin .8s linear infinite;margin:0 auto 12px;}
 @keyframes spin{to{transform:rotate(360deg);}}
-
-/* ── RESPONSIVE ── */
 @media(max-width:1000px){.main{margin-left:0 !important;}.stats{grid-template-columns:repeat(2,1fr);}.content-grid{grid-template-columns:1fr;}.hamburger.inside{left:15px;}}
 @media(max-width:700px){.stats{grid-template-columns:1fr;}.hero-dashboard{flex-direction:column;align-items:flex-start;}.hero-dashboard h1{font-size:32px;}.account-card{width:100%;}.main{padding:18px;}}
 </style>
@@ -120,7 +98,6 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
 <div class="overlay" id="overlay"></div>
 <button class="hamburger" id="hamburger">&#9776;</button>
 
-<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <div class="sidebar-header">
     <div class="brand-title">PEJUANG KEDINASAN</div>
@@ -146,10 +123,8 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="main" id="mainEl">
 
-  <!-- HERO -->
   <div class="hero-dashboard">
     <div class="hero-left">
       <div class="welcome-badge">&#128293; PEJUANG KEDINASAN 2026</div>
@@ -176,7 +151,6 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
     </div>
   </div>
 
-  <!-- TRYOUT TERBARU dari DB -->
   <div class="latest-section">
     <div class="section-title">&#128293; Tryout Terbaru</div>
     <div class="latest-grid" id="latestGrid">
@@ -184,7 +158,6 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
     </div>
   </div>
 
-  <!-- STATS real dari DB -->
   <div class="stats">
     <div class="stat-card">
       <div class="stat-title">Tryout Dikerjakan</div>
@@ -203,7 +176,6 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
     </div>
   </div>
 
-  <!-- CONTENT GRID -->
   <div class="content-grid">
     <div>
       <div class="card">
@@ -235,12 +207,10 @@ body::after{content:"";position:fixed;bottom:-250px;left:-250px;width:500px;heig
 <script>
 const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 
-/* ── AUTH ── */
 const rawUser = localStorage.getItem("user");
 if (!rawUser) window.location.href = "login.html";
 const user = JSON.parse(rawUser);
 
-/* ── INFO STATIS DARI localStorage ── */
 document.getElementById("greetingName").textContent =
   "Halo, " + (user.username || user.nama || "Pejuang") + "!";
 document.getElementById("targetSekolah").textContent =
@@ -250,12 +220,11 @@ document.getElementById("tahunSeleksi").textContent =
 const tcEl = document.getElementById("targetSekolahCard");
 if (tcEl) tcEl.textContent = user.sekolah_kedinasan || "Belum Dipilih";
 
-/* ════════════════════════════════
-   1. STATUS AKUN — dari /api/kuota/cek
-════════════════════════════════ */
+/* PERUBAHAN: tidak lagi kirim ?email=... -- endpoint baca dari
+   session cookie httpOnly yang otomatis ikut terkirim browser. */
 async function loadStatusAkun() {
   try {
-    const res  = await fetch("/api/kuota/cek?email=" + encodeURIComponent(user.email));
+    const res  = await fetch("/api/kuota/cek");
     const json = await res.json();
     if (!json.success) return;
 
@@ -287,14 +256,9 @@ async function loadStatusAkun() {
   }
 }
 
-/* ════════════════════════════════
-   2. TRYOUT TERBARU — dari /api/tryout
-      Pakai view tryout_publik, field real:
-      id, nama, deskripsi, durasi, jumlah_soal,
-      akses, status, tanggal_mulai, tanggal_selesai,
-      bebas_waktu, banner_url, created_at,
-      + sudah_gratis, sudah_premium (kalau email dikirim)
-════════════════════════════════ */
+/* CATATAN: /api/tryout MASIH pakai ?email=... untuk sekarang --
+   belum diperbaiki karena kode aslinya belum dikirim. Kirim isi
+   app/api/tryout/route.ts kalau mau ini ikut dirapikan juga. */
 async function loadTryoutTerbaru() {
   const grid = document.getElementById("latestGrid");
   try {
@@ -315,7 +279,6 @@ async function loadTryoutTerbaru() {
     const now = new Date();
 
     grid.innerHTML = json.data.map(r => {
-      // ── Badge akses ──
       const aksesMap = {
         gratis:  { text: "GRATIS",           bg: "#dcfce7", color: "#166534" },
         premium: { text: "PREMIUM",           bg: "#dbeafe", color: "#1d4ed8" },
@@ -323,7 +286,6 @@ async function loadTryoutTerbaru() {
       };
       const aMap = aksesMap[r.akses] || aksesMap.gratis;
 
-      // ── Status waktu ──
       const mulai = r.tanggal_mulai   ? new Date(r.tanggal_mulai)   : null;
       const sel   = r.tanggal_selesai ? new Date(r.tanggal_selesai) : null;
       let statusText = "TERSEDIA"; let statusBg = "#dcfce7"; let statusColor = "#166534";
@@ -335,9 +297,6 @@ async function loadTryoutTerbaru() {
         statusText = "BERAKHIR"; statusBg = "#f1f5f9"; statusColor = "#64748b";
       }
 
-      // ── Tombol aksi berdasarkan status user ──
-      // sudah_gratis  = sudah pernah selesai mode gratis
-      // sudah_premium = sudah pernah unlock premium (boleh ulang tanpa potong kuota)
       let btnLabel = "Ikuti Sekarang";
       let btnCls   = "latest-btn";
       let btnAksi  = "window.location.href='tryout-tersedia.html'";
@@ -381,26 +340,19 @@ async function loadTryoutTerbaru() {
   }
 }
 
-/* ════════════════════════════════
-   3. STATS + RIWAYAT
-      /api/tryout/riwayat → hasil_tryout user
-        field: id, tryout_id, nama_tryout, nilai, nilai_twk, nilai_tiu,
-               nilai_tkp, durasi_menit, mode, selesai, is_first_attempt, created_at
-      /api/tryout/akses → akses_tryout user
-        field: tryout_id, mode, sumber, dibuka_at, nama, durasi, jumlah_soal, ...
-════════════════════════════════ */
+/* PERUBAHAN: kedua fetch di bawah TIDAK LAGI kirim ?email=...
+   -- endpoint /api/tryout/riwayat dan /api/tryout/akses sekarang
+   baca identitas dari session cookie. */
 async function loadStatsAndRiwayat() {
   try {
     const [resRiwayat, resAkses] = await Promise.all([
-      fetch("/api/tryout/riwayat?email=" + encodeURIComponent(user.email)),
-      fetch("/api/tryout/akses?email="   + encodeURIComponent(user.email)),
+      fetch("/api/tryout/riwayat"),
+      fetch("/api/tryout/akses"),
     ]);
 
     const jsonRiwayat = await resRiwayat.json();
     const jsonAkses   = await resAkses.json();
 
-    // ── riwayat ──
-    // Hitung hanya yang selesai=true supaya percobaan setengah jalan tidak ikut
     const semua    = jsonRiwayat.success ? (jsonRiwayat.data || []) : [];
     const selesai  = semua.filter(r => r.selesai === true);
     const total    = selesai.length;
@@ -414,7 +366,6 @@ async function loadStatsAndRiwayat() {
       document.getElementById("sNilai").textContent = "—";
     }
 
-    // ── akses (tryout dimiliki = sudah pernah dibuka, gratis maupun premium) ──
     const aksesData = jsonAkses.success ? (jsonAkses.data || []) : [];
     document.getElementById("sDimiliki").textContent = aksesData.length;
 
@@ -468,9 +419,8 @@ function renderRiwayat(rows) {
   wrap.innerHTML = html + "</tbody></table>";
 }
 
-/* ════════════════════════════════
-   4. NOTIFIKASI — dari /api/notifikasi/terbaru
-════════════════════════════════ */
+/* CATATAN: /api/notifikasi/terbaru balas 404 -- kemungkinan route
+   belum dibuat. Bukan masalah keamanan, tidak diubah di sini. */
 async function loadNotif() {
   const wrap = document.getElementById("notifWrap");
   try {
@@ -498,7 +448,6 @@ async function loadNotif() {
   }
 }
 
-/* ── SIDEBAR ── */
 const sidebar   = document.getElementById("sidebar");
 const hamburger = document.getElementById("hamburger");
 const overlay   = document.getElementById("overlay");
@@ -510,10 +459,8 @@ overlay.addEventListener("click", closeSidebar);
 window.addEventListener("resize", () => window.innerWidth<=1000 ? closeSidebar() : openSidebar());
 function logout() { if (confirm("Yakin ingin keluar?")) { localStorage.removeItem("user"); window.location.href = "login.html"; } }
 
-/* ── INIT ── */
 async function init() {
   window.innerWidth <= 1000 ? closeSidebar() : openSidebar();
-  // Jalankan paralel supaya cepat
   await Promise.all([
     loadStatusAkun(),
     loadTryoutTerbaru(),

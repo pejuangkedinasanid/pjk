@@ -1,22 +1,13 @@
 // FILE: app/api/tryout/akses/route.ts
-// GET /api/tryout/akses?email=...
+// GET /api/tryout/akses
 //
-// Mengembalikan semua tryout yang sudah PERNAH DIBUKA oleh user ini --
-// baik lewat password gratis maupun lewat kuota premium -- terlepas
-// dari apakah sudah diselesaikan atau belum. Sumber datanya tabel
-// akses_tryout (dicatat oleh akses-gratis/verify untuk mode='gratis'
-// dan kuota/pakai untuk mode='premium'), digabung dengan data tryout
-// aslinya (nama, durasi, banner, dll).
-//
-// Kalau satu tryout punya akses GRATIS dan PREMIUM sekaligus (misal
-// user awalnya kerja gratis lalu upgrade dan unlock juga lewat kuota),
-// baris PREMIUM yang dipakai (fitur lebih lengkap), bukan ditampilkan
-// dua kali.
-//
-// Dipakai oleh tryout-saya.html.
+// PERUBAHAN: email diambil dari session cookie, bukan query string.
+// Mencegah siapa pun melihat daftar tryout yang sudah dibuka/dibeli
+// user lain hanya dengan mengganti ?email= di URL.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { getSessionUser } from "@/lib/session";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -25,15 +16,16 @@ const supabase = createClient(
 
 export async function GET(req: NextRequest) {
   try {
-    const { searchParams } = new URL(req.url);
-    const email = searchParams.get("email");
+    const session = getSessionUser(req);
 
-    if (!email) {
+    if (!session) {
       return NextResponse.json(
-        { success: false, message: "Email wajib diisi." },
-        { status: 400 }
+        { success: false, message: "Sesi tidak valid, silakan login ulang." },
+        { status: 401 }
       );
     }
+
+    const email = session.email;
 
     const { data: aksesRows, error: errAkses } = await supabase
       .from("akses_tryout")
@@ -90,7 +82,6 @@ export async function GET(req: NextRequest) {
       };
     });
 
-    // Urutkan berdasarkan terbaru dibuka
     hasil.sort((a, b) => new Date(b.dibuka_at).getTime() - new Date(a.dibuka_at).getTime());
 
     return NextResponse.json({ success: true, data: hasil });

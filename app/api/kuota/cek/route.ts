@@ -1,12 +1,14 @@
 // FILE: app/api/kuota/cek/route.ts
-// GET /api/kuota/cek?email=
+// GET /api/kuota/cek
 //
-// PERBAIKAN: sebelumnya route ini salah pakai nama kolom
-// "status_akun" — skema tabel "users" yang sebenarnya pakai
-// kolom "plan" ('free' | 'premium'). Disesuaikan di sini.
+// PERUBAHAN: email TIDAK LAGI diambil dari query string (?email=...)
+// karena itu bisa diubah bebas oleh siapa pun lewat URL/DevTools --
+// sekarang diambil dari session cookie httpOnly yang di-set saat
+// login, jadi dijamin sesuai user yang benar-benar sedang login.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { getSessionUser } from "@/lib/session";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -14,20 +16,19 @@ const supabase = createClient(
 );
 
 export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const email = searchParams.get("email");
+  const session = getSessionUser(req);
 
-  if (!email) {
+  if (!session) {
     return NextResponse.json(
-      { success: false, message: "Email wajib diisi." },
-      { status: 400 }
+      { success: false, message: "Sesi tidak valid, silakan login ulang." },
+      { status: 401 }
     );
   }
 
   const { data, error } = await supabase
     .from("users")
     .select("plan, kuota_tryout")
-    .eq("email", email)
+    .eq("email", session.email)
     .single();
 
   if (error || !data) {

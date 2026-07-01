@@ -2,15 +2,14 @@
 // POST /api/auth/login
 // Body: { email, password }
 //
-// Menggantikan query langsung dari browser di login.html lama
-// (yang membandingkan password mentah lewat anon key -- itu yang
-// menyebabkan kebocoran password semua user).
-//
-// Sengaja pakai pola PERSIS SAMA dengan register/route.ts: service
-// role key, supaya konsisten dan tidak terbentur RLS.
+// PERUBAHAN dari versi sebelumnya: setelah login berhasil, sekarang
+// juga men-set cookie session httpOnly. Endpoint lain (kuota/cek,
+// tryout/riwayat, dll) akan membaca identitas dari cookie ini,
+// BUKAN dari parameter email di URL yang bisa diubah bebas.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { createSessionCookieValue, SESSION_COOKIE_OPTIONS } from "@/lib/session";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -30,9 +29,6 @@ export async function POST(req: NextRequest) {
 
     const emailLower = String(email).trim().toLowerCase();
 
-    // Memanggil fungsi SQL login_user() -- password dibandingkan
-    // dengan hash bcrypt di sisi database, dan kolom password TIDAK
-    // PERNAH ikut ke response ini.
     const { data, error } = await supabase.rpc("login_user", {
       p_email: emailLower,
       p_password: password,
@@ -47,9 +43,6 @@ export async function POST(req: NextRequest) {
     }
 
     if (!data || data.length === 0) {
-      // Pesan generik -- tidak membedakan "email tidak ada" vs
-      // "password salah", supaya tidak membantu penyerang menebak
-      // email mana yang terdaftar.
       return NextResponse.json(
         { success: false, message: "Email atau password salah." },
         { status: 401 }
@@ -58,11 +51,22 @@ export async function POST(req: NextRequest) {
 
     const user = data[0];
 
-    // TODO (disarankan, tidak mendesak): ganti localStorage di
-    // frontend dengan cookie httpOnly yang di-set di sini, supaya
-    // tidak bisa dibaca skrip lain di halaman (proteksi XSS).
+    const response = NextResponse.json({ success: true, user });
 
-    return NextResponse.json({ success: true, user });
+    // Set cookie session httpOnly -- ini yang dipakai endpoint lain
+    // untuk tahu "siapa yang sedang login", bukan query string email.
+    const cookieValue = createSessionCookieValue({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    });
+    response.cookies.set(
+      SESSION_COOKIE_OPTIONS.name,
+      cookieValue,
+      SESSION_COOKIE_OPTIONS
+    );
+
+    return response;
   } catch (err: any) {
     console.error("auth/login error:", err);
     return NextResponse.json(
