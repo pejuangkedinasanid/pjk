@@ -2,36 +2,58 @@
 // POST /api/akses-gratis/verify
 // Body: { tryout_id, email, password }
 //
-// PERBAIKAN (revisi ini): sebelum cek password sama sekali, tolak dulu
-// kalau user ini SUDAH PERNAH menyelesaikan tryout ini dengan mode
-// gratis (hasil_tryout.selesai=true). Akun gratis hanya boleh
-// mengerjakan satu tryout satu kali; untuk mengulang harus upgrade ke
-// Premium. Ini lapisan keamanan tambahan di server — frontend
-// (tryout-tersedia.html) seharusnya sudah menyembunyikan tombol
-// "Kerjakan Sekarang" dan menggantinya dengan "Upgrade ke Premium"
-// memakai flag sudah_gratis dari /api/tryout, tapi endpoint ini tetap
-// menolak kalau diakses langsung / dimanipulasi dari klien.
+// PERBAIKAN (revisi ini): password_akses di database sekarang ADA YANG
+// SUDAH DI-HASH pakai bcrypt (contoh: "$2a$06$..."), tapi sebagian data
+// lama masih PLAIN TEXT (contoh: "456321"). Sebelumnya kode ini
+// membandingkan dengan "===" / "!==" langsung, yang PASTI GAGAL untuk
+// baris yang sudah di-hash (plain text tidak akan pernah sama persis
+// dengan hash-nya walau passwordnya benar).
 //
-// Kalau belum pernah selesai (termasuk yang baru mengisi password tapi
-// belum menyelesaikan ujian -> masih boleh resume), lanjut seperti biasa:
-//   1. Password BERSAMA di kolom tryout.password_akses.
-//   2. Password PER-USER di tabel akses_gratis.
+// Fungsi cocokPassword() di bawah ini mendeteksi otomatis:
+//   - Kalau nilai di DB berformat bcrypt ($2a$/$2b$/$2y$) -> pakai
+//     bcrypt.compare() untuk membandingkan dengan input user.
+//   - Kalau bukan (data lama, masih plain text) -> tetap dibandingkan
+//     sebagai string biasa, supaya tryout lama yang belum sempat
+//     di-hash tetap bisa dipakai tanpa perlu migrasi manual dulu.
 //
-// TAMBAHAN (revisi ini): setiap kali password berhasil diverifikasi,
-// dicatat ke tabel akses_tryout (mode='gratis') -- supaya
-// tryout-saya.html bisa menampilkan TO ini di tab "Belum Dikerjakan"
-// walau usernya belum pernah menyelesaikan ujiannya. Dicek dulu
-// (select) sebelum insert supaya tidak dobel kalau password yang sama
-// diverifikasi ulang sebelum tryout-nya selesai dikerjakan (misal user
-// resume sesi).
+// Sisanya (logika "sudah pernah selesai", catat ke akses_tryout, dst)
+// tidak diubah dari versi sebelumnya.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import bcrypt from "bcryptjs";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
+
+// Deteksi apakah sebuah string adalah hash bcrypt ($2a$/$2b$/$2y$...)
+function isBcryptHash(value: string): boolean {
+  return /^\$2[aby]\$\d{2}\$/.test(value);
+}
+
+// Bandingkan password input user dengan nilai yang tersimpan di DB.
+// Otomatis pakai bcrypt.compare kalau nilai DB adalah hash bcrypt,
+// atau perbandingan string biasa kalau masih data lama (plain text).
+async function cocokPassword(inputPassword: string, storedValue: string): Promise<boolean> {
+  if (!storedValue) return false;
+
+  const stored = storedValue.trim();
+  const input = inputPassword.trim();
+
+  if (isBcryptHash(stored)) {
+    try {
+      return await bcrypt.compare(input, stored);
+    } catch (err) {
+      console.error("bcrypt.compare error:", err);
+      return false;
+    }
+  }
+
+  // Fallback: data lama yang belum di-hash
+  return stored === input;
+}
 
 async function catatAksesGratis(email: string, tryout_id: number | string) {
   try {
@@ -99,13 +121,12 @@ export async function POST(req: NextRequest) {
       .eq("id", tryout_id)
       .single();
 
-    if (
-      tryoutRow &&
-      tryoutRow.password_akses &&
-      tryoutRow.password_akses.trim() === password.trim()
-    ) {
-      await catatAksesGratis(email, tryout_id);
-      return NextResponse.json({ success: true, message: "Akses diberikan (password bersama)." });
+    if (tryoutRow && tryoutRow.password_akses) {
+      const cocok = await cocokPassword(password, tryoutRow.password_akses);
+      if (cocok) {
+        await catatAksesGratis(email, tryout_id);
+        return NextResponse.json({ success: true, message: "Akses diberikan (password bersama)." });
+      }
     }
 
     // ── 2. Kalau tidak cocok, cek password PER-USER di akses_gratis ──
@@ -130,7 +151,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (aksesRow.password_akses !== password.trim()) {
+    const cocokPerUser = await cocokPassword(password, aksesRow.password_akses);
+    if (!cocokPerUser) {
       return NextResponse.json(
         { success: false, message: "Password salah. Silakan coba lagi." },
         { status: 401 }
