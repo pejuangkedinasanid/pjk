@@ -12,8 +12,6 @@
 html{scroll-behavior:smooth;}
 body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 .container{max-width:1280px;margin:auto;padding:0 24px;}
-
-/* NAVBAR */
 .navbar{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.95);backdrop-filter:blur(15px);border-bottom:1px solid #eef2f7;}
 .nav-content{height:85px;display:flex;align-items:center;justify-content:space-between;}
 .brand-title{font-size:30px;font-weight:800;color:var(--primary);line-height:1;letter-spacing:-1px;}
@@ -25,8 +23,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 .btn-login{padding:12px 22px;border-radius:12px;border:1px solid var(--border);text-decoration:none;font-weight:700;color:var(--primary);background:white;}
 .btn-register{padding:12px 24px;border-radius:12px;background:var(--primary);color:white;text-decoration:none;font-weight:700;}
 .btn-register:hover{opacity:.95;}
-
-/* HAMBURGER */
 .hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px;}
 .hamburger span{width:25px;height:3px;background:var(--primary);border-radius:20px;}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1200;}
@@ -35,8 +31,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 .sidebar-logo{font-size:26px;font-weight:800;color:var(--primary);margin-bottom:30px;}
 .sidebar a{display:block;padding:15px 0;text-decoration:none;font-weight:700;color:var(--primary);border-bottom:1px solid #edf2f7;}
 .sidebar-buttons{margin-top:20px;display:flex;flex-direction:column;gap:10px;}
-
-/* HERO */
 .hero{padding:100px 0;}
 .hero-content{display:grid;grid-template-columns:1.1fr .9fr;align-items:center;gap:70px;}
 .hero-badge{display:inline-block;padding:10px 18px;background:#e8eefc;color:var(--primary);font-weight:700;border-radius:999px;margin-bottom:25px;}
@@ -59,30 +53,22 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 .tryout-button{width:100%;padding:16px;background:var(--primary);border:none;border-radius:12px;color:white;font-size:15px;font-weight:700;cursor:pointer;margin-top:10px;}
 .skeleton{background:linear-gradient(90deg,#f1f5f9 25%,#e2e8f0 50%,#f1f5f9 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px;display:inline-block;}
 @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
-
-/* STATS */
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:25px;}
 .stat-card{background:white;padding:35px;border-radius:24px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.06);}
 .stat-card h2{font-size:42px;font-weight:800;color:#14274e;margin-bottom:10px;}
 .stat-card p{color:#64748b;font-size:15px;}
-
-/* FEATURES */
 .feature-grid-new{display:grid;grid-template-columns:repeat(4,1fr);gap:25px;}
 .feature-card{background:#f8fafc;padding:35px;border-radius:24px;transition:.3s;}
 .feature-card:hover{transform:translateY(-8px);box-shadow:0 15px 35px rgba(0,0,0,.08);}
 .feature-icon{font-size:42px;margin-bottom:20px;}
 .feature-card h3{font-size:22px;margin-bottom:15px;color:#14274e;}
 .feature-card p{font-size:18px;font-weight:400;line-height:1.8;color:#64748b;}
-
-/* STEPS */
 .steps-grid{display:flex;justify-content:center;align-items:center;gap:25px;flex-wrap:wrap;}
 .step-card{width:320px;background:white;padding:40px;border-radius:25px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,.05);}
 .step-number{font-size:52px;font-weight:800;color:#14274e;margin-bottom:15px;}
 .step-card h3{font-size:24px;margin-bottom:15px;color:#14274e;}
 .step-card p{font-size:18px;font-weight:400;line-height:1.8;color:#64748b;}
 .step-arrow{font-size:40px;font-weight:800;color:#14274e;}
-
-/* ANALISIS */
 .premium-eyebrow{display:inline-block;padding:10px 18px;background:#fff7ed;color:#c2410c;font-weight:700;border-radius:999px;margin-bottom:20px;}
 .analisis-preview{background:#14274e;padding:50px;border-radius:30px;display:grid;grid-template-columns:1fr 2fr;gap:30px;}
 .analisis-left{display:flex;flex-direction:column;gap:20px;}
@@ -102,8 +88,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 .rekap-fill{height:100%;border-radius:999px;}
 .rekap-fill.kuat{background:#16a34a;}
 .rekap-fill.lemah{background:#f59e0b;}
-
-/* PRICING */
 .pricing-grid-new{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
 .pricing-card{background:white;padding:45px;border-radius:30px;box-shadow:0 15px 35px rgba(0,0,0,.05);position:relative;}
 .pricing-card h3{font-size:28px;margin-bottom:15px;color:#14274e;}
@@ -112,19 +96,12 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 .featured-badge{position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:#14274e;color:white;padding:10px 20px;border-radius:999px;font-size:12px;font-weight:700;}
 .pricing-btn{width:100%;padding:16px;border:none;background:#14274e;color:white;border-radius:14px;font-weight:700;cursor:pointer;}
 .pricing-btn-outline{width:100%;padding:16px;background:white;border:2px solid #14274e;color:#14274e;border-radius:14px;font-weight:700;cursor:pointer;}
-
-/* LEADERBOARD */
 .leaderboard-card{background:white;border-radius:30px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.06);}
 .leaderboard-card table{width:100%;border-collapse:collapse;}
 .leaderboard-card thead{background:#14274e;color:white;}
 .leaderboard-card th{padding:20px;text-align:left;}
 .leaderboard-card td{padding:18px 20px;border-bottom:1px solid #eef2f7;font-size:14px;}
 .leaderboard-card tr:last-child td{border-bottom:none;}
-.plan-badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:700;}
-.plan-premium{background:#dbeafe;color:#1d4ed8;}
-.plan-gratis{background:#f1f5f9;color:#64748b;}
-
-/* TESTIMONIALS */
 .testimonial-modern{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;}
 .testimonial-card{background:white;padding:35px;border-radius:30px;box-shadow:0 15px 40px rgba(0,0,0,.05);}
 .stars{font-size:22px;margin-bottom:20px;}
@@ -132,23 +109,17 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 .user{display:flex;align-items:center;gap:15px;}
 .avatar{width:55px;height:55px;border-radius:50%;background:#14274e;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;}
 .user span{font-size:13px;color:#64748b;}
-
-/* FAQ */
 .faq-wrapper{max-width:900px;margin:auto;}
 .faq-item{background:#f8fafc;margin-bottom:15px;border-radius:20px;overflow:hidden;}
 .faq-question{width:100%;padding:25px;border:none;background:none;font-size:18px;font-weight:700;color:#14274e;display:flex;justify-content:space-between;align-items:center;cursor:pointer;}
 .faq-answer{display:none;padding:0 25px 25px;line-height:1.8;color:#64748b;}
 .faq-item.active .faq-answer{display:block;}
-
-/* CTA */
 .cta-section{background:linear-gradient(135deg,#14274e,#1f3f7a);padding:80px;border-radius:35px;text-align:center;color:white;}
 .cta-section h2{font-size:60px;font-weight:800;margin-bottom:20px;}
 .cta-section p{font-size:20px;opacity:.9;max-width:700px;margin:auto;margin-bottom:35px;line-height:1.8;}
 .cta-buttons{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;}
 .cta-primary{background:white;color:#14274e;padding:16px 30px;border-radius:14px;text-decoration:none;font-weight:700;}
 .cta-secondary{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.3);color:white;padding:16px 30px;border-radius:14px;text-decoration:none;font-weight:700;}
-
-/* CPNSLAB */
 .cpnslab-card{background:white;border-radius:28px;padding:50px 30px;text-align:center;box-shadow:0 15px 40px rgba(0,0,0,.06);border:1px solid #eef2f7;}
 .cpnslab-eyebrow{font-size:18px;font-weight:400;color:#64748b;margin-bottom:14px;}
 .cpnslab-logo{font-size:56px;font-weight:800;letter-spacing:-1px;margin-bottom:26px;}
@@ -156,8 +127,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 .cpnslab-logo-orange{color:#f59e0b;}
 .cpnslab-btn{display:inline-block;background:#14274e;color:white;padding:16px 32px;border-radius:14px;text-decoration:none;font-weight:700;font-size:15px;transition:.2s;}
 .cpnslab-btn:hover{opacity:.9;}
-
-/* FOOTER */
 .footer-grid-new{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;}
 .footer-grid-new h4{margin-bottom:20px;font-size:18px;}
 .footer-grid-new ul{list-style:none;}
@@ -165,8 +134,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 .footer-social{display:flex;gap:12px;margin-top:18px;}
 .footer-social a{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;transition:.2s;}
 .footer-social a:hover{background:rgba(255,255,255,.2);}
-
-/* RESPONSIVE */
 @media(max-width:992px){
   .hero-content{grid-template-columns:1fr;}
   .feature-grid-new{grid-template-columns:1fr 1fr;}
@@ -242,7 +209,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </nav>
 
-<!-- ═══════════ HERO ═══════════ -->
 <section class="hero" id="home">
   <div class="container hero-content">
     <div>
@@ -256,7 +222,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
     </div>
     <div>
       <div class="hero-card">
-        <!-- Banner tryout terbaru — ditampilkan kalau ada banner_url -->
         <div class="tryout-banner-wrap" id="tryoutBannerWrap" style="display:none;">
           <img id="tryoutBannerImg" src="" alt="Banner tryout terbaru">
         </div>
@@ -270,21 +235,17 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ STATISTIK ═══════════ -->
 <section id="tryout" style="padding:30px 0 90px;">
   <div class="container">
     <div class="stat-grid">
-      <!-- Peserta terdaftar: real dari /api/stats/users kalau ada, fallback hardcode -->
       <div class="stat-card">
         <h2 id="statPeserta">—</h2>
         <p>Peserta Terdaftar</p>
       </div>
-      <!-- Tryout tersedia: real dari /api/tryout -->
       <div class="stat-card">
         <h2 id="statTryoutTersedia">—</h2>
         <p>Tryout Tersedia</p>
       </div>
-      <!-- Modul belajar: real dari /api/modul (kolom: id, judul, akses, status) -->
       <div class="stat-card">
         <h2 id="statJumlahModul">—</h2>
         <p>Modul Belajar</p>
@@ -297,7 +258,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ KEUNGGULAN ═══════════ -->
 <section style="padding:100px 0;background:white;">
   <div class="container">
     <div style="text-align:center;margin-bottom:70px;">
@@ -313,7 +273,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ ALUR BELAJAR ═══════════ -->
 <section style="padding:100px 0;background:#f8fafc;">
   <div class="container">
     <div style="text-align:center;margin-bottom:70px;">
@@ -330,7 +289,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ ANALISIS PERKEMBANGAN ═══════════ -->
 <section style="padding:100px 0;background:white;">
   <div class="container">
     <div style="text-align:center;margin-bottom:60px;">
@@ -367,7 +325,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ PAKET ═══════════ -->
 <section id="paket" style="padding:110px 0;background:#f8fafc;">
   <div class="container">
     <div style="text-align:center;margin-bottom:70px;">
@@ -419,7 +376,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ CTA CPNSLAB ═══════════ -->
 <section style="padding:0 0 60px;">
   <div class="container">
     <div class="cpnslab-card">
@@ -430,7 +386,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ LEADERBOARD ═══════════ -->
 <section style="padding:110px 0;background:white;">
   <div class="container">
     <div style="text-align:center;margin-bottom:60px;">
@@ -440,17 +395,16 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
     <div class="leaderboard-card">
       <table>
         <thead>
-          <tr><th>Rank</th><th>Nama</th><th>Nilai</th><th>Status</th></tr>
+          <tr><th>Rank</th><th>Nama</th><th>Sekolah Kedinasan</th><th>Provinsi</th><th>Nilai</th></tr>
         </thead>
         <tbody id="leaderboardBody">
-          <tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:30px;">Memuat leaderboard...</td></tr>
+          <tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">Memuat leaderboard...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </section>
 
-<!-- ═══════════ TESTIMONI ═══════════ -->
 <section id="testimoni" style="padding:110px 0;background:#f8fafc;">
   <div class="container">
     <div style="text-align:center;margin-bottom:70px;">
@@ -465,7 +419,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ FAQ ═══════════ -->
 <section id="faq" style="padding:120px 0;background:white;">
   <div class="container">
     <div style="text-align:center;margin-bottom:70px;">
@@ -481,7 +434,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ CTA ═══════════ -->
 <section style="padding:120px 0;background:#f8fafc;">
   <div class="container">
     <div class="cta-section">
@@ -495,7 +447,6 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
   </div>
 </section>
 
-<!-- ═══════════ FOOTER ═══════════ -->
 <footer style="background:#14274e;padding:80px 0 30px;color:white;">
   <div class="container">
     <div class="footer-grid-new">
@@ -521,18 +472,12 @@ body{background:#f8fafc;color:var(--text);overflow-x:hidden;}
 </footer>
 
 <script>
-/* ════════════════════════════════════════
-   FAQ TOGGLE
-════════════════════════════════════════ */
 document.querySelectorAll('.faq-item').forEach(item => {
   item.querySelector('.faq-question').addEventListener('click', () => {
     item.classList.toggle('active');
   });
 });
 
-/* ════════════════════════════════════════
-   SIDEBAR MOBILE
-════════════════════════════════════════ */
 const hamburger = document.getElementById('hamburger');
 const sidebar   = document.getElementById('sidebar');
 const overlay   = document.getElementById('overlay');
@@ -552,9 +497,6 @@ sidebar.querySelectorAll('a').forEach(link => {
   });
 });
 
-/* ════════════════════════════════════════
-   HELPER
-════════════════════════════════════════ */
 const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 
 function formatPeriode(row) {
@@ -575,25 +517,15 @@ function labelAkses(akses) {
   return 'Akses: Gratis';
 }
 
-/* ════════════════════════════════════════
-   1. TRYOUT TERBARU + STATISTIK TRYOUT
-   Endpoint: GET /api/tryout?status=publish&limit=500
-   Field dari tryout_publik view:
-     id, nama, deskripsi, durasi, jumlah_soal, akses,
-     status, tanggal_mulai, tanggal_selesai, bebas_waktu,
-     banner_url, created_at
-════════════════════════════════════════ */
 async function loadTryoutData() {
   try {
     const res  = await fetch('/api/tryout?status=publish&limit=500');
     const json = await res.json();
     const rows = json.data || [];
 
-    // ── Statistik: jumlah tryout publish real ──
     document.getElementById('statTryoutTersedia').textContent =
       rows.length ? rows.length + '+' : '0';
 
-    // ── Hero card: tryout terbaru (index 0, API sudah desc created_at) ──
     const t = rows[0];
     if (!t) {
       document.getElementById('tryoutNama').textContent = 'Belum ada tryout';
@@ -603,7 +535,6 @@ async function loadTryoutData() {
     document.getElementById('tryoutNama').textContent    = t.nama || 'Tryout';
     document.getElementById('tryoutAkses').textContent   = labelAkses(t.akses);
 
-    // Meta: durasi + jumlah soal + periode
     const metaParts = [];
     if (t.durasi)      metaParts.push('⏱ ' + t.durasi + ' menit');
     if (t.jumlah_soal) metaParts.push('📝 ' + t.jumlah_soal + ' soal');
@@ -611,7 +542,6 @@ async function loadTryoutData() {
     if (periode)       metaParts.push('📅 ' + periode);
     document.getElementById('tryoutMeta').textContent = metaParts.join('  ·  ');
 
-    // Banner (kalau ada)
     if (t.banner_url) {
       const img  = document.getElementById('tryoutBannerImg');
       const wrap = document.getElementById('tryoutBannerWrap');
@@ -627,12 +557,6 @@ async function loadTryoutData() {
   }
 }
 
-/* ════════════════════════════════════════
-   2. JUMLAH MODUL
-   Endpoint: GET /api/modul   (tanpa email → tidak ada status_akses per user)
-   Field yang dipakai: hanya hitung panjang array data
-   (modul hanya yang status='publish', sesuai route)
-════════════════════════════════════════ */
 async function loadModulData() {
   try {
     const res  = await fetch('/api/modul');
@@ -646,36 +570,27 @@ async function loadModulData() {
   }
 }
 
-/* ════════════════════════════════════════
-   3. JUMLAH PESERTA TERDAFTAR
-   Endpoint: GET /api/stats/users  (kalau ada)
-   Fallback: tampilkan angka statis yang masuk akal
-════════════════════════════════════════ */
 async function loadStatsPeserta() {
   try {
     const res  = await fetch('/api/stats/users');
     const json = await res.json();
     if (json.success && json.total) {
-      // Format ribuan: 1234 → "1.234+"
       const formatted = Number(json.total).toLocaleString('id-ID') + '+';
       document.getElementById('statPeserta').textContent = formatted;
     } else {
       throw new Error('no data');
     }
   } catch (e) {
-    // Endpoint belum ada → tampilkan angka statis
     document.getElementById('statPeserta').textContent = '18.456+';
   }
 }
 
 /* ════════════════════════════════════════
-   4. LEADERBOARD
+   LEADERBOARD — data real dari tryout terbaru,
+   TANPA kolom status (Premium/Gratis).
    Endpoint: GET /api/leaderboard/terbaru
-   Response: { success, nama_tryout, data: [{nama, nilai, plan}] }
-   Field `nama`:
-     route sudah handle fallback: r.nama || r.nama_peserta ||
-     r.nama_user || email.split('@')[0]
-   Field `plan`: 'premium' | 'gratis'
+   Response yang dipakai:
+     { success, nama_tryout, data: [{nama, sekolah, daerah, nilai}] }
 ════════════════════════════════════════ */
 async function loadLeaderboard() {
   const tbody = document.getElementById('leaderboardBody');
@@ -684,7 +599,6 @@ async function loadLeaderboard() {
     const res  = await fetch('/api/leaderboard/terbaru');
     const json = await res.json();
 
-    // Tampilkan nama tryout di subtitle
     if (json.nama_tryout) {
       subEl.textContent = 'Peringkat teratas — ' + json.nama_tryout;
     } else {
@@ -694,38 +608,33 @@ async function loadLeaderboard() {
     const data = json.data || [];
     if (!data.length) {
       tbody.innerHTML =
-        '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:30px;">' +
+        '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">' +
         'Belum ada peserta yang menyelesaikan tryout terbaru.</td></tr>';
       return;
     }
 
     const MEDALI = ['🥇','🥈','🥉'];
     tbody.innerHTML = data.map((row, idx) => {
-      const rankLabel  = (MEDALI[idx] ? MEDALI[idx] + ' ' : '') + (idx + 1);
-      const planBadge  = row.plan === 'premium'
-        ? '<span class="plan-badge plan-premium">Premium</span>'
-        : '<span class="plan-badge plan-gratis">Gratis</span>';
+      const rankLabel = (MEDALI[idx] ? MEDALI[idx] + ' ' : '') + (idx + 1);
 
       return '<tr>' +
         '<td style="font-weight:700;">'  + rankLabel           + '</td>' +
         '<td style="font-weight:600;">'  + (row.nama || '—')   + '</td>' +
+        '<td>' + (row.sekolah || '—') + '</td>' +
+        '<td>' + (row.provinsi || '—') + '</td>' +
         '<td style="font-weight:800;color:#14274e;">' + (row.nilai ?? 0) + '</td>' +
-        '<td>' + planBadge + '</td>' +
       '</tr>';
     }).join('');
 
   } catch (e) {
     console.error('loadLeaderboard error:', e);
     tbody.innerHTML =
-      '<tr><td colspan="4" style="text-align:center;color:#94a3b8;padding:30px;">' +
+      '<tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:30px;">' +
       'Leaderboard belum tersedia.</td></tr>';
     subEl.textContent = 'Lihat siapa yang berada di peringkat teratas';
   }
 }
 
-/* ════════════════════════════════════════
-   INIT — semua paralel supaya cepat
-════════════════════════════════════════ */
 Promise.all([
   loadTryoutData(),
   loadModulData(),

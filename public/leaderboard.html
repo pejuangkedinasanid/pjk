@@ -330,12 +330,13 @@ body::after{content:"";position:fixed;bottom:-200px;left:-200px;width:500px;heig
             <th style="width:56px;">Rank</th>
             <th>Peserta</th>
             <th class="center hide-mobile">Sekolah Tujuan</th>
+            <th class="center hide-mobile">Provinsi</th>
             <th class="center hide-mobile">Nilai per Bagian</th>
             <th class="center">Nilai</th>
           </tr>
         </thead>
         <tbody id="lbBody">
-          <tr class="loading-row"><td colspan="5"><div class="spinner-sm"></div>Memuat data...</td></tr>
+          <tr class="loading-row"><td colspan="6"><div class="spinner-sm"></div>Memuat data...</td></tr>
         </tbody>
       </table>
     </div>
@@ -388,7 +389,7 @@ async function loadTryoutList() {
 /* ── LOAD DATA ── */
 async function load() {
   const body = document.getElementById("lbBody");
-  body.innerHTML = '<tr class="loading-row"><td colspan="5"><div class="spinner-sm"></div>Memuat data...</td></tr>';
+  body.innerHTML = '<tr class="loading-row"><td colspan="6"><div class="spinner-sm"></div>Memuat data...</td></tr>';
 
   const provinsi = document.getElementById("filterProvinsi").value.trim();
   const sekolah  = document.getElementById("filterSekolah").value.trim();
@@ -427,7 +428,7 @@ async function load() {
     renderPagination(currentTotal);
 
   } catch(err) {
-    body.innerHTML = '<tr class="empty-row"><td colspan="5">Gagal memuat: ' + err.message + '</td></tr>';
+    body.innerHTML = '<tr class="empty-row"><td colspan="6">Gagal memuat: ' + err.message + '</td></tr>';
   }
 }
 
@@ -457,7 +458,7 @@ function renderUserCard(rank, data, type) {
 function renderTable(rows, userRank, type) {
   const body = document.getElementById("lbBody");
   if (!rows.length) {
-    body.innerHTML = '<tr class="empty-row"><td colspan="5">Belum ada data di leaderboard ini.</td></tr>';
+    body.innerHTML = '<tr class="empty-row"><td colspan="6">Belum ada data di leaderboard ini.</td></tr>';
     return;
   }
 
@@ -501,6 +502,7 @@ function renderTable(rows, userRank, type) {
         '</div>' +
       '</div></td>' +
       '<td class="center hide-mobile"><span style="font-size:13px;color:var(--muted);">' + (r.sekolah_kedinasan || "—") + '</span></td>' +
+      '<td class="center hide-mobile"><span style="font-size:13px;color:var(--muted);">' + (r.provinsi || "—") + '</span></td>' +
       '<td class="center hide-mobile">' + seksiHtml + '</td>' +
       '<td class="center"><span class="nilai-badge ' + nilaiCls + '">' + nilaiVal + '</span></td>' +
     '</tr>';
@@ -511,7 +513,7 @@ function renderTable(rows, userRank, type) {
     const ud = userData;
     if (ud) {
       const nilaiUD = type === "global" ? (ud.total_nilai || 0) : (ud.nilai || 0);
-      html += '<tr><td colspan="5" class="separator-row td" style="background:#fff7ed;text-align:center;padding:10px;font-size:13px;color:#c2410c;font-weight:700;border-top:2px dashed #f97316;">· · · · · · · ·</td></tr>';
+      html += '<tr><td colspan="6" class="separator-row td" style="background:#fff7ed;text-align:center;padding:10px;font-size:13px;color:#c2410c;font-weight:700;border-top:2px dashed #f97316;">· · · · · · · ·</td></tr>';
       html += '<tr class="user-row" id="user-table-row" style="background:linear-gradient(135deg,#fff7ed,#fef3c7) !important;">' +
         '<td><div class="rank-badge rank-user">' + userRank + '</div></td>' +
         '<td><div class="nama-cell">' +
@@ -521,6 +523,7 @@ function renderTable(rows, userRank, type) {
           '</div><div class="nama-sub">' + (ud.provinsi||"—") + '</div></div>' +
         '</div></td>' +
         '<td class="center hide-mobile"><span style="font-size:13px;color:var(--muted);">' + (ud.sekolah_kedinasan||"—") + '</span></td>' +
+        '<td class="center hide-mobile"><span style="font-size:13px;color:var(--muted);">' + (ud.provinsi||"—") + '</span></td>' +
         '<td class="center hide-mobile"></td>' +
         '<td class="center"><span class="nilai-badge nilai-mid">' + nilaiUD + '</span></td>' +
       '</tr>';

@@ -4,21 +4,29 @@
 // Dipakai landing page (publik, tanpa login) untuk menampilkan
 // leaderboard dari TRYOUT TERBARU yang dipublish admin.
 //
-// ASUMSI SKEMA (tolong koreksi kalau beda): tabel/view "leaderboard_view"
-// punya kolom "tryout_id" dan "nilai", dan hanya berisi baris dengan
-// is_first_attempt=true (sesuai komentar di app/api/tryout/submit/route.ts
-// kamu). Kalau nama kolom nyatanya beda, response tetap aman (tidak
-// expose kolom mentah ke publik -- field selain nama/nilai/plan tidak
-// pernah dikirim ke klien), tapi datanya bisa kosong/salah sampai
-// disesuaikan.
+// PERBAIKAN:
+// 1. Sebelumnya pakai NEXT_PUBLIC_SUPABASE_ANON_KEY, yang kena RLS.
+//    Kalau leaderboard_view tidak punya policy SELECT untuk role anon,
+//    query akan sukses tapi selalu mengembalikan array kosong (bukan error).
+//    Solusinya: pakai SUPABASE_SERVICE_ROLE_KEY (server-side only, tidak
+//    pernah dikirim ke browser) supaya bisa membaca leaderboard_view
+//    tanpa terhalang RLS. Response tetap disaring, jadi tetap aman untuk
+//    endpoint publik.
+// 2. Field "plan" (premium/gratis) dihapus dari response, karena kolom
+//    Status sudah tidak ditampilkan lagi di leaderboard landing page.
+// 3. Urutan pakai kolom "ranking" dari view kalau tersedia, fallback ke
+//    "nilai" desc supaya tetap benar walau kolom ranking belum ada.
+// 4. Menambahkan "sekolah" (dari kolom sekolah_kedinasan) dan "provinsi"
+//    di leaderboard_view. Kolom sekolah_kedinasan sudah terbukti ada di
+//    view, tapi kolom provinsi BELUM ada -- perlu ditambahkan lewat
+//    ALTER VIEW / join ke tabel users di Supabase.
 
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-// Pakai anon key -- ini endpoint publik, tidak butuh data sensitif.
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
 );
 
 export async function GET() {
@@ -40,7 +48,7 @@ export async function GET() {
       return NextResponse.json({ success: true, nama_tryout: null, data: [] });
     }
 
-    // 2. Leaderboard untuk tryout itu
+    // 2. Leaderboard untuk tryout itu (service role -> tidak kena RLS)
     const { data: rows, error: errBoard } = await supabase
       .from("leaderboard_view")
       .select("*")
@@ -49,16 +57,23 @@ export async function GET() {
       .limit(5);
 
     if (errBoard) {
-      // Jangan bikin landing page error total kalau view-nya belum cocok --
-      // cukup kembalikan list kosong + pesan, biar halaman tetap tampil.
       console.error("leaderboard_view error:", errBoard);
-      return NextResponse.json({ success: true, nama_tryout: tryoutTerbaru.nama, data: [], warning: errBoard.message });
+      return NextResponse.json({
+        success: true,
+        nama_tryout: tryoutTerbaru.nama,
+        data: [],
+        warning: errBoard.message,
+      });
     }
 
     const data = (rows || []).map((r: any) => ({
       nama: r.nama || r.nama_peserta || r.nama_user || (r.email ? String(r.email).split("@")[0] : "Peserta"),
       nilai: r.nilai ?? r.nilai_total ?? 0,
-      plan: r.plan === "premium" || r.status_akun === "premium" ? "premium" : "gratis",
+      sekolah: r.sekolah_kedinasan || r.sekolah || "-",
+      // NOTE: kolom "provinsi" belum ada di leaderboard_view saat ini,
+      // makanya selalu jatuh ke "-". Perlu tambahkan join ke tabel users
+      // di definisi view supaya kolom ini terisi.
+      provinsi: r.provinsi || "-",
     }));
 
     return NextResponse.json({ success: true, nama_tryout: tryoutTerbaru.nama, data });
