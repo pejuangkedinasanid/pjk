@@ -7,7 +7,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { getSessionUser } from "@/lib/session";
+import { getActiveSessionUser } from "@/lib/session";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -16,7 +16,14 @@ const supabase = createClient(
 
 export async function GET(req: NextRequest) {
   try {
-    const session = getSessionUser(req);
+    const { session, blockedByReset } = getActiveSessionUser(req);
+
+    if (blockedByReset) {
+      return NextResponse.json(
+        { success: false, mustResetPassword: true, message: "Harap ganti password terlebih dahulu." },
+        { status: 403 }
+      );
+    }
 
     if (!session) {
       return NextResponse.json(

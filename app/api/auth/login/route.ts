@@ -1,11 +1,6 @@
 // FILE: app/api/auth/login/route.ts
 // POST /api/auth/login
 // Body: { email, password }
-//
-// PERUBAHAN dari versi sebelumnya: setelah login berhasil, sekarang
-// juga men-set cookie session httpOnly. Endpoint lain (kuota/cek,
-// tryout/riwayat, dll) akan membaca identitas dari cookie ini,
-// BUKAN dari parameter email di URL yang bisa diubah bebas.
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
@@ -53,12 +48,11 @@ export async function POST(req: NextRequest) {
 
     const response = NextResponse.json({ success: true, user });
 
-    // Set cookie session httpOnly -- ini yang dipakai endpoint lain
-    // untuk tahu "siapa yang sedang login", bukan query string email.
     const cookieValue = createSessionCookieValue({
       id: user.id,
       email: user.email,
       role: user.role,
+      harusResetPassword: !!user.harus_reset_password,
     });
     response.cookies.set(
       SESSION_COOKIE_OPTIONS.name,

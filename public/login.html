@@ -136,7 +136,9 @@ async function login(event) {
     showMsg("Login berhasil! Mengalihkan...", "success");
 
     setTimeout(() => {
-      if (result.user.role === "admin" || result.user.role === "super_admin") {
+      if (result.user.harus_reset_password) {
+        window.location.href = "ganti-password-wajib.html";
+      } else if (result.user.role === "admin" || result.user.role === "super_admin") {
         window.location.href = "admin-dashboard.html";
       } else {
         window.location.href = "dashboard.html";

@@ -210,6 +210,7 @@ const BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov'
 const rawUser = localStorage.getItem("user");
 if (!rawUser) window.location.href = "login.html";
 const user = JSON.parse(rawUser);
+if (user.harus_reset_password) window.location.href = "ganti-password-wajib.html";
 
 document.getElementById("greetingName").textContent =
   "Halo, " + (user.username || user.nama || "Pejuang") + "!";

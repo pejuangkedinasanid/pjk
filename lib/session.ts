@@ -1,15 +1,9 @@
 // FILE: lib/session.ts
 //
-// Session sederhana berbasis cookie httpOnly yang di-sign (HMAC),
-// tanpa perlu install library tambahan (next-auth dll). Cocok untuk
-// menggantikan pola "kirim email di query string" yang rawan IDOR.
+// Session sederhana berbasis cookie httpOnly yang di-sign (HMAC).
 //
-// PENTING: Anda perlu 1 environment variable baru:
-//   SESSION_SECRET=<string acak panjang, minimal 32 karakter>
-// Generate contoh: openssl rand -hex 32
-// Tambahkan ini di .env lokal DAN di Vercel > Settings > Environment
-// Variables (jangan sampai lupa yang di Vercel, atau login akan gagal
-// di production).
+// PENTING: butuh environment variable SESSION_SECRET (sudah Anda
+// pasang di Vercel sebelumnya -- tidak berubah).
 
 import crypto from "crypto";
 import { NextRequest } from "next/server";
@@ -22,13 +16,13 @@ export type SessionPayload = {
   id: string;
   email: string;
   role: string | null;
+  harusResetPassword: boolean;
 };
 
 function sign(data: string): string {
   return crypto.createHmac("sha256", SECRET).update(data).digest("hex");
 }
 
-/** Bikin nilai cookie: base64(payload).signature */
 export function createSessionCookieValue(payload: SessionPayload): string {
   const json = JSON.stringify({ ...payload, exp: Date.now() + MAX_AGE_SECONDS * 1000 });
   const b64 = Buffer.from(json).toString("base64url");
@@ -36,14 +30,12 @@ export function createSessionCookieValue(payload: SessionPayload): string {
   return `${b64}.${sig}`;
 }
 
-/** Verifikasi & baca payload dari nilai cookie mentah */
 export function verifySessionCookieValue(value: string | undefined): SessionPayload | null {
   if (!value) return null;
   const [b64, sig] = value.split(".");
   if (!b64 || !sig) return null;
 
   const expectedSig = sign(b64);
-  // Perbandingan tahan timing-attack
   if (
     expectedSig.length !== sig.length ||
     !crypto.timingSafeEqual(Buffer.from(expectedSig), Buffer.from(sig))
@@ -54,23 +46,41 @@ export function verifySessionCookieValue(value: string | undefined): SessionPayl
   try {
     const json = Buffer.from(b64, "base64url").toString("utf8");
     const payload = JSON.parse(json);
-    if (!payload.exp || Date.now() > payload.exp) return null; // kedaluwarsa
-    return { id: payload.id, email: payload.email, role: payload.role };
+    if (!payload.exp || Date.now() > payload.exp) return null;
+    return {
+      id: payload.id,
+      email: payload.email,
+      role: payload.role,
+      harusResetPassword: !!payload.harusResetPassword,
+    };
   } catch {
     return null;
   }
 }
 
-/** Dipakai di setiap API route yang butuh identitas user yang login */
+/** Dipakai di endpoint yang BOLEH diakses walau user masih wajib reset
+ *  (contoh: endpoint reset password itu sendiri). Tidak mengecek flag. */
 export function getSessionUser(req: NextRequest): SessionPayload | null {
   const raw = req.cookies.get(COOKIE_NAME)?.value;
   return verifySessionCookieValue(raw);
 }
 
+/** Dipakai di endpoint DATA BIASA (kuota, riwayat, akses, dll).
+ *  Menolak akses kalau user masih wajib ganti password dulu. */
+export function getActiveSessionUser(req: NextRequest): {
+  session: SessionPayload | null;
+  blockedByReset: boolean;
+} {
+  const session = getSessionUser(req);
+  if (!session) return { session: null, blockedByReset: false };
+  if (session.harusResetPassword) return { session: null, blockedByReset: true };
+  return { session, blockedByReset: false };
+}
+
 export const SESSION_COOKIE_OPTIONS = {
   name: COOKIE_NAME,
   httpOnly: true,
-  secure: true, // wajib true di production (HTTPS)
+  secure: true,
   sameSite: "lax" as const,
   path: "/",
   maxAge: MAX_AGE_SECONDS,
